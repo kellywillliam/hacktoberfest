@@ -11,8 +11,7 @@ import java.util.logging.Logger;
 
 @LineMessageHandler
 public class PrimbonController {
-	
-	private static final Logger LOGGER = Logger.getLogger(PrimbonController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PrimbonController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -31,11 +30,11 @@ public class PrimbonController {
                 event.getTimestamp(), event.getSource()));
     }
     
-    public static String makePostCall(String tgl, String bln, String thn){ //post to www.primbon.com with body-form inputs
+    public String makePostCall(String tgl, String bln, String thn){ //post to www.primbon.com with body-form inputs
     	return null;
     }
     
-    public static String screenScrapeGetNamaWeton(String html){
+    public String screenScrapeGetNamaWeton(String html){
     	return null;
     }
 
