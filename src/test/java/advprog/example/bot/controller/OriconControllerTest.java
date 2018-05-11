@@ -41,11 +41,11 @@ public class OriconControllerTest {
     @Test
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/oricon Lorem Ipsum");
+                EventTestUtil.createDummyTextMessage("/oricon 2018-05-11");
 
         TextMessage reply = oriconController.handleTextMessageEvent(event);
 
-        assertEquals("Lorem Ipsum", reply.getText());
+        assertEquals("2018-05-11", reply.getText());
     }
 
     @Test
@@ -57,4 +57,15 @@ public class OriconControllerTest {
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
     }
+
+    @Test
+    void testMakeGetCall() {
+    	assertEquals(oriconController.makeGetCall(), null);
+    }
+    
+    @Test
+    void testScreenScrapeGetBooks() {
+    	assertEquals(oriconController.screenScrapeGetBooks("<html></html>"), null);
+    }
+
 }

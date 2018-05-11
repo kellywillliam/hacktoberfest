@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 @LineMessageHandler
 public class OriconController {
 
-    private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OriconController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -29,5 +29,13 @@ public class OriconController {
     public void handleDefaultMessage(Event event) {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
+    }
+
+    public static String makeGetCall(){
+        return null
+    }
+
+    public static ArrayList<String> screenScrapeGetBooks(String html){
+        return null
     }
 }
