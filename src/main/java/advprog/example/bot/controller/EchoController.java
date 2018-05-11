@@ -1,4 +1,4 @@
-package advprog.artist_in_weekly_tropical.bot.controller;
+package advprog.example.bot.controller;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;

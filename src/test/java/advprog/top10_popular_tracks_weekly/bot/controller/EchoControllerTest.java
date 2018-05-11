@@ -1,4 +1,4 @@
-package advprog.artist_in_weekly_tropical.bot.controller;
+package advprog.top10_popular_tracks_weekly.bot.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -1,4 +1,4 @@
-package advprog.artist_in_weekly_tropical.bot;
+package advprog.top10_popular_tracks_weekly.bot;
 
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;

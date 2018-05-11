@@ -1,4 +1,4 @@
-package advprog.artist_in_weekly_tropical.bot;
+package advprog.example.bot;
 
 import java.util.logging.Logger;
 
