@@ -20,7 +20,8 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-        //String replyText = contentText.replace("/is_sfw","");
+
+        //String replyText = contentText.replace("/is_sfw", "");
         return new TextMessage(contentText);
     }
 
@@ -29,5 +30,14 @@ public class SfwCheckerController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
+
+    public String getConfidencePercentage(){
+        return null;
+    }
+
+    public Boolean is_sfw(){
+        return true;
+    }
+
 
 }
