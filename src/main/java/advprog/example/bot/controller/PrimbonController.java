@@ -30,12 +30,12 @@ public class PrimbonController {
                 event.getTimestamp(), event.getSource()));
     }
     
-    public String makePostCall(String tgl, String bln, String thn){ //post to www.primbon.com with body-form inputs
-    	return null;
+    public String makePostCall(String tgl, String bln, String thn) { 
+        //post to www.primbon.com with body-form inputs
+        return null;
     }
     
-    public String screenScrapeGetNamaWeton(String html){
-    	return null;
+    public String screenScrapeGetNamaWeton(String html) {
+        return null;
     }
-
 }
