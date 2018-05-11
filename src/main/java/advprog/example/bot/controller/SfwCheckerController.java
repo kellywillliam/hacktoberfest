@@ -1,5 +1,6 @@
 package advprog.example.bot.controller;
 
+//import org.json.*;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -31,12 +32,12 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    public String getConfidencePercentage(){
-        return null;
+    public Boolean isSfw() {
+        return true;
     }
 
-    public Boolean is_sfw(){
-        return true;
+    public String getConfidence() {
+        return null;
     }
 
 

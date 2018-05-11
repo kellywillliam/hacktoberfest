@@ -26,8 +26,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class SfwCheckerControllerTest {
 
     static {
-        System.setProperty("line.bot.channelSecret", "SECRET");
-        System.setProperty("line.bot.channelToken", "TOKEN");
+        System.setProperty("line.bot.channelSecret", "24202316968b16193c83be859056ccdf");
+        System.setProperty("line.bot.channelToken", "+uFmWifpVZJBF1ZuxCaIeiFA7v4FF6D4"
+                + "djyNitngehBdGNjpKc7ICYgFZHLFP7L/yuaH+Y"
+                + "AIxi22WOgCGGVkwHhjWuJyEl38fBNOhb+A2G6gNJgwFBHQ2f"
+                + "+B5ud6ofr7V7oH3ZNKD9scEl+FMTkwdB04t89/1O/w1cDnyilFU=");
     }
 
     @Autowired
@@ -56,6 +59,16 @@ public class SfwCheckerControllerTest {
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
+    }
+
+    @Test
+    void getConfidencePercentage() {
+        assertEquals(sfwCheckerController.getConfidence(), null);
+    }
+
+    @Test
+    void isSfw() {
+        assertEquals(sfwCheckerController.isSfw(),true);
     }
 
 
