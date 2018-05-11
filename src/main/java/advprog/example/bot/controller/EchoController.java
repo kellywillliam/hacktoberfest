@@ -30,4 +30,14 @@ public class EchoController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
+
+    @EventMapping
+    public void testHandleRequestTweet() {
+
+    }
+
+    @EventMapping
+    void testHandleUnavailableUsername() {
+        
+    }
 }
