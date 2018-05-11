@@ -35,4 +35,8 @@ public class HandwrittenController {
         String convertedText = null;
         return "ini loh tulisannya: " + convertedText;
     }
+
+    public String accessAPI(){
+        return "";
+    }
 }
