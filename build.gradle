@@ -110,4 +110,7 @@ task stage(dependsOn: ['bootJar', 'clean']) {
 //Additional dependencies
 dependencies {
     compile 'org.jsoup:jsoup:1.11.3'
+    implementation 'com.linecorp.bot:line-bot-servlet:1.15.0'
+    implementation 'com.linecorp.bot:line-bot-model:1.15.0'
+    implementation 'com.linecorp.bot:line-bot-api-client:1.15.0'
 }
