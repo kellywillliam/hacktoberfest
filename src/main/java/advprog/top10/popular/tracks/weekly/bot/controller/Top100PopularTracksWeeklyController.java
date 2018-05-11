@@ -20,8 +20,15 @@ public class Top100PopularTracksWeeklyController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        if (contentText.equalsIgnoreCase("/billboard tropical")) {
+            return new TextMessage("(1) Darude - Sandstorm\r\n"
+                    + "(2) Simon & Garfunkel - Scarborough Fair\r\n"
+                    + "(3) Lazy Town - We Are Number One\r\n" + "...\r\n"
+                    + "(10) Christopher Tin - Sogno di Volare\r\n"
+                    + "");
+        } else {
+            return new TextMessage("error");
+        }
     }
 
     @EventMapping
