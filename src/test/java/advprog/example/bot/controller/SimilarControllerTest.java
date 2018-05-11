@@ -47,62 +47,90 @@ public class SimilarControllerTest {
 
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
+        String hasil = reply.getText();
         //Terkadang Error karena koneksi
-        //assertEquals("100%", reply.getText());
-        assertNotNull(reply.getText());
+        if (hasil.contains("Error")) {
+            assertNotNull(reply.getText());
+        } else {
+            assertEquals("100%", hasil);
+        }
     }
 
     @Test
     void testHandleTextDifferentMessageEvent() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/docs_sim 'abcdef' 'q'");
+                EventTestUtil.createDummyTextMessage("/docs_sim 'abcdef' 'podasdopaldkjalk'");
 
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
+        String hasil = reply.getText();
         //Terkadang Error karena koneksi
-        //assertEquals("0%", reply.getText());
-        assertNotNull(reply.getText());
+        if (hasil.contains("Error")) {
+            assertNotNull(reply.getText());
+        } else {
+            assertEquals("0%", hasil);
+        }
     }
 
     @Test
     void testHandleUrlEqualMessageEvent() {
-		String url = "http://www.bbc.com/news/world-us-canada-26734036";
+        String url = "http://www.bbc.com/news/world-us-canada-26734036";
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/docs_sim "+url+" "+url+"");
+                EventTestUtil.createDummyTextMessage("/docs_sim " + url + " " + url + "");
 
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
+        String hasil = reply.getText();
         //Terkadang Error karena koneksi
-        //assertEquals("0%", reply.getText());
-        assertNotNull(reply.getText());
+        if (hasil.contains("Error")) {
+            assertNotNull(reply.getText());
+        } else {
+            assertEquals("100%", hasil);
+        }
     }
 
     @Test
     void testHandleUrlDifferentMessageEvent() {
-		String url1 = "http://www.bbc.com/news/world-us-canada-26734036";
-		String url2 = "http://edition.cnn.com/2014/03/24/politics/obama-europe-trip/";
+        String url1 = "http://www.bbc.com/news/world-us-canada-26734036";
+        String url2 = "http://edition.cnn.com/2014/03/24/politics/obama-europe-trip/";
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/docs_sim "+url1+" "+url2+"");
+                EventTestUtil.createDummyTextMessage("/docs_sim " + url1 + " " + url2 + "");
 
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
+        String hasil = reply.getText();
         //Terkadang Error karena koneksi
-        //assertEquals("0%", reply.getText());
-        assertNotNull(reply.getText());
+        if (hasil.contains("Error")) {
+            assertNotNull(reply.getText());
+        } else {
+            assertTrue(!hasil.contains("100%"));
+        }
     }
 
     @Test
     void testErrorMessageEvent() {
-		String url1 = "'htasdasdww.bbc.com/news/dsdsd34036'";
-		String url2 = "htasdadstics/obama-europe-trip/";
+        String url1 = "htasdasdww.bbc.com/news/dsdsd34036";
+        String url2 = "htasdadstics/obama-europe-trip/";
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/docs_sim "+url1+" "+url2+"");
+                EventTestUtil.createDummyTextMessage("/docs_sim " + url1 + " " + url2 + "");
 
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
-        //Terkadang Error karena koneksi
-        //assertEquals("0%", reply.getText());
-        assertNotNull(reply.getText());
+        String hasil = reply.getText();
+        assertTrue(hasil.contains("Error"));
+    }
+
+    @Test
+    void testBadInputMessageEvent() {
+        String url1 = "'http'";
+        String url2 = "htasdadstics/obama-europe-trip/";
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/docs_sim " + url1 + " " + url2 + "");
+
+        TextMessage reply = similarController.handleTextMessageEvent(event);
+        System.out.println(reply.getText());
+        String hasil = reply.getText();
+        assertTrue(hasil.contains("Kesalahan input"));
     }
 
     @Test
