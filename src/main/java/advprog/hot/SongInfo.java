@@ -5,7 +5,7 @@ public class SongInfo {
     private String songTitle;
     private int rank;
 
-    public ChartRow(String songArtist, String songTitle, int rank) {
+    public SongInfo(String songArtist, String songTitle, int rank) {
         this.songArtist = songArtist;
         this.songTitle = songTitle;
         this.rank = rank;
