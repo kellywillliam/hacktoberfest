@@ -10,9 +10,8 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import java.util.logging.Logger;
 
 @LineMessageHandler
-public class EchoController {
-
-    private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
+public class TweetController {
+    private static final Logger LOGGER = Logger.getLogger(TweetController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -21,8 +20,9 @@ public class EchoController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        TwitterAPI api = new TwitterAPI();
+        String replyText = api.recentTweets(contentText);
+        return new TextMessage(replyText);
     }
 
     @EventMapping
@@ -30,5 +30,4 @@ public class EchoController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
-
 }
