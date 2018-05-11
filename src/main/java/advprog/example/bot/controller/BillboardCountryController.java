@@ -7,6 +7,7 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 @LineMessageHandler
@@ -30,4 +31,13 @@ public class BillboardCountryController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
+    
+    public static String makeGetCall(){
+    	return null;
+    }
+    
+    public static ArrayList<String> screenScrapeGetArtists(String html){
+    	return null;
+    }
+    
 }
