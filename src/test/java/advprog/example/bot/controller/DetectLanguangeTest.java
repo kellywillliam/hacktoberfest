@@ -40,6 +40,6 @@ public class DetectLanguangeTest {
     @Test
     void testDetectLang() {
 
-        assertEquals("en 0.3423", detectLanguage.detectLang(""));
+        assertEquals("id 0.3423", detectLanguage.detectLang(""));
     }
 }
