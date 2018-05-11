@@ -59,13 +59,13 @@ public class BillboardCountryControllerTest {
     }
     
     @Test
-    void testMakeGetCall(){
-    	assertEquals(billboardCountryController.makeGetCall(), null);
+    void testMakeGetCall() {
+        assertEquals(billboardCountryController.makeGetCall(), null);
     }
     
     @Test
-    void testScreenScrapeGetArtists(){
-    	assertEquals(billboardCountryController.screenScrapeGetArtists("<html></html>"), null);
+    void testScreenScrapeGetArtists() {
+        assertEquals(billboardCountryController.screenScrapeGetArtists("<html></html>"), null);
     }
     
 }

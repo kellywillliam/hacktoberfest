@@ -13,7 +13,8 @@ import java.util.logging.Logger;
 @LineMessageHandler
 public class BillboardCountryController {
 
-    private static final Logger LOGGER = Logger.getLogger(BillboardCountryController.class.getName());
+    private static final Logger LOGGER = 
+            Logger.getLogger(BillboardCountryController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -31,13 +32,13 @@ public class BillboardCountryController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
-    
-    public static String makeGetCall(){
-    	return null;
+
+    public static String makeGetCall() {
+        return null;
     }
     
-    public static ArrayList<String> screenScrapeGetArtists(String html){
-    	return null;
+    public static ArrayList<String> screenScrapeGetArtists(String html) {
+        return null;
     }
     
 }
