@@ -10,7 +10,7 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import java.util.logging.Logger;
 
 @LineMessageHandler
-public class EchoController {
+public class HandwrittenController {
 
     private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
 
@@ -22,7 +22,7 @@ public class EchoController {
         String contentText = content.getText();
 
         String replyText = contentText.replace("/echo", "");
-        return new TextMessage("nih baca tulisannya: ");
+        return new TextMessage(replyText.substring(1));
     }
 
     @EventMapping
