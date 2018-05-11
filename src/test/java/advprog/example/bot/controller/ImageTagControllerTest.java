@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
-public class EchoControllerTest {
+public class ImageTagControllerTest {
 
     static {
         System.setProperty("line.bot.channelSecret", "46da48a24a9f5c1628dda6acc7ba02cf");
@@ -31,19 +31,19 @@ public class EchoControllerTest {
     }
 
     @Autowired
-    private EchoController echoController;
+    private ImageTagController imageTagController;
 
     @Test
     void testContextLoads() {
-        assertNotNull(echoController);
+        assertNotNull(imageTagController);
     }
 
     @Test
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
+                EventTestUtil.createDummyTextMessage("/tags Lorem Ipsum");
 
-        TextMessage reply = echoController.handleTextMessageEvent(event);
+        TextMessage reply = imageTagController.handleTextMessageEvent(event);
 
         assertEquals("Lorem Ipsum", reply.getText());
     }
@@ -52,7 +52,7 @@ public class EchoControllerTest {
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
-        echoController.handleDefaultMessage(event);
+        imageTagController.handleDefaultMessage(event);
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
