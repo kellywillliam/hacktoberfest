@@ -44,7 +44,7 @@ public class MusicBrainzControllerTest {
 
         TextMessage reply = musicBrainzController.handleTextMessageEvent(event);
 
-        //System.out.println(reply.getText());
+        System.out.println(reply.getText());
         String[] lines = reply.getText().split("\n");
         assertEquals(lines.length, 6);
     }

@@ -37,7 +37,7 @@ public class MusicBrainzController {
         String contentText = content.getText();
 //        String[] splitContentText = contentText.split(" ");
         String artistName = contentText.replace("/10albums ", "");
-        return new TextMessage(albumSearch(artistName));
+        return new TextMessage(albumSearch(artistName.toLowerCase()));
     }
 
     public String albumSearch(String artistName) throws MBWS2Exception {
@@ -50,7 +50,7 @@ public class MusicBrainzController {
     	ArtistWs2 artist = new ArtistWs2();
 
     	for (ArtistResultWs2 x : result) {
-    		if (x.getArtist().getName().equals(artistName)) {
+    		if (x.getArtist().getName().toLowerCase().equals(artistName)) {
     			artist = x.getArtist();
     		}
     	}
