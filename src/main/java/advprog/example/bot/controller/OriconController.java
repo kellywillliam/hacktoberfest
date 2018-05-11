@@ -31,11 +31,11 @@ public class OriconController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    public static String makeGetCall(){
+    public String makeGetCall(){
         return null
     }
 
-    public static ArrayList<String> screenScrapeGetBooks(String html){
+    public ArrayList<String> screenScrapeGetBooks(String html){
         return null
     }
 }
