@@ -41,11 +41,16 @@ public class MusicBrainzControllerTest {
     @Test
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/10albums Lorem Ipsum");
+                EventTestUtil.createDummyTextMessage("/10albums Fall Out Boy");
 
         TextMessage reply = musicBrainzController.handleTextMessageEvent(event);
 
-        assertEquals("Lorem Ipsum", reply.getText());
+        //assertEquals("Lorem Ipsum", reply.getText());
+        //System.out.println(reply.getText());
+        assertEquals("Fall Out Boy-M A N I A-2018\nFall Out Boy-American Beauty/American Psycho-2015\n"
+        		+ "Fall Out Boy-Save Rock and Roll-2013\nFall Out Boy-Folie à Deux-2008\n"
+        		+ "Fall Out Boy-Infinity On High-2007\nFall Out Boy-From Under The Cork Tree-2005\n"
+        		+ "Fall Out Boy-Take This to Your Grave-2003", reply.getText());
     }
 
     @Test
