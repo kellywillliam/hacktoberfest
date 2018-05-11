@@ -13,7 +13,7 @@ public class Top100ChartTest {
     @Before
     public void setUp() {
         Top100Chart top100Chart = new Top100Chart();
-        top100 = new ArrayList<>();
+        top100 = top100Chart.getDataFromBillboard();
     }
 
     @Test

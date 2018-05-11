@@ -16,15 +16,22 @@ class Top100Chart {
         top100 = new ArrayList<>();
     }
 
-    public void getDataFromBillboard() {
+    public ArrayList<SongInfo> getDataFromBillboard() {
         String targetURL = "https://www.billboard.com/charts/hot-100";
-        //get Data via JSOUP.
-    }
 
-    public void setTop100Array(Elements data) {
-        for(int i = 0; i < data.size(); i++) {
-            top100.set(i, new SongInfo(data.songArtist, data.songTitle, data.rank));
+        try {
+            Document document = Jsoup.connect(targetURL).get();
+            Elements chartRows = document.getElementsByClass("chart-row");
+            for (Element chartRow : chartRows) {
+                String songArtist = chartRow.getElementsByClass("chart-row__song").html();
+                String songTitle = chartRow.getElementsByClass("chart-row__artist").html();
+                String currentRank = chartRow.getElementsByClass("chart-row__current-week").html();
+                int rank = Integer.parseInt(currentRank);
+                top100.add(new SongInfo(songArtist, songTitle, rank));
+            }
+        } catch (IOException e) {
+            e.getMessage();
         }
+        return top100;
     }
-
 }
