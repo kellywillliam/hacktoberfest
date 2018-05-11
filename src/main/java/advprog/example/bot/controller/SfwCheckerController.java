@@ -20,7 +20,7 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-        //String replyText = contentText.replace("/is_sfw","");
+        //String replyText = contentText.replace("/is_sfw", "");
         return new TextMessage(contentText);
     }
 
