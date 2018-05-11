@@ -14,7 +14,7 @@ import java.net.SocketTimeoutException;
 public class NewAgeAlbumApplication{
     public static void main(String[] args){
         try {
-            String url = "https://www.billboard.com/charts/tropical-songs";
+            String url = "https://www.billboard.com/charts/new-age-albums";
             Document doc = Jsoup.connect(url).timeout(5000).get();
             Elements links = doc.getElementsByClass("chart-row");
             for(Element link : links) {
