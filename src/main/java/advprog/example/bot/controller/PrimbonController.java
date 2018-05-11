@@ -30,5 +30,9 @@ public class PrimbonController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
+    
+    public static String makePostCall(String tgl, String bln, String thn){ //post to www.primbon.com with body-form inputs
+    	return null;
+    }
 
 }
