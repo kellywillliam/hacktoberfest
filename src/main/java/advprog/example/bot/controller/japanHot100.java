@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 @LineMessageHandler
-public class newAgeAlbums {
+public class japanHot100 {
 
     private static final Logger LOGGER = Logger.getLogger(BotExampleApplication.class.getName());
 
@@ -29,26 +29,23 @@ public class newAgeAlbums {
         ArrayList<String> arrArtist = new ArrayList();
         ArrayList<String> arrTitle = new ArrayList();
 
-        if (contentText.equalsIgnoreCase("newage")) {
+        if (contentText.equalsIgnoreCase("japan100")) {
 
-            String url = "https://www.billboard.com/charts/new-age-albums";
+            String url = "https://www.billboard.com/charts/japan-hot-100";
             Document doc = Jsoup.connect(url).get();
 
             Elements artist = doc.getElementsByClass("chart-row__artist");
             Elements title = doc.getElementsByClass("chart-row__song");
 
-            for (Element e: artist) {
+            for (int i = 0; i < 10; i++) {
+                Element e = artist.get(i);
                 arrArtist.add(e.text());
             }
 
-            for (Element e: title) {
+            for (int i = 0; i < 10; i++) {
+                Element e = title.get(i);
                 arrTitle.add(e.text());
             }
-
-            for (int i = 0; i < arrArtist.size(); i++) {
-                System.out.println("(" + (i+1) + ") " + arrArtist.get(i) + " - " + arrTitle.get(i));
-            }
-
         }
 
         String replyText = "";
