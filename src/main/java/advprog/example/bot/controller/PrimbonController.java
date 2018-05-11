@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 @LineMessageHandler
 public class PrimbonController {
 	
-	private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(PrimbonController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
