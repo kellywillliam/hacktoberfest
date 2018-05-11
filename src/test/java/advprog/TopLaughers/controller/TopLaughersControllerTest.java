@@ -3,13 +3,9 @@ package advprog.TopLaughers.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 
 import advprog.example.bot.EventTestUtil;
 
-import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
@@ -23,7 +19,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
-public class EchoControllerTest {
+public class TopLaughersControllerTest {
 
     static {
         System.setProperty("line.bot.channelSecret", "SECRET");
@@ -41,9 +37,9 @@ public class EchoControllerTest {
     @Test
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/laughers Lorem Ipsum");
+                EventTestUtil.createDummyTextMessage("/toplaughers");
 
         TextMessage reply = topLaughersControllerStub.handleTextMessageEvent(event);
 
-        assertEquals("Lorem Ipsum", reply.getText());
-    }
+        assertEquals("1. FirstPerson \n2. SecondPerson \n3. ThirdPerson \n4. ForthPerson \n5. Fifth Person", reply.getText());
+    }}
