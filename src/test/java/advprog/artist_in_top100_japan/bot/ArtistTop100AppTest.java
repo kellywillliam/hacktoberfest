@@ -6,9 +6,9 @@ import com.linecorp.bot.model.event.source.UserSource;
 
 import java.time.Instant;
 
-public class EventTestUtil {
+public class ArtistTop100AppTest {
 
-    private EventTestUtil() {
+    private ArtistTop100AppTest() {
         // Default private constructor
     }
 

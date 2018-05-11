@@ -10,9 +10,9 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import java.util.logging.Logger;
 
 @LineMessageHandler
-public class BotArtistInTop100Controller {
+public class ArtistTop100Controller {
 
-    private static final Logger LOGGER = Logger.getLogger(BotArtistInTop100Controller.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ArtistTop100Controller.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
