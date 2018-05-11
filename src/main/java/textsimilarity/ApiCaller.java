@@ -5,19 +5,21 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+
 public class ApiCaller {
     private String jsonString;
-    public ApiCaller(String content1, String content2) {
+
+    public double checkSimilarity(String content1, String content2) {
         //TODO
         //Check if content1 and content2 url or text
+        return 1.0;
+    }
+
+    private String textSimilarity(String text1, String text2) {
 
     }
 
-    private void textSimilarity(String text1, String text2){
-
-    }
-
-    private void urlSimilarity(String url1, String url2){
+    private String urlSimilarity(String url1, String url2) {
 
     }
 
