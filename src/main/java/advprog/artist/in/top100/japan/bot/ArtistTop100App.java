@@ -1,4 +1,4 @@
-package advprog.artist_in_top100_japan.bot;
+package advprog.artist.in.top100.japan.bot;
 
 import java.util.logging.Logger;
 

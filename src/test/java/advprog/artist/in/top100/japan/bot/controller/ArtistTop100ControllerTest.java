@@ -1,4 +1,4 @@
-package advprog.artist_in_top100_japan.bot.controller;
+package advprog.artist.in.top100.japan.bot.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -7,8 +7,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import advprog.artist_in_top100_japan.bot.ArtistTop100AppTest;
-import advprog.artist_in_top100_japan.bot.controller.ArtistTop100Controller;
+import advprog.artist.in.top100.japan.bot.ArtistTop100AppTest;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
