@@ -1,4 +1,4 @@
-package advprog.example.bot.controller;
+package advprog.example.bot;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -8,6 +8,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import advprog.example.bot.EventTestUtil;
+import advprog.example.bot.controller.OriconController;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -25,36 +26,40 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 public class OriconControllerTest {
 
-    static {
-        System.setProperty("line.bot.channelSecret", "SECRET");
-        System.setProperty("line.bot.channelToken", "TOKEN");
-    }
+	static {
+		System.setProperty("line.bot.channelSecret", "SECRET");
+		System.setProperty("line.bot.channelToken", "TOKEN");
+	}
 
-    @Autowired
-    private OriconController oriconController;
+	@Autowired
+	private OriconController oriconController;
 
-    @Test
-    void testContextLoads() {
-        assertNotNull(oriconController);
-    }
+	@Test
+	void testContextLoads() {
+		assertNotNull(oriconController);
+	}
 
-    @Test
-    void testHandleTextMessageEvent() {
-        MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/oricon 1999-05-04");
+	@Test
+	void testHandleTextMessageEvent() {
+		MessageEvent<TextMessageContent> event = EventTestUtil.createDummyTextMessage("/oricon 1999-05-04");
 
-        TextMessage reply = oriconController.handleTextMessageEvent(event);
+		TextMessage reply = oriconController.handleTextMessageEvent(event);
 
-        assertEquals("1999-05-04", reply.getText());
-    }
+		assertEquals("1999-05-04", reply.getText());
+	}
 
-    @Test
-    void testHandleDefaultMessage() {
-        Event event = mock(Event.class);
+	@Test
+	void testHandleDefaultMessage() {
+		Event event = mock(Event.class);
+		oriconController.handleDefaultMessage(event);
 
-        oriconController.handleDefaultMessage(event);
+		verify(event, atLeastOnce()).getSource();
+		verify(event, atLeastOnce()).getTimestamp();
+	}
 
-        verify(event, atLeastOnce()).getSource();
-        verify(event, atLeastOnce()).getTimestamp();
-    }
+	@Test
+	void testMakeGetCall() {
+		assertEquals(null, oriconController.makeGetCall());
+	}
+
 }

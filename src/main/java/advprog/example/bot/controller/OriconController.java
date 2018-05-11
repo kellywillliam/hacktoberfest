@@ -1,5 +1,17 @@
 package advprog.example.bot.controller;
 
+import java.util.*;
+import com.linecorp.bot.model.event.Event;
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.spring.boot.annotation.EventMapping;
+import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+
+
+import java.util.logging.Logger;
+
+
 public class OriconController {
 	private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
 
@@ -18,5 +30,11 @@ public class OriconController {
     public void handleDefaultMessage(Event event) {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
+    }
+    public static String makeGetCall(){
+    	return null;
+    }
+    public static ArrayList<String> screenScrapeGetComics(String html){
+    	return null;
     }
 }
