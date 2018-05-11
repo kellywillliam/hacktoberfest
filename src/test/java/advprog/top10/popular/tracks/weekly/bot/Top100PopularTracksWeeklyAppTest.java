@@ -1,4 +1,4 @@
-package advprog.top10_popular_tracks_weekly.bot;
+package advprog.top10.popular.tracks.weekly.bot;
 
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -6,9 +6,9 @@ import com.linecorp.bot.model.event.source.UserSource;
 
 import java.time.Instant;
 
-public class EventTestUtil {
+public class Top100PopularTracksWeeklyAppTest {
 
-    private EventTestUtil() {
+    private Top100PopularTracksWeeklyAppTest() {
         // Default private constructor
     }
 

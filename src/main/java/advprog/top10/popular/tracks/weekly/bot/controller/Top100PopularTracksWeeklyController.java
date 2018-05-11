@@ -1,4 +1,4 @@
-package advprog.example.bot.controller;
+package advprog.top10.popular.tracks.weekly.bot.controller;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -10,9 +10,8 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import java.util.logging.Logger;
 
 @LineMessageHandler
-public class EchoController {
-
-    private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
+public class Top100PopularTracksWeeklyController {
+    private static final Logger LOGGER = Logger.getLogger(Top100PopularTracksWeeklyController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -30,4 +29,6 @@ public class EchoController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
+
+
 }
