@@ -1,4 +1,4 @@
-package advprog.artist_in_top100_japan.bot.controller;
+package advprog.artist.in.weekly.tropical.bot.controller;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -10,9 +10,9 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import java.util.logging.Logger;
 
 @LineMessageHandler
-public class EchoController {
+public class ArtistInTop100Controller {
 
-    private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(advprog.artist_in_top100_japan.bot.controller.ArtistInTop100Controller.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {

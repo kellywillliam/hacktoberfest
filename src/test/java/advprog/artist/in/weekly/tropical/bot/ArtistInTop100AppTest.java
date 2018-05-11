@@ -1,4 +1,4 @@
-package advprog.artist_in_weekly_tropical.bot;
+package advprog.artist.in.weekly.tropical.bot;
 
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -6,9 +6,9 @@ import com.linecorp.bot.model.event.source.UserSource;
 
 import java.time.Instant;
 
-public class EventTestUtil {
+public class ArtistInTop100AppTest {
 
-    private EventTestUtil() {
+    private ArtistInTop100AppTest() {
         // Default private constructor
     }
 
