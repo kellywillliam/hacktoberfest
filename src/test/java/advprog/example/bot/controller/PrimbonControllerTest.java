@@ -57,5 +57,15 @@ public class PrimbonControllerTest {
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
     }
+    
+    @Test
+    void testMakePostCall() {
+    	assertEquals(primbonController.makePostCall("04", "02", "1999"), null);
+    }
+    
+    @Test
+    void testScreenScrapeGetNamaWeton() {
+    	assertEquals(primbonController.screenScrapeGetNamaWeton("<html></html>"), null);
+    }
 
 }

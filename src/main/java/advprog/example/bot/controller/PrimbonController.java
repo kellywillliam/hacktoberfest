@@ -34,5 +34,9 @@ public class PrimbonController {
     public static String makePostCall(String tgl, String bln, String thn){ //post to www.primbon.com with body-form inputs
     	return null;
     }
+    
+    public static String screenScrapeGetNamaWeton(String html){
+    	return null;
+    }
 
 }
