@@ -48,13 +48,13 @@ public class EchoControllerTest {
         assertEquals("Lorem Ipsum", reply.getText());
     }
 
-    @Test
-    void testHandleDefaultMessage() {
-        Event event = mock(Event.class);
 
-        echoController.handleDefaultMessage(event);
+}@Test
+void testHandleDefaultMessage() {
+    Event event = mock(Event.class);
 
-        verify(event, atLeastOnce()).getSource();
-        verify(event, atLeastOnce()).getTimestamp();
-    }
+    echoController.handleDefaultMessage(event);
+
+    verify(event, atLeastOnce()).getSource();
+    verify(event, atLeastOnce()).getTimestamp();
 }
