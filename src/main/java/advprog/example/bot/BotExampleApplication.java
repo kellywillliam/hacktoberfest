@@ -15,4 +15,3 @@ public class BotExampleApplication {
         SpringApplication.run(BotExampleApplication.class, args);
     }
 }
- 
