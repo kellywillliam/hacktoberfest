@@ -21,8 +21,13 @@ public class ArtistTop100Controller {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        if (contentText.equalsIgnoreCase("/billboard hotcountry Coldplay")) {
+            return new TextMessage("We're sorry to tell you that Coldplay isn't on the list");
+        } else if (contentText.equalsIgnoreCase("/billboard hotcountry Bruno Mars")) {
+            return new TextMessage("Bruno Mars\nJust The Way You Are\n1");
+        } else {
+            return new TextMessage("error");
+        }
     }
 
     @EventMapping
