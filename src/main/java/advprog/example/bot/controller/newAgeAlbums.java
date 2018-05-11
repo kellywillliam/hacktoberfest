@@ -29,7 +29,7 @@ public class newAgeAlbums {
         ArrayList<String> arrArtist = new ArrayList();
         ArrayList<String> arrTitle = new ArrayList();
 
-        if (contentText.equalsIgnoreCase("newage")) {
+        if (contentText.equalsIgnoreCase("/newage")) {
 
             String url = "https://www.billboard.com/charts/new-age-albums";
             Document doc = Jsoup.connect(url).get();
