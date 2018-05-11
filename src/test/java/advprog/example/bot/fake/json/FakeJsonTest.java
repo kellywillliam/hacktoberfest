@@ -1,4 +1,5 @@
 package advprog.example.bot.fake.json;
+
 import static org.junit.Assert.assertTrue;
 
 import com.linecorp.bot.model.message.TextMessage;
