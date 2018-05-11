@@ -29,7 +29,7 @@ public class japanHot100 {
         ArrayList<String> arrArtist = new ArrayList();
         ArrayList<String> arrTitle = new ArrayList();
 
-        if (contentText.equalsIgnoreCase("japan100")) {
+        if (contentText.equalsIgnoreCase("/japan100")) {
 
             String url = "https://www.billboard.com/charts/japan-hot-100";
             Document doc = Jsoup.connect(url).get();
