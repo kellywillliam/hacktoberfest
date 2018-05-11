@@ -11,20 +11,27 @@ public class ApiCaller {
 
     public String checkSimilarity(String content1, String content2) {
         double temp = 0.0;
-        if (!content1.contains("'") && !content2.contains("'")) {
+        StringBuilder builder = new StringBuilder();
+        if (!isText(content1) && !isText(content2)) {
             temp = jsonGetRequest("https://api.dandelion.eu/datatxt/sim/v1/?url1=" + content1 + "&url2=" + content2 + "&token=16e5e85e020b4cef900aa5bcaaaae369");
-        } else if (content1.contains("'") && content2.contains("'")) {
-            content1 = content1.replace("'", "");
-            content2 = content2.replace("'", "");
+        } else if (isText(content1) && isText(content2)) {
             temp = jsonGetRequest("https://api.dandelion.eu/datatxt/sim/v1/?text1=" + content1 + "&text2=" + content2 + "&token=16e5e85e020b4cef900aa5bcaaaae369");
         } else {
-            temp = -1.0;
+            builder.append("Kesalahan input\n");
+            builder.append("untuk membandingkan text ketik : \\docs_sim 'text1' 'text2'\n");
+            builder.append("untuk membandingkan url ketik : \\docs_sim 'url1' 'url2'");
+            return builder.toString();
         }
         if (temp < 0) {
-            return "Terjadi Error";
+            return "Terjadi Error pada url yang dimasukkan";
         }
         int hsl = (int) Math.floor(temp * 100);
         return "" + hsl + "%";
+    }
+
+    public boolean isText(String input) {
+        int n = input.length();
+        return (n > 1 && input.charAt(0) == '\'' && input.charAt(n - 1) == '\'');
     }
 
     public String streamToString(InputStream inputStream) {
