@@ -35,7 +35,7 @@ public class OriconController {
         return null
     }
 
-    public ArrayList<String> screenScrapeGetBooks(String html){
+    public String screenScrapeGetBooks(String html){
         return null
     }
-} 
+}
