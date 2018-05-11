@@ -8,9 +8,9 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 
 import java.util.logging.Logger;
 
-public class NSFWCheckerController {
+public class SfwCheckerController {
 
-    private static final Logger LOGGER = Logger.getLogger(NSFWCheckerController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {

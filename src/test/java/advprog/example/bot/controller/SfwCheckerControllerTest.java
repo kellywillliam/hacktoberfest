@@ -23,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
-public class NSFWCheckerControllerTest {
+public class SfwCheckerControllerTest {
 
     static {
         System.setProperty("line.bot.channelSecret", "SECRET");
@@ -31,11 +31,11 @@ public class NSFWCheckerControllerTest {
     }
 
     @Autowired
-    private NSFWCheckerController NSFWCheckerController;
+    private SfwCheckerController sfwCheckerController;
 
     @Test
     void testContextLoads() {
-        assertNotNull(NSFWCheckerController);
+        assertNotNull(sfwCheckerController);
     }
 
     @Test
@@ -43,7 +43,7 @@ public class NSFWCheckerControllerTest {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/is_sfw");
 
-        TextMessage reply = NSFWCheckerController.handleTextMessageEvent(event);
+        TextMessage reply = sfwCheckerController.handleTextMessageEvent(event);
 
         assertEquals("", reply.getText());
     }
@@ -52,7 +52,7 @@ public class NSFWCheckerControllerTest {
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
-        NSFWCheckerController.handleDefaultMessage(event);
+        sfwCheckerController.handleDefaultMessage(event);
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
