@@ -57,4 +57,15 @@ public class BillboardCountryControllerTest {
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
     }
+    
+    @Test
+    void testMakeGetCall(){
+    	assertEquals(billboardCountryController.makeGetCall(), null);
+    }
+    
+    @Test
+    void testScreenScrapeGetArtists(){
+    	assertEquals(billboardCountryController.screenScrapeGetArtists("<html></html>"), null);
+    }
+    
 }
