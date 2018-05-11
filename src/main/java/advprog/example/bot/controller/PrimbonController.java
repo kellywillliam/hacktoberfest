@@ -10,7 +10,7 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import java.util.logging.Logger;
 
 @LineMessageHandler
-public class PrimbonEcho {
+public class PrimbonController {
 	
 	private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
 
