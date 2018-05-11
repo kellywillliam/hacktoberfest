@@ -45,7 +45,7 @@ public class SfwCheckerControllerTest {
 
         TextMessage reply = sfwCheckerController.handleTextMessageEvent(event);
 
-        assertEquals("", reply.getText());
+        assertEquals("/is_sfw", reply.getText());
     }
 
     @Test
