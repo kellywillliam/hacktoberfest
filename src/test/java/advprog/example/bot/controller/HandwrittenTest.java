@@ -30,31 +30,10 @@ public class HandwrittenTest {
         System.setProperty("line.bot.channelToken", "TOKEN");
     }
 
-    @Autowired
-    private EchoController echoController;
-
     @Test
-    void testContextLoads() {
-        assertNotNull(echoController);
-    }
+    void testHandleTextMessageEvent(String handwritten) {
 
-    @Test
-    void testHandleTextMessageEvent() {
-        MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
-
-        TextMessage reply = echoController.handleTextMessageEvent(event);
-
-        assertEquals("Lorem Ipsum", reply.getText());
-    }
-
-    @Test
-    void testHandleDefaultMessage() {
-        Event event = mock(Event.class);
-
-        echoController.handleDefaultMessage(event);
-
-        verify(event, atLeastOnce()).getSource();
-        verify(event, atLeastOnce()).getTimestamp();
+        HandwrittenController theText = new HandwrittenController();
+        assertEquals("Lorem Ipsum", theText.convertHandwritten());
     }
 }

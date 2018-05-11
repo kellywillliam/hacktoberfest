@@ -30,4 +30,9 @@ public class HandwrittenController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
+    
+    public String convertHandwritten(){
+        String convertedText = null;
+        return "ini loh tulisannya: " + convertedText;
+    }
 }
