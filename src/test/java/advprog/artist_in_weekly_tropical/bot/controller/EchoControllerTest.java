@@ -1,4 +1,4 @@
-package advprog.artist_in_top100_japan.bot.controller;
+package advprog.artist_in_weekly_tropical.bot.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

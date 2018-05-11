@@ -1,4 +1,4 @@
-package advprog.artist_in_top100_japan.bot;
+package advprog.artist_in_weekly_tropical.bot;
 
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
