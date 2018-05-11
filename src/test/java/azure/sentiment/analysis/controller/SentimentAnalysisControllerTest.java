@@ -1,4 +1,4 @@
-package advprog.example.bot.controller;
+package azure.sentiment.analysis.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -7,7 +7,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import advprog.example.bot.EventTestUtil;
+import azure.sentiment.analysis.EventTestUtil;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -31,19 +31,19 @@ public class SentimentAnalysisControllerTest {
     }
 
     @Autowired
-    private EchoController echoController;
+    private SentimentAnalysisController sentimentAnalysisController;
 
     @Test
     void testContextLoads() {
-        assertNotNull(echoController);
+        assertNotNull(sentimentAnalysisController);
     }
 
     @Test
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/sentiment Lorem Ipsum Dolor");
+                EventTestUtil.createDummyTextMessage("/sentimentAnalysisController Lorem Ipsum Dolor");
 
-        TextMessage reply = echoController.handleTextMessageEvent(event);
+        TextMessage reply = sentimentAnalysisController.handleTextMessageEvent(event);
 
         assertEquals("0.50", reply.getText());
     }
@@ -52,7 +52,7 @@ public class SentimentAnalysisControllerTest {
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
-        echoController.handleDefaultMessage(event);
+        sentimentAnalysisController.handleDefaultMessage(event);
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
