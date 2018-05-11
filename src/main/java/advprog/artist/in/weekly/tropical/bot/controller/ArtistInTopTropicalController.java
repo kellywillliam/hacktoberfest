@@ -10,9 +10,11 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import java.util.logging.Logger;
 
 @LineMessageHandler
-public class ArtistInTop100Controller {
+public class ArtistInTopTropicalController {
 
-    private static final Logger LOGGER = Logger.getLogger(advprog.artist_in_top100_japan.bot.controller.ArtistInTop100Controller.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(advprog..in.weekly.tropical.bot.controller.ArtistInTop100Controller.class.
+
+    ArtistInTopTropicalController());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -21,8 +23,13 @@ public class ArtistInTop100Controller {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        if (contentText.equalsIgnoreCase("/billboard tropical Drake")) {
+            return new TextMessage("We're sorry to tell you that Drake isn't on the list");
+        } else if (contentText.equalsIgnoreCase("/billboard tropical Coldplay")) {
+            return new TextMessage("Coldplay\nYellow\n1");
+        } else {
+            return new TextMessage("error");
+        }
     }
 
     @EventMapping

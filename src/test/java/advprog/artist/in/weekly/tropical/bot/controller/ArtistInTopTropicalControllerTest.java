@@ -7,8 +7,7 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import advprog.artist.in.weekly.tropical.bot.ArtistInTop100AppTest;
-import advprog.artist.in.weekly.tropical.bot.controller.ArtistInTop100Controller;
+import advprog.artist.in.weekly.tropical.bot.ArtistInTopTropicalAppTest;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -24,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
-public class ArtistInTop100ControllerTest {
+public class ArtistInTopTropicalControllerTest {
 
     static {
         System.setProperty("line.bot.channelSecret", "SECRET");
@@ -32,19 +31,19 @@ public class ArtistInTop100ControllerTest {
     }
 
     @Autowired
-    private ArtistInTop100Controller artistInTop100Controller;
+    private ArtistInTopTropicalController artistInTopTropicalController;
 
     @Test
     void testContextLoads() {
-        assertNotNull(artistInTop100Controller);
+        assertNotNull(artistInTopTropicalController);
     }
 
     @Test
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
-                ArtistInTop100AppTest.createDummyTextMessage("/billboard tropical Drake");
+                ArtistInTopTropicalAppTest.createDummyTextMessage("/billboard tropical Drake");
 
-        TextMessage reply = artistInTop100Controller.handleTextMessageEvent(event);
+        TextMessage reply = artistInTopTropicalController.handleTextMessageEvent(event);
 
         assertEquals("We're sorry to tell you that Drake isn't on the list", reply.getText());
     }
@@ -52,9 +51,9 @@ public class ArtistInTop100ControllerTest {
     @Test
     void testHandleTextMessageEventSuccess() {
         MessageEvent<TextMessageContent> event =
-                ArtistInTop100AppTest.createDummyTextMessage("/billboard hotcountry Coldplay");
+                ArtistInTopTropicalAppTest.createDummyTextMessage("/billboard tropical Coldplay");
 
-        TextMessage reply = artistInTop100Controller.handleTextMessageEvent(event);
+        TextMessage reply = artistInTopTropicalController.handleTextMessageEvent(event);
 
         assertEquals("Coldplay\nYellow\n1", reply.getText());
     }
@@ -63,7 +62,7 @@ public class ArtistInTop100ControllerTest {
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
-        artistInTop100Controller.handleDefaultMessage(event);
+        artistInTopTropicalController.handleDefaultMessage(event);
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
