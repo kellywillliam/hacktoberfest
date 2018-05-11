@@ -16,11 +16,11 @@ public class ApiCaller {
     }
 
     private String textSimilarity(String text1, String text2) {
-
+        return "";
     }
 
     private String urlSimilarity(String url1, String url2) {
-
+        return "";
     }
 
     private String streamToString(InputStream inputStream) {
