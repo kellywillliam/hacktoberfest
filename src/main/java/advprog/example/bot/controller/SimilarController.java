@@ -24,7 +24,8 @@ public class SimilarController {
         contentText = contentText.replace("/docs_sim ", "");
         String[] arr = contentText.split(" ");
         ApiCaller api = new ApiCaller();
-
+        System.out.println(arr[0]);
+        System.out.println(arr[1]);
         String replyText = api.checkSimilarity(arr[0], arr[1]);
         return new TextMessage(replyText);
     }
