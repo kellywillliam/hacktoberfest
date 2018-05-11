@@ -45,7 +45,7 @@ public class NSFWCheckerControllerTest {
 
         TextMessage reply = NSFWCheckerController.handleTextMessageEvent(event);
 
-        assertEquals("", reply.getText());
+        assertEquals("test", reply.getText());
     }
 
     @Test
