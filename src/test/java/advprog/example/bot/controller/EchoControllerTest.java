@@ -59,11 +59,12 @@ public class EchoControllerTest {
     }
 
     @Test
-    void testHandleRequestTweet(){
+    void testHandleRequestTweet() {
         assertNotNull(echoController);
     }
 
-    
-
-
+    @Test
+    void testHandleUnavailableUsername() {
+        assertNotNull(echoController);
+    }
 }
