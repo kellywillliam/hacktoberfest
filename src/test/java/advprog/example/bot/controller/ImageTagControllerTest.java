@@ -26,8 +26,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class ImageTagControllerTest {
 
     static {
-        System.setProperty("line.bot.channelSecret", "46da48a24a9f5c1628dda6acc7ba02cf");
-        System.setProperty("line.bot.channelToken", "2EoGg84oz9jI0+4uv0q2iSemaTwry34G5O6XhOyv3JIWrz5AM11NCVzMJvT7PQ//VQQ4hzv3o1g1EJ4sEAhghU47bviQfwAD+0tWt3v51QNxTERu3SE8uvlJ+OjbHUR9weySIoM5YzuXsRrbjSyaYAdB04t89/1O/w1cDnyilFU=");
+        System.setProperty(
+                "line.bot.channelSecret",
+                "46da48a24a9f5c1628dda6acc7ba02cf");
+        System.setProperty(
+                "line.bot.channelToken",
+                "2EoGg84oz9jI0+4uv0q2iSemaTwry34G5O6XhOyv3JIWrz5AM11NCVzMJvT7PQ"
+                        + "//VQQ4hzv3o1g1EJ4sEAhghU47bviQfwAD+0tWt3v51QNxTERu3SE8uvlJ"
+                        + "+OjbHUR9weySIoM5YzuXsRrbjSyaYAdB04t89/1O/w1cDnyilFU=");
     }
 
     @Autowired
