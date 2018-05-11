@@ -1,5 +1,6 @@
 package advprog.example.bot.controller;
 
+import advprog.example.bot.fake.json.FakeJson;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -20,6 +21,9 @@ public class EchoController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
+        if (contentText.split(" ")[0].equals("/fake_json")) {
+            return FakeJson.getFakeJson();
+        }
 
         String replyText = contentText.replace("/echo", "");
         return new TextMessage(replyText.substring(1));
