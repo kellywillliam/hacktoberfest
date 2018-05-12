@@ -61,15 +61,7 @@ public class SfwCheckerControllerTest {
         verify(event, atLeastOnce()).getTimestamp();
     }
 
-    @Test
-    void getConfidencePercentage() {
-        assertEquals(sfwCheckerController.getConfidence(), null);
-    }
 
-    @Test
-    void isSfw() {
-        assertEquals(sfwCheckerController.isSfw(),true);
-    }
 
 
 }

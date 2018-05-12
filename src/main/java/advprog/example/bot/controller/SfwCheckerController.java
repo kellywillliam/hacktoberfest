@@ -1,6 +1,7 @@
 package advprog.example.bot.controller;
 
 //import org.json.*;
+import advprog.example.bot.confidence.percentage.ConfidencePercentage;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -14,7 +15,9 @@ import java.util.logging.Logger;
 public class SfwCheckerController {
 
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
-
+    public static void main(String[] args) throws java.io.IOException{
+        ConfidencePercentage.getConfidencePercentage("https://twitter.com/");
+    }
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
@@ -22,7 +25,7 @@ public class SfwCheckerController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        //String replyText = contentText.replace("/is_sfw", "");
+        String replyText = contentText.replace("/is_sfw", "");
         return new TextMessage(contentText);
     }
 
@@ -32,13 +35,6 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    public Boolean isSfw() {
-        return true;
-    }
-
-    public String getConfidence() {
-        return null;
-    }
 
 
 }
