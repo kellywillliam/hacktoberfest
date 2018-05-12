@@ -39,6 +39,9 @@ repositories {
 }
 
 dependencies {
+    implementation "com.googlecode.json-simple', name: 'json-simple', version: '1.1"
+    implementation "org.json:json:20170516"
+    implementation "org.apache.httpcomponents:httpclient:4.2.4"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.linecorp.bot:line-bot-spring-boot:1.15.0"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
