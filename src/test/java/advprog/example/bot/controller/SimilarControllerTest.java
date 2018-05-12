@@ -48,7 +48,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
-		System.out.println(hasil);
+        System.out.println(hasil);
         //Terkadang Error karena koneksi
         if (hasil.contains("Error")) {
             assertNotNull(reply.getText());
@@ -60,17 +60,17 @@ public class SimilarControllerTest {
     @Test
     void testHandleTextDifferentMessageEvent() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/docs_sim 'abcdef' 'podasdopaldkjalk'");
+                EventTestUtil.createDummyTextMessage("/docs_sim 'I eat apple' 'I ate orange'");
 
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
-		System.out.println(hasil);
+        System.out.println(hasil);
         //Terkadang Error karena koneksi
         if (hasil.contains("Error")) {
             assertNotNull(reply.getText());
         } else {
-            assertEquals("0%", hasil);
+            assertTrue(!hasil.contains("100%"));
         }
     }
 
@@ -83,7 +83,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
-		System.out.println(hasil);
+        System.out.println(hasil);
         //Terkadang Error karena koneksi
         if (hasil.contains("Error")) {
             assertNotNull(reply.getText());
@@ -102,7 +102,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
-		System.out.println(hasil);
+        System.out.println(hasil);
         //Terkadang Error karena koneksi
         if (hasil.contains("Error")) {
             assertNotNull(reply.getText());
@@ -121,7 +121,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
-		System.out.println(hasil);
+        System.out.println(hasil);
         assertTrue(hasil.contains("Error"));
     }
 
@@ -135,8 +135,8 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
-		System.out.println(hasil);
-        assertTrue(hasil.contains("Kesalahan input"));
+        System.out.println(hasil);
+        assertTrue(hasil.contains("Wrong"));
     }
 
     @Test
