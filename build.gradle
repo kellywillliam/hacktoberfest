@@ -40,6 +40,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation("com.mashape.unirest:unirest-java:1.4.9")
     implementation "com.linecorp.bot:line-bot-spring-boot:1.15.0"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
