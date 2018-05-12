@@ -44,11 +44,18 @@ public class SfwCheckerControllerTest {
     @Test
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/is_sfw");
+                EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
 
         TextMessage reply = sfwCheckerController.handleTextMessageEvent(event);
 
-        assertEquals("/is_sfw", reply.getText());
+        assertEquals("Lorem Ipsum", reply.getText());
+
+        MessageEvent<TextMessageContent> eventSfw =
+                EventTestUtil.createDummyTextMessage("/is_sfw");
+
+        TextMessage replySfw = sfwCheckerController.handleTextMessageEvent(eventSfw);
+
+        assertEquals("test", replySfw.getText());
     }
 
     @Test

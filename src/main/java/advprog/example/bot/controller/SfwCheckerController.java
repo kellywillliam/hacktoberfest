@@ -24,8 +24,14 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-
-        String replyText = contentText.replace("/is_sfw", "");
+        String replyText = "";
+        String[] chatText = contentText.split(" ");
+        switch (chatText[0].toLowerCase()){
+            case "/echo":
+                replyText = contentText.replace("/echo", "").substring(1);
+            case "/is_sfw":
+                replyText = "test";
+        }
         return new TextMessage(contentText);
     }
 

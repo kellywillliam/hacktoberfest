@@ -12,7 +12,7 @@ public class ConfidencePercentage {
 
     public static String getConfidencePercentage(String img) throws java.io.IOException{
 
-
+        //api calling
         String credentialsToEncode = "acc_7131bd91f718dd6" + ":" + "0438f48b7ba34d253d4df8f7e52485af";
         String basicAuth = Base64.getEncoder().encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
 
