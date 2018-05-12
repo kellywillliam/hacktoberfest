@@ -20,10 +20,19 @@ public class EchoController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-
-
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        String replyText = "";
+        String[] userChatParsed = contentText.split(" ");
+        switch (userChatParsed[0].toLowerCase()) {
+            case "/echo":
+                replyText = contentText.replace("/echo", "").substring(1);
+                break;
+            case "/detect_lang":
+                replyText = DetectLanguage.detectLang(userChatParsed[1]);
+                break;
+            default:
+                break;
+        }
+        return new TextMessage(replyText);
     }
 
     @EventMapping
