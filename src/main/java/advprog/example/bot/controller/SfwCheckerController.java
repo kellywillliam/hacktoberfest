@@ -29,8 +29,13 @@ public class SfwCheckerController {
         switch (chatText[0].toLowerCase()){
             case "/echo":
                 replyText = contentText.replace("/echo", "").substring(1);
+                break;
             case "/is_sfw":
                 replyText = "test";
+                break;
+            default:
+                replyText = "salah cmd";
+                break;
         }
         return new TextMessage(contentText);
     }
