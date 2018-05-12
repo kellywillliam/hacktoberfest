@@ -38,7 +38,7 @@ public class SfwCheckerController {
                 replyText = "salah cmd";
                 break;
         }
-        return new TextMessage(contentText);
+        return new TextMessage(replyText);
     }
 
     @EventMapping
