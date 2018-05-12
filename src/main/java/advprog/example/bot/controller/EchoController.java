@@ -22,13 +22,15 @@ public class EchoController {
         String contentText = content.getText();
         String[] userMessageSplit = contentText.split(" ");
         String replyText = "";
-        switch (userMessageSplit[0]){
+        switch (userMessageSplit[0]) {
             case "/echo":
                 replyText = contentText.replace("/echo", "")
                         .substring(1);
                 break;
             case "/billboard":
-                if (!userMessageSplit[1].equals("bill200")) break;
+                if (!userMessageSplit[1].equals("bill200")) {
+                    break;
+                }
                 replyText = Billboard200Chart.getInstance().top10Tracks();
                 break;
             default:

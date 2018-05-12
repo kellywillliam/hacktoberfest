@@ -2,7 +2,6 @@ package advprog.example.bot;
 
 import java.util.logging.Logger;
 
-import advprog.example.bot.controller.Billboard200Chart;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

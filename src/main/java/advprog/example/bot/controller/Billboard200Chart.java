@@ -1,14 +1,14 @@
 package advprog.example.bot.controller;
 
+import java.io.IOException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 
 public class Billboard200Chart {
 
-    private final static String url = "https://www.billboard.com/charts/billboard-200";
+    private static final String url = "https://www.billboard.com/charts/billboard-200";
     private static Billboard200Chart instance;
 
     private Billboard200Chart() {}
@@ -35,7 +35,7 @@ public class Billboard200Chart {
                 counter++;
             }
             return res.trim();
-        } catch ( IOException e ) {
+        } catch (IOException e) {
             e.printStackTrace();
             return "Error on billboard URI, contact the bot owner !";
         }
