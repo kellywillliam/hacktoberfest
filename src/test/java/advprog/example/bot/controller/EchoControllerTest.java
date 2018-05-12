@@ -34,11 +34,6 @@ public class EchoControllerTest {
     private EchoController echoController;
 
     @Test
-    void testContextLoads() {
-        assertNotNull(echoController);
-    }
-
-    @Test
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
@@ -46,6 +41,17 @@ public class EchoControllerTest {
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
         assertEquals("Lorem Ipsum", reply.getText());
+
+        MessageEvent<TextMessageContent> eventDetectLang =
+                EventTestUtil.createDummyTextMessage("/detect_lang god is great");
+
+        TextMessage replyDetectLang = echoController.handleTextMessageEvent(eventDetectLang);
+        assertEquals("en 0.7857", replyDetectLang.getText());
+    }
+
+    @Test
+    void testContextLoads() {
+        assertNotNull(echoController);
     }
 
     @Test

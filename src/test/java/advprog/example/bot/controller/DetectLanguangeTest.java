@@ -39,5 +39,4 @@ public class DetectLanguangeTest {
         assertEquals("Some errors've occured, make sure your text is a valid text!",
                 DetectLanguage.detectLang("https://wwww.google.com"));
     }
-
 }
