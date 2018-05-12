@@ -20,7 +20,7 @@ public class SfwCheckerController {
         System.out.println(test);
     }
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws java.io.IOException{
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -32,10 +32,10 @@ public class SfwCheckerController {
                 replyText = contentText.replace("/echo", "").substring(1);
                 break;
             case "/is_sfw":
-                replyText = "test";
+                replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
                 break;
             default:
-                replyText = "salah cmd";
+                replyText = "salah command! command yang benar : /is_sfw [link]";
                 break;
         }
         return new TextMessage(replyText);
