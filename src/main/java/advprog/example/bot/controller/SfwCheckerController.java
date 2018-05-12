@@ -16,7 +16,8 @@ public class SfwCheckerController {
 
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
     public static void main(String[] args) throws java.io.IOException{
-        ConfidencePercentage.getConfidencePercentage("https://twitter.com/");
+        String test = ConfidencePercentage.getConfidencePercentage("http://www3.canisius.edu/~grandem/butterflylifecycle/Puzzle%20Picture.jpg");
+        System.out.println(test);
     }
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {

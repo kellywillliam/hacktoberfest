@@ -1,5 +1,6 @@
 package advprog.example.bot.confidence.percentage;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.json.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -36,11 +37,46 @@ public class ConfidencePercentage {
 
         connectionInput.close();
 
+        double safe = 0;
+        double nsfw = 0;
+
+        JSONObject bigObj = new JSONObject(jsonResponse);
         System.out.println(jsonResponse);
+        JSONArray parentArr = bigObj.getJSONArray("results");
+        if (parentArr.length() == 0) {
+            return "ini bukan image oi";
+        }else{
+            JSONObject smallObj = parentArr.getJSONObject(0);
+            return isSfw(smallObj);
+
+        }
+
+
+
+
 
 /* After receiving the JSON response you'll need to parse it in order to get the values you need.
 You can do this by using a JSON library/package of your choice.
 You can find a list of such tools at json.org */
-        return null;
+
+    }
+    public static String isSfw(JSONObject smallObj){
+        double safe = 0;
+        double nsfw = 0;
+        JSONArray categories = smallObj.getJSONArray("categories");
+        for( int i = 0; i < categories.length(); i++) {
+            String nama = categories.getJSONObject(i).getString("name");
+            double confidence = categories.getJSONObject(i).getDouble("confidence");
+            if(nama.equalsIgnoreCase("nsfw")){
+                nsfw = confidence;
+            }
+            if(nama.equalsIgnoreCase("safe")){
+                safe = confidence;
+            }
+        }
+        if(nsfw > safe){
+            return "NSFW";
+        }else
+            return "SFW";
     }
 }
