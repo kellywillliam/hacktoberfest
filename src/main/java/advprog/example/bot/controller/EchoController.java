@@ -20,9 +20,21 @@ public class EchoController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        String[] userMessageSplit = contentText.split(" ");
+        String replyText = "";
+        switch (userMessageSplit[0]){
+            case "/echo":
+                replyText = contentText.replace("/echo", "")
+                        .substring(1);
+                break;
+            case "/billboard":
+                if (!userMessageSplit[1].equals("bill200")) break;
+                replyText = Billboard200Chart.getInstance().top10Tracks();
+                break;
+            default:
+                break;
+        }
+        return new TextMessage(replyText);
     }
 
     @EventMapping
