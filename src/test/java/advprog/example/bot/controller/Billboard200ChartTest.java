@@ -24,7 +24,18 @@ public class Billboard200ChartTest {
 
     @Test
     void testTop10Tracks() {
-        assertEquals("A-C", Billboard200Chart.top10Tracks());
+        assertEquals("(1) Post Malone - beerbongs & bentleys \n" +
+                "(2) Keith Urban - Graffiti U \n" +
+                "(3) J. Cole - KOD \n" +
+                "(4) Cardi B - Invasion Of Privacy \n" +
+                "(5) Soundtrack - The Greatest Showman \n" +
+                "(6) Janelle Monae - Dirty Computer \n" +
+                "(7) YoungBoy Never Broke Again - Until Death Call My Name \n" +
+                "(8) Godsmack - When Legends Rise \n" +
+                "(9) Post Malone - Stoney \n" +
+                "(10) Jason Aldean - Rearview Town",
+                Billboard200Chart.getInstance()
+                .top10Tracks());
     }
 
 }
