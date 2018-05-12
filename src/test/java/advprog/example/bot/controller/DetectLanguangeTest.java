@@ -3,21 +3,9 @@ package advprog.example.bot.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import advprog.example.bot.EventTestUtil;
-
-import com.linecorp.bot.model.event.Event;
-import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.message.TextMessage;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -30,16 +18,26 @@ public class DetectLanguangeTest {
         System.setProperty("line.bot.channelToken", "TOKEN");
     }
 
-    private DetectLanguage detectLanguage = new DetectLanguage();
-
     @Test
     void testContextLoads() {
-        assertNotNull(detectLanguage);
+        assertNotNull(DetectLanguage.class);
     }
 
     @Test
-    void testDetectLang() {
-
-        assertEquals("id 0.3423", detectLanguage.detectLang(""));
+    void testDetectLangTextSuccess() {
+        assertEquals("en 0.7857", DetectLanguage.detectLang("god is great"));
     }
+
+    @Test
+    void testDetectLangUrlSuccess() {
+        assertEquals("en 1.0",
+                DetectLanguage.detectLang("https://www.facebook.com"));
+    }
+
+    @Test
+    void testDetectLangUrlFailed() {
+        assertEquals("Some errors've occured, make sure your text is a valid text!",
+                DetectLanguage.detectLang("https://wwww.google.com"));
+    }
+
 }
