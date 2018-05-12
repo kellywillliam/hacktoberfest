@@ -49,6 +49,25 @@ public class EchoControllerTest {
     }
 
     @Test
+    void testHandleTextMessageEventBillboard() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/billboard bill200");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertEquals("(1) Post Malone - beerbongs & bentleys \n" +
+                "(2) Keith Urban - Graffiti U \n" +
+                "(3) J. Cole - KOD \n" +
+                "(4) Cardi B - Invasion Of Privacy \n" +
+                "(5) Soundtrack - The Greatest Showman \n" +
+                "(6) Janelle Monae - Dirty Computer \n" +
+                "(7) YoungBoy Never Broke Again - Until Death Call My Name \n" +
+                "(8) Godsmack - When Legends Rise \n" +
+                "(9) Post Malone - Stoney \n" +
+                "(10) Jason Aldean - Rearview Town", reply.getText());
+    }
+
+    @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
