@@ -27,7 +27,7 @@ public class EchoController {
                 replyText = contentText.replace("/echo", "").substring(1);
                 break;
             case "/detect_lang":
-                replyText = DetectLanguage.detectLang(userChatParsed[1]);
+                replyText = DetectLanguage.detectLang(contentText.substring(13));
                 break;
             default:
                 break;
