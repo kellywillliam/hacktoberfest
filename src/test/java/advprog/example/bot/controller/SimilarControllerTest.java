@@ -48,6 +48,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
+		System.out.println(hasil);
         //Terkadang Error karena koneksi
         if (hasil.contains("Error")) {
             assertNotNull(reply.getText());
@@ -64,6 +65,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
+		System.out.println(hasil);
         //Terkadang Error karena koneksi
         if (hasil.contains("Error")) {
             assertNotNull(reply.getText());
@@ -81,6 +83,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
+		System.out.println(hasil);
         //Terkadang Error karena koneksi
         if (hasil.contains("Error")) {
             assertNotNull(reply.getText());
@@ -99,6 +102,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
+		System.out.println(hasil);
         //Terkadang Error karena koneksi
         if (hasil.contains("Error")) {
             assertNotNull(reply.getText());
@@ -117,6 +121,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
+		System.out.println(hasil);
         assertTrue(hasil.contains("Error"));
     }
 
@@ -130,6 +135,7 @@ public class SimilarControllerTest {
         TextMessage reply = similarController.handleTextMessageEvent(event);
         System.out.println(reply.getText());
         String hasil = reply.getText();
+		System.out.println(hasil);
         assertTrue(hasil.contains("Kesalahan input"));
     }
 

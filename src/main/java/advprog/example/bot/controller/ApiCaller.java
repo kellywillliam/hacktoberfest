@@ -5,34 +5,57 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.json.JSONObject;
+import java.util.*;
+import java.net.URL;
+import java.net.URLEncoder;
+import javax.net.ssl.HttpsURLConnection;
 
 public class ApiCaller {
-    private String jsonString;
+	private String urlApi;
+	
+	public ApiCaller() {
+		urlApi = "https://api.dandelion.eu/datatxt/sim/v1/?";
+		urlApi += "token=16e5e85e020b4cef900aa5bcaaaae369&";
+		urlApi += "lang=en&";
+	}
 
-    public String checkSimilarity(String content1, String content2) {
+    public String checkSimilarity(String content) {
         double temp = 0.0;
+		if(content.contains("'")){
+			List<String>words = getContent(content);
+			if(words.size()==2){
+				String text1 = toUrlString(words.get(0));
+				String text2 = toUrlString(words.get(1));
+				temp = jsonGetRequest(urlApi + "text1=" + text1 + "&text2=" + text2);
+			} else {
+				temp = -1.0;
+			}
+		} else {
+			content = content.trim();
+			String[]urls = content.split(" ");
+			temp = jsonGetRequest(urlApi + "url1=" + urls[0] + "&url2=" + urls[1]);
+        }
+		return similarOut(temp);
+    }
+	
+	public String similarOut(double nilai){
         StringBuilder builder = new StringBuilder();
-        if (!isText(content1) && !isText(content2)) {
-            temp = jsonGetRequest("https://api.dandelion.eu/datatxt/sim/v1/?url1=" + content1 + "&url2=" + content2 + "&token=16e5e85e020b4cef900aa5bcaaaae369");
-        } else if (isText(content1) && isText(content2)) {
-            temp = jsonGetRequest("https://api.dandelion.eu/datatxt/sim/v1/?text1=" + content1 + "&text2=" + content2 + "&token=16e5e85e020b4cef900aa5bcaaaae369");
-        } else {
+        if (nilai < 0 && nilai > -2.0) {
             builder.append("Kesalahan input\n");
             builder.append("untuk membandingkan text ketik : \\docs_sim 'text1' 'text2'\n");
             builder.append("untuk membandingkan url ketik : \\docs_sim 'url1' 'url2'");
-            return builder.toString();
-        }
-        if (temp < 0) {
-            return "Terjadi Error pada url yang dimasukkan";
-        }
-        int hsl = (int) Math.floor(temp * 100);
-        return "" + hsl + "%";
-    }
-
-    public boolean isText(String input) {
-        int n = input.length();
-        return (n > 1 && input.charAt(0) == '\'' && input.charAt(n - 1) == '\'');
-    }
+        } else if (nilai < -2.0) {
+			builder.append("Error, Kesalahan jaringan  atau URL error");
+		} else {
+			int hsl = (int) Math.floor(nilai * 100);
+			builder.append(hsl).append("%");
+		}
+		return builder.toString();
+		
+	}
 
     public String streamToString(InputStream inputStream) {
         String text = new Scanner(inputStream, "UTF-8").useDelimiter("\\Z").next();
@@ -42,36 +65,45 @@ public class ApiCaller {
     public Double jsonGetRequest(String urlQueryString) {
         Double hasil = 0.0;
         try {
-            URL url = new URL(urlQueryString);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoOutput(true);
-            connection.setInstanceFollowRedirects(false);
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("charset", "utf-8");
-            connection.connect();
-            InputStream inStream = connection.getInputStream();
+			URL myUrl = new URL(urlQueryString);
+			HttpsURLConnection connection = (HttpsURLConnection)myUrl.openConnection();
+			InputStream inStream = connection.getInputStream();
             hasil = getSimilarity(streamToString(inStream));
         } catch (Exception ex) {
-            hasil = -1.0;
+            hasil = -5.0;
         }
         return hasil;
     }
 
-    public Double getSimilarity(String str) {
-        Double hasil = -1.0;
-        String temp = str.replace("{", "").replace("}", "");
-        String[] arr = temp.split(",");
-        for (String p : arr) {
-            if (p.contains("\"similarity\"")) {
-                p = p.replace("\"similarity\"", "");
-                p = p.replace(":", "");
-                p = p.replace(" ", "");
-                p = p.replace("\t", "");
-                hasil = Double.parseDouble(p);
-                break;
-            }
-        }
-        return hasil;
+    public Double getSimilarity(String inStream) {
+		JSONObject jsonObj = new JSONObject(inStream);
+		if(jsonObj.has("similarity")){
+			return jsonObj.getDouble("similarity");
+		}
+		return -1.0;
     }
+	
+	public String toUrlString(String str){
+		String hasil = "";
+		try{
+			hasil = URLEncoder.encode(str, "UTF-8");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return hasil;
+	}
+	
+	public List<String> getContent(String content){
+		content = content.trim();
+		char[] chars = content.toCharArray();
+		int size = chars.length;
+		String[] str = content.split("'");
+		
+		List<String> words = new ArrayList<>();
+		if(chars[0] == '\'' && chars[size-1] == '\'' && str.length == 4) {
+			words.add(str[1]);
+			words.add(str[3]);
+		}
+		return words;
+	}
 }
