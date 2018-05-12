@@ -22,7 +22,8 @@ public class DetectLanguage {
                     .asJson();
             JSONArray jsonArray = jsonResponse.getBody().getObject().getJSONArray("detectedLangs");
             String languange = jsonArray.getJSONObject(0).getString("lang");
-            String confidenceLevel = String.valueOf(jsonArray.getJSONObject(0).getDouble("confidence"));
+            String confidenceLevel = String.valueOf(jsonArray.getJSONObject(0)
+                    .getDouble("confidence"));
             res += languange + " " + confidenceLevel;
             return res;
         } catch (Exception e) {
