@@ -38,10 +38,11 @@ public class SfwCheckerController {
                 break;
             case "/cmd":
                 replyText = "command sementara : /is_sfw [Link Image mu]";
+                break;
             default:
                 break;
         }
-        return new TextMessage(contentText);
+        return new TextMessage(replyText);
     }
 
     @EventMapping
