@@ -134,7 +134,7 @@ public class TopChartController {
         } catch (IOException e) {
             return "Tanggal yang anda masukkan salah (Hint: Jika anda mencari informasi " +
                     "terkait top 10 chart" +
-                    "WEEKLY maka informasi hanya dapat diperoleh untuk " +
+                    " WEEKLY maka informasi hanya dapat diperoleh untuk " +
                     "tanggal yang jatuh pada hari SENIN";
         }
 
