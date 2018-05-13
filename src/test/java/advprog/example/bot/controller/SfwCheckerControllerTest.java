@@ -42,7 +42,7 @@ public class SfwCheckerControllerTest {
     }
 
     @Test
-    void testHandleTextMessageEvent() {
+    void testHandleTextMessageEvent() throws java.io.IOException {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
 
@@ -50,12 +50,27 @@ public class SfwCheckerControllerTest {
 
         assertEquals("Lorem Ipsum", reply.getText());
 
-        MessageEvent<TextMessageContent> eventSfw =
-                EventTestUtil.createDummyTextMessage("/is_sfw");
+        MessageEvent<TextMessageContent> eventSfwCaseOne =
+                EventTestUtil.createDummyTextMessage("/is_sfw https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Hopetoun_falls.jpg/300px-Hopetoun_falls.jpg");
 
-        TextMessage replySfw = sfwCheckerController.handleTextMessageEvent(eventSfw);
+        TextMessage replySfwCaseOne = sfwCheckerController.handleTextMessageEvent(eventSfwCaseOne);
 
-        assertEquals("test", replySfw.getText());
+        assertEquals("SFW", replySfwCaseOne.getText());
+
+        MessageEvent<TextMessageContent> eventSfwCaseTwo =
+                EventTestUtil.createDummyTextMessage("/is_sfw https://i.pinimg.com/736x/8f/89/61/8f8961ce472020ae790c803f86c90077--one-piece-x-one-piece-anime.jpg");
+
+        TextMessage replySfwCaseTwo = sfwCheckerController.handleTextMessageEvent(eventSfwCaseTwo);
+
+        assertEquals("NSFW", replySfwCaseTwo.getText());
+
+        MessageEvent<TextMessageContent> eventSfwCaseThree =
+                EventTestUtil.createDummyTextMessage("/is_sfw twitter.com");
+
+        TextMessage replySfwCaseThree = sfwCheckerController.handleTextMessageEvent(
+                eventSfwCaseThree);
+
+        assertEquals("Link bukan image", replySfwCaseThree.getText());
     }
 
     @Test
