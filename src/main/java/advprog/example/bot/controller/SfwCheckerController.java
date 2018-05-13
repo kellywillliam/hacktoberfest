@@ -15,10 +15,7 @@ import java.util.logging.Logger;
 public class SfwCheckerController {
 
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
-    public static void main(String[] args) throws java.io.IOException{
-        String test = ConfidencePercentage.getConfidencePercentage("http://www3.canisius.edu/~grandem/butterflylifecycle/Puzzle%20Picture.jpg");
-        System.out.println(test);
-    }
+
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws java.io.IOException{
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
@@ -38,7 +35,7 @@ public class SfwCheckerController {
                 replyText = "salah command! command yang benar : /is_sfw [link]";
                 break;
         }
-        return new TextMessage(replyText);
+        return new TextMessage(contentText);
     }
 
     @EventMapping
