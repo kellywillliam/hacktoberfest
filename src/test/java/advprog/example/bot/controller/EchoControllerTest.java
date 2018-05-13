@@ -65,7 +65,12 @@ public class EchoControllerTest {
 
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
-        assertEquals("Format yang anda masukkan salah", reply.getText());
+        assertEquals("Format yang anda masukkan salah.\n" +
+                "Untuk format yang benar adalah sbb :\n" +
+                "(1) /oricon jpsingles YYYY (untuk info tahunan)\n" +
+                "(2) /oricon jpsingles YYYY-MM (untuk info bulanan)\n" +
+                "(3) /oricon jpsingles weekly YYYY-MM-DD (untuk info mingguan ,ps: untuk info ini hanya ada untuk tanggal yang jatuh di hari senin)\n" +
+                "(4) /oricon jpsingles daily YYYY-MM-DD", reply.getText());
     }
 
     @Test
