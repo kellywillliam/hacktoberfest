@@ -1,6 +1,6 @@
 package advprog.example.bot.confidence.percentage;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import org.json.*;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
