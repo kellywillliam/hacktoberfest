@@ -65,12 +65,13 @@ public class EchoControllerTest {
 
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
-        assertEquals("Format yang anda masukkan salah.\n" +
-                "Untuk format yang benar adalah sbb :\n" +
-                "(1) /oricon jpsingles YYYY (untuk info tahunan)\n" +
-                "(2) /oricon jpsingles YYYY-MM (untuk info bulanan)\n" +
-                "(3) /oricon jpsingles weekly YYYY-MM-DD (untuk info mingguan ,ps: untuk info ini hanya ada untuk tanggal yang jatuh di hari senin)\n" +
-                "(4) /oricon jpsingles daily YYYY-MM-DD", reply.getText());
+        assertEquals("Format yang anda masukkan salah.\n"
+                + "Untuk format yang benar adalah sbb :\n"
+                + "(1) /oricon jpsingles YYYY (untuk info tahunan)\n"
+                + "(2) /oricon jpsingles YYYY-MM (untuk info bulanan)\n"
+                + "(3) /oricon jpsingles weekly YYYY-MM-DD (untuk info mingguan ,"
+                + "ps: untuk info ini hanya ada untuk tanggal yang jatuh di hari senin)\n"
+                + "(4) /oricon jpsingles daily YYYY-MM-DD", reply.getText());
     }
 
     @Test
@@ -80,16 +81,16 @@ public class EchoControllerTest {
 
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
-        assertEquals("(1) 願いごとの持ち腐れ - AKB48 - 2017-05-31 - Unknown\n" +
-                "(2) #好きなんだ - AKB48 - 2017-08-30 - Unknown\n" +
-                "(3) 11月のアンクレット - AKB48 - 2017-11-22 - Unknown\n" +
-                "(4) シュートサイン - AKB48 - 2017-03-15 - Unknown\n" +
-                "(5) 逃げ水 - 乃木坂46 - 2017-08-09 - Unknown\n" +
-                "(6) インフルエンサー - 乃木坂46 - 2017-03-22 - Unknown\n" +
-                "(7) いつかできるから今日できる - 乃木坂46 - 2017-10-11 - Unknown\n" +
-                "(8) 不協和音 - 欅坂46 - 2017-04-05 - Unknown\n" +
-                "(9) 風に吹かれても - 欅坂46 - 2017-10-25 - Unknown\n" +
-                "(10) Doors 〜勇気の軌跡〜 - 嵐 - 2017-11-08 - Unknown"
-                , reply.getText());
+        assertEquals("(1) 願いごとの持ち腐れ - AKB48 - 2017-05-31 - Unknown\n"
+                + "(2) #好きなんだ - AKB48 - 2017-08-30 - Unknown\n"
+                + "(3) 11月のアンクレット - AKB48 - 2017-11-22 - Unknown\n"
+                + "(4) シュートサイン - AKB48 - 2017-03-15 - Unknown\n"
+                + "(5) 逃げ水 - 乃木坂46 - 2017-08-09 - Unknown\n"
+                + "(6) インフルエンサー - 乃木坂46 - 2017-03-22 - Unknown\n"
+                + "(7) いつかできるから今日できる - 乃木坂46 - 2017-10-11 - Unknown\n"
+                + "(8) 不協和音 - 欅坂46 - 2017-04-05 - Unknown\n"
+                + "(9) 風に吹かれても - 欅坂46 - 2017-10-25 - Unknown\n"
+                + "(10) Doors 〜勇気の軌跡〜 - 嵐 - 2017-11-08 - Unknown",
+                reply.getText());
     }
 }

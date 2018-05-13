@@ -16,12 +16,13 @@ public class EchoController {
     private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
 
     TopChartController eventHandler = new TopChartController();
-    String errorMessage = "Format yang anda masukkan salah.\n" +
-            "Untuk format yang benar adalah sbb :\n" +
-            "(1) /oricon jpsingles YYYY (untuk info tahunan)\n" +
-            "(2) /oricon jpsingles YYYY-MM (untuk info bulanan)\n" +
-            "(3) /oricon jpsingles weekly YYYY-MM-DD (untuk info mingguan ,ps: untuk info ini hanya ada untuk tanggal yang jatuh di hari senin)\n" +
-            "(4) /oricon jpsingles daily YYYY-MM-DD";
+    String errorMessage = "Format yang anda masukkan salah.\n"
+            + "Untuk format yang benar adalah sbb :\n"
+            + "(1) /oricon jpsingles YYYY (untuk info tahunan)\n"
+            + "(2) /oricon jpsingles YYYY-MM (untuk info bulanan)\n"
+            + "(3) /oricon jpsingles weekly YYYY-MM-DD (untuk info mingguan ,"
+            + "ps: untuk info ini hanya ada untuk tanggal yang jatuh di hari senin)\n"
+            + "(4) /oricon jpsingles daily YYYY-MM-DD";
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -34,10 +35,10 @@ public class EchoController {
         String[] temp = contentText.split(" ");
         String replyText;
 
-        if (temp[0].equalsIgnoreCase("/oricon") &&
-                temp[1].equalsIgnoreCase("jpsingles")) {
+        if (temp[0].equalsIgnoreCase("/oricon")
+                && temp[1].equalsIgnoreCase("jpsingles")) {
             if  (temp.length > 3) {
-                if(temp[2].equalsIgnoreCase("weekly")) {
+                if (temp[2].equalsIgnoreCase("weekly")) {
                     String tanggal = temp[3];
                     replyText = eventHandler.topChartWeekly(tanggal);
                 } else if (temp[2].equalsIgnoreCase("daily")) {
@@ -64,7 +65,7 @@ public class EchoController {
             return new TextMessage(replyText);
         }
 
-       return new TextMessage(replyText);
+        return new TextMessage(replyText);
     }
 
     @EventMapping
