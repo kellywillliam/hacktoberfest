@@ -30,14 +30,15 @@ public class SfwCheckerController {
         String replyText = "";
         String[] chatText = contentText.split(" ");
         switch (chatText[0].toLowerCase()){
-//            case "/echo":
-//                replyText = contentText.replace("/echo", "").substring(1);
-//                break;
+            case "/echo":
+                replyText = chatText[1];
+                break;
             case "/is_sfw":
                 replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
                 break;
+            case "/cmd":
+                replyText = "command sementara : /is_sfw [Link Image mu]";
             default:
-                replyText = "salah command! command yang benar : /is_sfw [link]";
                 break;
         }
         return new TextMessage(replyText);
