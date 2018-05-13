@@ -23,17 +23,18 @@ public class ScreenScraping {
         this.param = "w";
         this.date = date;
         this.url += param + "/" + date + "/";
-        search(date);
+        System.out.println(search());
     }
 
     public void daily (String date){
         this.param = "d";
-        this.url += param + "/" + date + "/";
         this.date = date;
-        search(date);
+        this.url += param + "/" + date + "/";
+        System.out.println(search());
     }
 
-    public void search (String date) {
+    public String search () {
+        String result = "";
         try {
             Document doc = Jsoup.connect(url).timeout(5000).get();
             Elements links = doc.getElementsByClass("box-rank-entry");
@@ -55,7 +56,12 @@ public class ScreenScraping {
             }
 
             for (int i = 0; i < str.size(); i++) {
-                System.out.println(str.get(i));
+                if (i == str.size() - 1 ) {
+                    result += str.get(str.size()-1);
+                }
+                else {
+                    result += str.get(i) + "\n";
+                }
             }
         }
 
@@ -65,6 +71,20 @@ public class ScreenScraping {
         catch (IOException e) {
             System.out.println("Invalid input");
         }
+
+        return result;
+    }
+
+    public void setParam(String param) {
+        this.param = param;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public String getParam() {
