@@ -37,7 +37,7 @@ public class SfwCheckerController {
             default:
                 break;
         }
-        return new TextMessage(contentText);
+        return new TextMessage(replyText);
     }
 
     @EventMapping
