@@ -33,6 +33,13 @@ public class BillboardCountryController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
+        if (contentText.startsWith("/echo")) {
+            return new TextMessage("echo dari primbon");
+        }
+        if (!contentText.startsWith("/billboard hotcountry")) {
+            return new TextMessage("Wrong input, use /billboard hotcountry "
+                    + "<desired artist> to access the feature");
+        }
         String replyText = contentText.replace("/billboard hotcountry", "");
         return new TextMessage(getArtist(replyText.substring(1)));
     }
@@ -47,10 +54,10 @@ public class BillboardCountryController {
         Elements elements = screenScrapeGetArtists(makeGetCall());
 
         for (Element elm: elements) {
-            String artist = elm.getElementsByClass("chart-row__artist").toString();
-            if (artist.equalsIgnoreCase(name)) {
-                String title = elm.getElementsByClass("chart-row__song").toString();
-                String position = elm.getElementsByClass("chart-row__current-week").toString();
+            String artist = elm.getElementsByClass("chart-row__artist").text();
+            if (artist.equalsIgnoreCase(name) || artist.contains(name)) {
+                String title = elm.getElementsByClass("chart-row__song").text();
+                String position = elm.getElementsByClass("chart-row__current-week").text();
                 String result = artist + "\n" + title + "\n" + "This week's position: " + position;
                 return result;
             }
