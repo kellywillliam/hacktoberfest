@@ -7,9 +7,9 @@ import org.junit.jupiter.api.Test;
 
 public class FakeJsonTest {
     @Test
-    public void testDataIsNull() {
+    void testDataIsNull() {
         TextMessage textMessage = FakeJson.getFakeJson();
-        assertTrue(textMessage != null);
+        assertTrue(textMessage.getText() != null);
     }
 
 }
