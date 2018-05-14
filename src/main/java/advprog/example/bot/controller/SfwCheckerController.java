@@ -68,7 +68,7 @@ public class SfwCheckerController {
         try {
             switch (chatText[0].toLowerCase()) {
                 case "/is_sfw":
-                    replyText = ConfidencePercentage.getConfidencePercentage(img);
+                    replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
                     break;
                 case "/echo":
                     replyText = contentText.replace("/echo", "")
@@ -84,7 +84,7 @@ public class SfwCheckerController {
     }
 
     @EventMapping
-    public void handleImageMessage(MessageEvent<ImageMessageContent> event) {
+    public TextMessage handleImageMessage(MessageEvent<ImageMessageContent> event) {
         handleHeavyContent(
             event.getReplyToken(),
             event.getMessage().getId(),
@@ -105,10 +105,10 @@ public class SfwCheckerController {
                 }
 
                 JSONObject data = (JSONObject) temp.get("data");
-                img = (String) data.get("link");
+                String img = (String) data.get("link");
 
             });
-
+            return new TextMessage(img);
 
     }
 
