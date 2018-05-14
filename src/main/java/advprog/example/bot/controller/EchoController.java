@@ -23,7 +23,7 @@ public class EchoController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
         String[] splitContentText = contentText.split(" ");
-        if(splitContentText[0].equals("/sentiment")) {
+        if (splitContentText[0].equals("/sentiment")) {
             return SentimentAnalysis.analyzeText(String.join(" ",
                     Arrays.copyOfRange(splitContentText, 1, splitContentText.length)));
         }
