@@ -1,9 +1,8 @@
 package advprog.example.bot.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -57,7 +56,7 @@ public class EchoControllerTest {
         TextMessage reply = echoController.handleTextMessageEvent(event);
         Double score = Double.parseDouble(reply.getText());
 
-        assertTrue( score <= 1.0 || score >= 0.0);
+        assertTrue(score <= 1.0 || score >= 0.0);
     }
 
     @Test
