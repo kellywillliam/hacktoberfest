@@ -29,9 +29,8 @@ public class EchoController {
         if (replyText[0].equalsIgnoreCase("/echo")) {
             String replyEchoText = contentText.replace("/echo","");
             return new TextMessage(replyEchoText.substring(1));
-        }
-
-        else if (replyText[0].equalsIgnoreCase("/billboard") && replyText[1].equalsIgnoreCase("hot100")) {
+        } else if (replyText[0].equalsIgnoreCase("/billboard")
+                && replyText[1].equalsIgnoreCase("hot100")) {
             Top100Chart top100Chart = new Top100Chart();
             ArrayList<SongInfo> top100 = top100Chart.getDataFromBillboard();
             ArrayList<SongInfo> listLagu = new ArrayList<>();
@@ -40,7 +39,7 @@ public class EchoController {
             String replyBillboardText = "";
 
             for (int i = 0; i < top100.size(); i++) {
-                if(top100.get(i).getSongArtist().toLowerCase().contains(artistName.toLowerCase())) {
+                if (top100.get(i).getSongArtist().toLowerCase().contains(artistName.toLowerCase())) {
                     listLagu.add(top100.get(i));
                 }
             }
@@ -50,14 +49,12 @@ public class EchoController {
             }
 
             for (int j = 0; j < listLagu.size(); j++) {
-                replyBillboardText += listLagu.get(j).getSongArtist() + ("\n" + listLagu.get(j).getSongTitle() + "\n"
-                        + listLagu.get(j).getRank() + "\n\n");
+                replyBillboardText += listLagu.get(j).getSongArtist() + ("\n"
+                        + listLagu.get(j).getSongTitle() + "\n" + listLagu.get(j).getRank() + "\n\n");
             }
 
             return new TextMessage(replyBillboardText);
-        }
-
-        else {
+        } else {
             return new TextMessage("input tidak dapat dibaca");
         }
     }

@@ -17,10 +17,10 @@ public class Top100Chart {
     }
 
     public ArrayList<SongInfo> getDataFromBillboard() {
-        String targetURL = "https://www.billboard.com/charts/hot-100";
+        String targetUrl = "https://www.billboard.com/charts/hot-100";
 
         try {
-            Document document = Jsoup.connect(targetURL).get();
+            Document document = Jsoup.connect(targetUrl).get();
             Elements chartRows = document.getElementsByClass("chart-row");
             for (Element chartRow : chartRows) {
                 String songArtist = chartRow.getElementsByClass("chart-row__artist").html();
