@@ -11,7 +11,10 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import java.util.logging.Logger;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 @LineMessageHandler
@@ -28,9 +31,11 @@ public class ImageTagController {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.add("Authorization", "Bearer JDXrmd0FpLk0e6v16czZQq19k9+19NRP7+L364LorekLQUS+FfUd708u30hGXHHLVQQ4hzv3o1g1EJ4sEAhghU47bviQfwAD+0tWt3v51QN+bsyZBgnfKaHHYK6C2cMYK3NA4OjuNvffNSk+bw/oj49PbdgDzCFqoOLOYbqAITQ=");
-        String result = restTemplate.getForObject("https://api.line.me/v2/bot/message/{id}/content", String.class, contentId);
+        HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
+        ResponseEntity result = restTemplate.exchange("https://api.line.me/v2/bot/message/{id}/content", HttpMethod.POST, entity, String.class, contentId);
+//        String result = restTemplate.getForObject("https://api.line.me/v2/bot/message/{id}/content", String.class, contentId);
 //        String replyText = contentText.replace("/tags", "");
-        return new TextMessage(result);
+        return new TextMessage(result.toString());
     }
 
     @EventMapping
