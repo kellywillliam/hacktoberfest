@@ -1,4 +1,4 @@
-package advprog.oricon;
+package advprog.example.bot.controller;
 
 import org.jsoup.Jsoup;
 
@@ -10,27 +10,27 @@ import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 
-public class ScreenScraping {
+public class OriconRank {
     private String param;
     private String date;
     private String url;
 
-    public ScreenScraping() {
+    public OriconRank() {
         this.url = "https://www.oricon.co.jp/rank/bd/";
     }
 
-    public void weekly (String date){
+    public String weekly (String date){
         this.param = "w";
         this.date = date;
         this.url += param + "/" + date + "/";
-        System.out.println(search());
+        return search();
     }
 
-    public void daily (String date){
+    public String daily (String date){
         this.param = "d";
         this.date = date;
         this.url += param + "/" + date + "/";
-        System.out.println(search());
+        return search();
     }
 
     public String search () {
