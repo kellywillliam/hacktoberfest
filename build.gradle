@@ -106,3 +106,8 @@ compileTestKotlin {
 task stage(dependsOn: ['bootJar', 'clean']) {
     bootJar.mustRunAfter clean
 }
+
+//Additional dependencies
+dependencies {
+    compile 'org.jsoup:jsoup:1.11.3'
+}
