@@ -55,7 +55,7 @@ public class BillboardCountryController {
 
         for (Element elm: elements) {
             String artist = elm.getElementsByClass("chart-row__artist").text();
-            if (artist.equalsIgnoreCase(name) || artist.contains(name)) {
+            if (artist.equalsIgnoreCase(name)) {
                 String title = elm.getElementsByClass("chart-row__song").text();
                 String position = elm.getElementsByClass("chart-row__current-week").text();
                 String result = artist + "\n" + title + "\n" + "This week's position: " + position;
