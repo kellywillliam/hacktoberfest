@@ -15,6 +15,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
     }
 }
 
@@ -39,6 +40,11 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.linecorp.bot:line-bot-spring-boot:1.15.0'
+    implementation 'com.linecorp.bot:line-bot-servlet:1.15.0'
+    implementation 'com.linecorp.bot:line-bot-model:1.15.0'
+    implementation 'com.linecorp.bot:line-bot-api-client:1.15.0'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.linecorp.bot:line-bot-spring-boot:1.15.0"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
