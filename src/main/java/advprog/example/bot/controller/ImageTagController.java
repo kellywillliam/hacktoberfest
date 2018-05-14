@@ -94,7 +94,8 @@ public class ImageTagController {
                         + "NSk+bw/oj49PbdgDzCFqoOLOYbqAITQ=");
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         ResponseEntity<byte[]> result = restTemplate.exchange("https://api.line.me/v2/bot/message/{id}/content", HttpMethod.GET, entity, byte[].class, contentId);
-        Files.write(Paths.get("src/main/resources/image.jpg"), result.getBody(), StandardOpenOption.CREATE_NEW);
+        Files.deleteIfExists(Paths.get("src/main/resources/image.jpg"));
+        Files.write(Paths.get("src/main/resources/image.jpg"), result.getBody());
     }
 
     public String uploadContentToImagga() throws IOException {
