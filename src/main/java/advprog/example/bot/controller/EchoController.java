@@ -39,7 +39,7 @@ public class EchoController {
             String replyBillboardText = "";
 
             for (int i = 0; i < top100.size(); i++) {
-                if(top100.get(i).getSongArtist().contains(artistName)) {
+                if (top100.get(i).getSongArtist().contains(artistName)) {
                     listLagu.add(top100.get(i));
                 }
             }
@@ -62,8 +62,8 @@ public class EchoController {
             ArrayList<SongInfo> top100 = top100Chart.getDataFromBillboard();
             String replyTopTenBillboardText = "";
 
-            for(int i = 0; i < 10; i++) {
-                replyTopTenBillboardText += ( "(" + (i+1) + ")"
+            for (int i = 0; i < 10; i++) {
+                replyTopTenBillboardText += ("(" + (i + 1) + ")"
                         + " " + top100.get(i).getSongArtist() + " - "
                         + top100.get(i).getSongTitle() + "\n");
             }
