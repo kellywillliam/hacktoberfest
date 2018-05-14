@@ -1,7 +1,8 @@
 package advprog.example.bot.controller;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -68,6 +69,24 @@ public class EchoControllerTest {
         assertEquals("input tidak dapat dibaca", reply.getText());
     }
 
+    @Test
+    void testHandleTextMessageEvent4() {
+        MessageEvent<TextMessageContent> event4 =
+                EventTestUtil.createDummyTextMessage("/billboard hot100");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event4);
+
+        assertTrue(reply.getText().contains("(1)"));
+        assertTrue(reply.getText().contains("(2)"));
+        assertTrue(reply.getText().contains("(3)"));
+        assertTrue(reply.getText().contains("(4)"));
+        assertTrue(reply.getText().contains("(5)"));
+        assertTrue(reply.getText().contains("(6)"));
+        assertTrue(reply.getText().contains("(7)"));
+        assertTrue(reply.getText().contains("(8)"));
+        assertTrue(reply.getText().contains("(9)"));
+        assertTrue(reply.getText().contains("(10)"));
+    }
     @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
