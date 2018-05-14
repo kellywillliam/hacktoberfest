@@ -56,10 +56,10 @@ public class PrimbonController {
     }
     
     public String makePostCall(String tgl, String bln, String thn) { 
-    	try {
+        try {
             String url = "http://www.primbon.com/ramalan_weton.php";
-            HttpClient client = HttpClientBuilder.create().build();
-            HttpPost post = new HttpPost(url);
+            final HttpClient client = HttpClientBuilder.create().build();
+            final HttpPost post = new HttpPost(url);
 
             // add header
             List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
@@ -75,7 +75,8 @@ public class PrimbonController {
             System.out.println("Post parameters : " + post.getEntity());
             System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            BufferedReader rd = new BufferedReader(new 
+                    InputStreamReader(response.getEntity().getContent()));
             StringBuffer result = new StringBuffer();
             String line = "";
             while ((line = rd.readLine()) != null) {
@@ -90,18 +91,19 @@ public class PrimbonController {
             return null;
         }
     }
-    
+
     public String screenScrapeGetNamaWeton(String html) {
-    	Document doc = Jsoup.parse(html);
-		Elements newsHeadlines = doc.select("#body");
-		System.out.println(newsHeadlines.size());
-		System.out.println(newsHeadlines.text());
-		
-		String hari = newsHeadlines.text();
-		if (hari.indexOf("Hari Lahir: ") == -1) {
-			return "Wrong input, please retry";
-		}
-		String hasil = hari.substring(hari.indexOf("Hari Lahir: ")+12, hari.indexOf(", Tgl. "));
-		return hasil;
+        Document doc = Jsoup.parse(html);
+        Elements newsHeadlines = doc.select("#body");
+        System.out.println(newsHeadlines.size());
+        System.out.println(newsHeadlines.text());
+
+        String hari = newsHeadlines.text();
+        if (hari.indexOf("Hari Lahir: ") == -1) {
+            return "Wrong input, please retry";
+        }
+        String hasil = hari.substring(hari.indexOf(
+               "Hari Lahir: ") + 12, hari.indexOf(", Tgl. "));
+        return hasil;
     }
 }
