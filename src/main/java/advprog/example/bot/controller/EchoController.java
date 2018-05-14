@@ -35,11 +35,12 @@ public class EchoController {
             Top100Chart top100Chart = new Top100Chart();
             ArrayList<SongInfo> top100 = top100Chart.getDataFromBillboard();
             ArrayList<SongInfo> listLagu = new ArrayList<>();
-            String artistName = replyText[2];
+            String getArtistName = contentText.replace("/billboard hot100", "");
+            String artistName = getArtistName.substring(1);
             String replyBillboardText = "";
 
             for (int i = 0; i < top100.size(); i++) {
-                if(artistName.equalsIgnoreCase(top100.get(i).getSongArtist())) {
+                if(top100.get(i).getSongArtist().contains(artistName)) {
                     listLagu.add(top100.get(i));
                 }
             }
