@@ -109,5 +109,5 @@ task stage(dependsOn: ['bootJar', 'clean']) {
 
 //Additional dependencies
 dependencies {
-    compile 'org.jsoup:1.11.3'
+    compile 'org.jsoup:jsoup:1.11.3'
 }
