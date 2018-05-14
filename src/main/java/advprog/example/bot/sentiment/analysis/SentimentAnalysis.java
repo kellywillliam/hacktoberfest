@@ -21,8 +21,20 @@ public class SentimentAnalysis {
                     + "      \"id\": \"1\",\n"
                     + "      \"text\": \"%s\"\n"
                     + "    }]}";
+    private static final String GOOD_TEMPLATE = "The sentiment is good :), score: %.2g";
+    private static final String BAD_TEMPLATE = "The sentiment is bad :(, score: %.2g";
+
 
     public static TextMessage analyzeText(String text) {
+        Double score = getScore(text);
+        if (score < 0.5) {
+            return new TextMessage(String.format(BAD_TEMPLATE, score));
+        } else {
+            return new TextMessage(String.format(GOOD_TEMPLATE, score));
+        }
+    }
+
+    private static Double getScore(String text) {
         String requestJson = String.format(TEMPLATE, text);
 
         HttpHeaders headers = new HttpHeaders();
@@ -33,14 +45,14 @@ public class SentimentAnalysis {
         ResponseEntity<String> response = postForSentiment(entity);
         try {
             JSONObject jsonObject = new JSONObject(response.getBody());
-            Double result = jsonObject
+
+            return jsonObject
                     .getJSONArray("documents")
                     .getJSONObject(0)
                     .getDouble("score");
 
-            return new TextMessage(String.format("%.2g", result));
         } catch (Exception e) {
-            return new TextMessage("Can't get sentiment from Server!");
+            return -1.0;
         }
     }
 
