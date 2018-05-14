@@ -11,6 +11,7 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import java.util.logging.Logger;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 @LineMessageHandler
@@ -25,7 +26,9 @@ public class ImageTagController {
         ImageMessageContent content = event.getMessage();
         String contentId = content.getId();
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.getForObject("https://xkcd.com/info.0.json", String.class, "");
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Bearer JDXrmd0FpLk0e6v16czZQq19k9+19NRP7+L364LorekLQUS+FfUd708u30hGXHHLVQQ4hzv3o1g1EJ4sEAhghU47bviQfwAD+0tWt3v51QN+bsyZBgnfKaHHYK6C2cMYK3NA4OjuNvffNSk+bw/oj49PbdgDzCFqoOLOYbqAITQ=");
+        String result = restTemplate.getForObject("https://api.line.me/v2/bot/message/{id}/content", String.class, contentId);
 //        String replyText = contentText.replace("/tags", "");
         return new TextMessage(result);
     }
