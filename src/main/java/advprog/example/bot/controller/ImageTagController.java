@@ -3,7 +3,9 @@ package advprog.example.bot.controller;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.model.message.ImageMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
@@ -15,14 +17,14 @@ public class ImageTagController {
     private static final Logger LOGGER = Logger.getLogger(ImageTagController.class.getName());
 
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-        LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
+    public TextMessage handleImageMessageEvent(MessageEvent<ImageMessageContent> event) {
+        LOGGER.fine(String.format("ImageMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
-        TextMessageContent content = event.getMessage();
-        String contentText = content.getText();
+        ImageMessageContent content = event.getMessage();
+        String contentId = content.getId();
 
-        String replyText = contentText.replace("/tags", "");
-        return new TextMessage(replyText.substring(1));
+//        String replyText = contentText.replace("/tags", "");
+        return new TextMessage(contentId);
     }
 
     @EventMapping
