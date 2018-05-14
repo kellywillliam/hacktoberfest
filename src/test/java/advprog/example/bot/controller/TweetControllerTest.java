@@ -67,11 +67,6 @@ public class TweetControllerTest {
         TextMessage reply = tweetController.handleTextMessageEvent(event);
         assertEquals("Failed to retrieve tweets caused by Sorry, that page does not exist.", reply.getText());
     }
-//    @Test
-//    void testHandleDefaultMessage() {
-//        TwitterAPI api = new TwitterAPI();
-//        System.out.println(api.getUserTimeLine("melkibens"));
-//    }
 
     @Test
     void testHandleDefaultMessage() {
