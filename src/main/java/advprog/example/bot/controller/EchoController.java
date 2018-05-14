@@ -29,7 +29,8 @@ public class EchoController {
             String replyEchoText = contentText.replace("/echo","");
             return new TextMessage(replyEchoText.substring(1));
         } else if (replyText[0].equalsIgnoreCase("/billboard")
-                && replyText[1].equalsIgnoreCase("hot100")) {
+                && replyText[1].equalsIgnoreCase("hot100")
+                && replyText.length != 2) {
             Top100Chart top100Chart = new Top100Chart();
             ArrayList<SongInfo> top100 = top100Chart.getDataFromBillboard();
             ArrayList<SongInfo> listLagu = new ArrayList<>();
@@ -55,7 +56,7 @@ public class EchoController {
             return new TextMessage(replyBillboardText);
         } else if (replyText[0].equalsIgnoreCase("/billboard")
                 && replyText[1].equalsIgnoreCase("hot100")
-                && replyText.length==2) {
+                && replyText.length == 2) {
             Top100Chart top100Chart = new Top100Chart();
             ArrayList<SongInfo> top100 = top100Chart.getDataFromBillboard();
             String replyTopTenBillboardText = "";
