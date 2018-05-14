@@ -87,6 +87,7 @@ public class EchoControllerTest {
         assertTrue(reply.getText().contains("(9)"));
         assertTrue(reply.getText().contains("(10)"));
     }
+    
     @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
