@@ -63,8 +63,8 @@ public class EchoController {
             String replyTopTenBillboardText = "";
 
             for(int i = 0; i < 10; i++) {
-                replyTopTenBillboardText += ( + "(" + (i+1) + ")"
-                        + (" " + top100.get(i).getSongArtist() + " - "
+                replyTopTenBillboardText += ( "(" + (i+1) + ")"
+                        + " " + top100.get(i).getSongArtist() + " - "
                         + top100.get(i).getSongTitle() + "\n");
             }
 
