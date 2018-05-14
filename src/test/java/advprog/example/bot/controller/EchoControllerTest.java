@@ -1,8 +1,9 @@
 package advprog.example.bot.controller;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -54,9 +55,8 @@ public class EchoControllerTest {
                 EventTestUtil.createDummyTextMessage("/sentiment Hello World");
 
         TextMessage reply = echoController.handleTextMessageEvent(event);
-        Double score = Double.parseDouble(reply.getText());
 
-        assertTrue(score <= 1.0 || score >= 0.0);
+        assertThat(reply.getText(), containsString("score"));
     }
 
     @Test
