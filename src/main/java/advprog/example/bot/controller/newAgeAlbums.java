@@ -26,8 +26,8 @@ public class newAgeAlbums {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        ArrayList<String> arrArtist = new ArrayList();
-        ArrayList<String> arrTitle = new ArrayList();
+        ArrayList<String> arrArtist = new ArrayList<>();
+        ArrayList<String> arrTitle = new ArrayList<>();
 
         if (contentText.equalsIgnoreCase("/newage")) {
 
@@ -56,6 +56,8 @@ public class newAgeAlbums {
         for (int i = 0; i < arrArtist.size(); i++) {
             replyText = replyText + ("(" + (i+1) + ") " + arrArtist.get(i) + " - " + arrTitle.get(i)) + "\n";
         }
+
+        replyText = replyText + "\nThank you for using our service";
 
         return new TextMessage(replyText);
     }
