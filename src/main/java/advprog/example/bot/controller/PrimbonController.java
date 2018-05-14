@@ -43,7 +43,7 @@ public class PrimbonController {
         
         String[] arrInput = replyText.substring(1).split("-");
         
-        if (arrInput.length == 1) {
+        if (arrInput.length != 3) {
             return new TextMessage("Wrong input, please try again!");
         }
 
