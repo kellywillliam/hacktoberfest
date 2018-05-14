@@ -11,6 +11,7 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.logging.Logger;
 
 import org.json.JSONArray;
@@ -71,6 +72,7 @@ public class ImageTagController {
                 Double confidence = tagsArray.getJSONObject(i).getDouble("confidence");
                 result += "Tag: " + tag + " Confidence: " + Double.toString(confidence) + "\n";
             }
+            isTags = false;
             return new TextMessage(result);
         }
         return new TextMessage("succesfully uploaded your image");
@@ -92,7 +94,7 @@ public class ImageTagController {
                         + "NSk+bw/oj49PbdgDzCFqoOLOYbqAITQ=");
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         ResponseEntity<byte[]> result = restTemplate.exchange("https://api.line.me/v2/bot/message/{id}/content", HttpMethod.GET, entity, byte[].class, contentId);
-        Files.write(Paths.get("src/main/resources/image.jpg"), result.getBody());
+        Files.write(Paths.get("src/main/resources/image.jpg"), result.getBody(), StandardOpenOption.CREATE_NEW);
     }
 
     public String uploadContentToImagga() throws IOException {
