@@ -11,6 +11,8 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import java.util.logging.Logger;
 
+import org.springframework.web.client.RestTemplate;
+
 @LineMessageHandler
 public class ImageTagController {
 
@@ -22,9 +24,10 @@ public class ImageTagController {
                 event.getTimestamp(), event.getMessage()));
         ImageMessageContent content = event.getMessage();
         String contentId = content.getId();
-
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject("https://xkcd.com/info.0.json", String.class, "");
 //        String replyText = contentText.replace("/tags", "");
-        return new TextMessage(contentId);
+        return new TextMessage(result);
     }
 
     @EventMapping
