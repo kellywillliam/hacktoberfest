@@ -80,7 +80,7 @@ public class SfwCheckerController {
         Files.copy(messageContentResponse.getStream(),
                 filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        return new TextMessage(filePath.toUri().toURL().toString());
+        return new TextMessage(id);
 
 
     }
