@@ -3,6 +3,7 @@ package advprog.example.bot.controller;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.ImageMessageContent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -29,6 +30,18 @@ import org.springframework.web.client.RestTemplate;
 public class ImageTagController {
 
     private static final Logger LOGGER = Logger.getLogger(ImageTagController.class.getName());
+    static boolean isTags = false;
+
+    @EventMapping
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+        TextMessageContent content = event.getMessage();
+        String contentText = content.getText();
+        if (contentText.equalsIgnoreCase("/tags")) {
+            isTags = true;
+            return new TextMessage("Now upload your image");
+        }
+        return new TextMessage("not available");
+    }
 
     @EventMapping
     public TextMessage handleImageMessageEvent(MessageEvent<ImageMessageContent> event)
@@ -40,24 +53,27 @@ public class ImageTagController {
         String contentId = content.getId();
         // Write image file to src/main/resources
         getContentFromLine(contentId);
-        // Read image file and upload to imagga
-        String uploadImageResponse = uploadContentToImagga();
-        // Parse response body from API call to upload image to imagga
-        JSONObject uploadImageJsonObject = new JSONObject(uploadImageResponse);
-        JSONArray uploadedArray = uploadImageJsonObject.getJSONArray("uploaded");
-        String id = uploadedArray.getJSONObject(0).getString("id");
-        // Pass id to be processed to API call to get image tags from imagga
-        String imageTagsresponse = getImageTags(id);
-        JSONObject imageTagsJsonResponse = new JSONObject(imageTagsresponse);
-        JSONArray resultsArray = imageTagsJsonResponse.getJSONArray("results");
-        JSONArray tagsArray = resultsArray.getJSONObject(0).getJSONArray("tags");
-        String result = "Here's the related tags of your image: \n";
-        for (int i = 0; i < 5; i++) {
-            String tag = tagsArray.getJSONObject(i).getString("tag");
-            Double confidence = tagsArray.getJSONObject(i).getDouble("confidence");
-            result += "Tag: " + tag + " Confidence: " + Double.toString(confidence) + "\n";
+        if (isTags) {
+            // Read image file and upload to imagga
+            String uploadImageResponse = uploadContentToImagga();
+            // Parse response body from API call to upload image to imagga
+            JSONObject uploadImageJsonObject = new JSONObject(uploadImageResponse);
+            JSONArray uploadedArray = uploadImageJsonObject.getJSONArray("uploaded");
+            String id = uploadedArray.getJSONObject(0).getString("id");
+            // Pass id to be processed to API call to get image tags from imagga
+            String imageTagsresponse = getImageTags(id);
+            JSONObject imageTagsJsonResponse = new JSONObject(imageTagsresponse);
+            JSONArray resultsArray = imageTagsJsonResponse.getJSONArray("results");
+            JSONArray tagsArray = resultsArray.getJSONObject(0).getJSONArray("tags");
+            String result = "Here's the related tags of your image: \n";
+            for (int i = 0; i < 5; i++) {
+                String tag = tagsArray.getJSONObject(i).getString("tag");
+                Double confidence = tagsArray.getJSONObject(i).getDouble("confidence");
+                result += "Tag: " + tag + " Confidence: " + Double.toString(confidence) + "\n";
+            }
+            return new TextMessage(result);
         }
-        return new TextMessage(result);
+        return new TextMessage("succesfully uploaded your image");
     }
 
     @EventMapping

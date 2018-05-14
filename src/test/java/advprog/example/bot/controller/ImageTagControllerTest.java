@@ -3,6 +3,7 @@ package advprog.example.bot.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -51,12 +52,28 @@ public class ImageTagControllerTest {
 
     @Test
     void testHandleTextMessageEvent() throws IOException, JSONException {
+        MessageEvent<TextMessageContent> eventText = EventTestUtil.createDummyTextMessage("/tags");
+        TextMessage replyText = imageTagController.handleTextMessageEvent(eventText);
         MessageEvent<ImageMessageContent> event =
                 EventTestUtil.createDummyImageMessage("7954184469074");
+        assertEquals(replyText.getText(), "Now upload your image");
+        assertTrue(imageTagController.isTags);
 
         TextMessage reply = imageTagController.handleImageMessageEvent(event);
         System.out.println(reply);
     }
+
+    @Test
+    void testHandleTextMessageEventNotTags() throws IOException, JSONException {
+        MessageEvent<TextMessageContent> eventText = EventTestUtil.createDummyTextMessage("/ping");
+        TextMessage replyText = imageTagController.handleTextMessageEvent(eventText);
+        assertEquals(replyText.getText(), "not available");
+        MessageEvent<ImageMessageContent> event =
+                EventTestUtil.createDummyImageMessage("7954184469074");
+        TextMessage reply = imageTagController.handleImageMessageEvent(event);
+        assertEquals(reply.getText(), "succesfully uploaded your image");
+    }
+
 
     @Test
     void testHandleDefaultMessage() {
