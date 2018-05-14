@@ -2,10 +2,10 @@ package advprog.hot;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 public class Top100ChartTest {
     ArrayList<SongInfo> top100;

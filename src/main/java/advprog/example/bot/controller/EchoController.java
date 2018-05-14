@@ -39,7 +39,8 @@ public class EchoController {
             String replyBillboardText = "";
 
             for (int i = 0; i < top100.size(); i++) {
-                if (top100.get(i).getSongArtist().toLowerCase().contains(artistName.toLowerCase())) {
+                if (top100.get(i).getSongArtist().toLowerCase()
+                        .contains(artistName.toLowerCase())) {
                     listLagu.add(top100.get(i));
                 }
             }
@@ -50,7 +51,8 @@ public class EchoController {
 
             for (int j = 0; j < listLagu.size(); j++) {
                 replyBillboardText += listLagu.get(j).getSongArtist() + ("\n"
-                        + listLagu.get(j).getSongTitle() + "\n" + listLagu.get(j).getRank() + "\n\n");
+                        + listLagu.get(j).getSongTitle() + "\n"
+                        + listLagu.get(j).getRank() + "\n\n");
             }
 
             return new TextMessage(replyBillboardText);
