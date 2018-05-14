@@ -50,7 +50,7 @@ public class EchoController {
             }
 
             for (int j = 0; j < listLagu.size(); j++) {
-                replyBillboardText += artistName + ("\n" + listLagu.get(j).getSongTitle() + "\n"
+                replyBillboardText += listLagu.get(j).getSongArtist() + ("\n" + listLagu.get(j).getSongTitle() + "\n"
                         + listLagu.get(j).getRank() + "\n\n");
             }
 
