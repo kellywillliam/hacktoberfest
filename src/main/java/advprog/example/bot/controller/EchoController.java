@@ -40,7 +40,7 @@ public class EchoController {
             String replyBillboardText = "";
 
             for (int i = 0; i < top100.size(); i++) {
-                if(top100.get(i).getSongArtist().contains(artistName)) {
+                if(top100.get(i).getSongArtist().toLowerCase().contains(artistName.toLowerCase())) {
                     listLagu.add(top100.get(i));
                 }
             }
