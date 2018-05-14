@@ -23,8 +23,8 @@ public class Top100Chart {
             Document document = Jsoup.connect(targetURL).get();
             Elements chartRows = document.getElementsByClass("chart-row");
             for (Element chartRow : chartRows) {
-                String songArtist = chartRow.getElementsByClass("chart-row__song").html();
-                String songTitle = chartRow.getElementsByClass("chart-row__artist").html();
+                String songArtist = chartRow.getElementsByClass("chart-row__artist").html();
+                String songTitle = chartRow.getElementsByClass("chart-row__song").html();
                 String currentRank = chartRow.getElementsByClass("chart-row__current-week").html();
                 int rank = Integer.parseInt(currentRank);
                 top100.add(new SongInfo(songArtist, songTitle, rank));
