@@ -49,7 +49,7 @@ public class EchoController {
             }
 
             for (int j = 0; j < listLagu.size(); j++) {
-                replyBillboardText += artistName
+                replyBillboardText += listLagu.get(j).getSongArtist()
                         + ("\n" + listLagu.get(j).getSongTitle() + "\n"
                         + listLagu.get(j).getRank() + "\n\n");
             }
@@ -63,9 +63,9 @@ public class EchoController {
             String replyTopTenBillboardText = "";
 
             for(int i = 0; i < 10; i++) {
-                replyTopTenBillboardText += top100.get(i).getSongArtist()
-                        + ("\n" + top100.get(i).getSongTitle() + "\n"
-                        + top100.get(i).getRank() + "\n\n");
+                replyTopTenBillboardText += (i+1)
+                        + (" " + top100.get(i).getSongArtist() + " - "
+                        + top100.get(i).getSongTitle() + "\n");
             }
 
             return new TextMessage(replyTopTenBillboardText);
