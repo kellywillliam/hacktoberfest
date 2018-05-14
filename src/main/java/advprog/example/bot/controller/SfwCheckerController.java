@@ -35,6 +35,7 @@ public class SfwCheckerController {
                         .substring(1);
                 break;
             default:
+                
                 break;
         }
         return new TextMessage(replyText);
