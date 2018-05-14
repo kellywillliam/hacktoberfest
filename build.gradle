@@ -46,6 +46,7 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5_version"
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$junit5_version"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.2.0"
+    compile group: 'org.twitter4j', name: 'twitter4j-core', version: '4.0.1'
 }
 
 // Configure Checkstyle plugin
@@ -86,6 +87,7 @@ test {
     reports {
         html.enabled = true
     }
+
 }
 
 // Use Spring dependency management plugin
