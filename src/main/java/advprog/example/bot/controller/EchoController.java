@@ -21,7 +21,6 @@ public class EchoController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        
         String replyText = contentText.replace("/echo", "");
         return new TextMessage(replyText.substring(1) + " halo");
     }
