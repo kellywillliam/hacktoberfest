@@ -1,6 +1,7 @@
 package advprog.example.bot.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import static org.mockito.Mockito.atLeastOnce;
@@ -46,6 +47,17 @@ public class EchoControllerTest {
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
         assertEquals("Lorem Ipsum", reply.getText());
+    }
+
+    @Test
+    void testHandleSentimentMessageEvent() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/sentiment Hello World");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+        Double score = Double.parseDouble(reply.getText());
+
+        assertTrue( score <= 1.0 || score >= 0.0);
     }
 
     @Test
