@@ -42,7 +42,7 @@ public class SfwCheckerControllerTest {
     }
 
     @Test
-    void testHandleTextMessageEvent() throws java.io.IOException {
+    void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
 
