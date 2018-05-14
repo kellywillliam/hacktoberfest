@@ -34,11 +34,11 @@ public class ConfidencePercentageTest {
                 "https://i.pinimg.com/736x/8f/89/61/8f8961ce472020ae790c803f86c90077--one-piece-x-one-piece-anime.jpg"));
     }
 
-    @Test
-    void testGetConfidencePercentageIsNotImage() throws java.io.IOException {
-        assertEquals("Link bukan image", ConfidencePercentage.getConfidencePercentage(
-                "twitter.com"));
-    }
+//    @Test
+//    void testGetConfidencePercentageIsNotImage() throws java.io.IOException {
+//        assertEquals("Link bukan image", ConfidencePercentage.getConfidencePercentage(
+//                "twitter.com"));
+//    }
 
 
 
