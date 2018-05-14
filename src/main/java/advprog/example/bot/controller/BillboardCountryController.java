@@ -7,8 +7,18 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
-import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.logging.Logger;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 @LineMessageHandler
 public class BillboardCountryController {
@@ -24,7 +34,7 @@ public class BillboardCountryController {
         String contentText = content.getText();
 
         String replyText = contentText.replace("/billboard hotcountry", "");
-        return new TextMessage(replyText.substring(1));
+        return new TextMessage(getArtist(replyText.substring(1)));
     }
 
     @EventMapping
@@ -32,13 +42,53 @@ public class BillboardCountryController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
+    
+    public static String getArtist(String name) {
+        Elements elements = screenScrapeGetArtists(makeGetCall());
+
+        for (Element elm: elements) {
+            String artist = elm.getElementsByClass("chart-row__artist").toString();
+            if (artist.equalsIgnoreCase(name)) {
+                String title = elm.getElementsByClass("chart-row__song").toString();
+                String position = elm.getElementsByClass("chart-row__current-week").toString();
+                String result = artist + "\n" + title + "\n" + "This week's position: " + position;
+                return result;
+            }
+        }
+
+        return "Your artist is not on the top 50 Hot Country Songs list";
+    }
 
     public static String makeGetCall() {
-        return null;
+        try {
+            String url = "https://www.billboard.com/charts/country-songs";
+            final HttpClient client = HttpClientBuilder.create().build();
+            final HttpGet get = new HttpGet(url);
+
+            HttpResponse response = client.execute(get);
+            System.out.println("\nSending 'GET' request to URL : " + url);
+            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+
+            BufferedReader rd = new BufferedReader(new 
+                    InputStreamReader(response.getEntity().getContent()));
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+
+            System.out.println(result.toString());
+            return result.toString();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
-    
-    public static ArrayList<String> screenScrapeGetArtists(String html) {
-        return null;
+
+    public static Elements screenScrapeGetArtists(String html) {
+        Document doc = Jsoup.parse(html);
+        Elements content = doc.select(".chart-row__primary");
+        return content;
     }
-    
 }
