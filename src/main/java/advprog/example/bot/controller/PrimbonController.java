@@ -20,10 +20,10 @@ public class PrimbonController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        if (contentText.equalsIgnoreCase("/echo")){
-        	return new TextMessage("echo dari primbon");
+        if (contentText.startsWith("/echo")) {
+            return new TextMessage("echo dari primbon");
         }
-        
+
         String replyText = contentText.replace("/primbon", "");
         return new TextMessage(replyText.substring(1));
     }
