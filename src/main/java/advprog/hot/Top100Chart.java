@@ -9,7 +9,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-class Top100Chart {
+public class Top100Chart {
     private ArrayList<SongInfo> top100;
 
     public Top100Chart() {
