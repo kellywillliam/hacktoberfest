@@ -6,7 +6,7 @@ import org.springframework.web.client.RestTemplate;
 
 
 public class FakeJson {
-    private static String FAKE_JSON_URL = "https://jsonplaceholder.typicode.com/posts/";
+    private static final String FAKE_JSON_URL = "https://jsonplaceholder.typicode.com/posts/";
 
     public static TextMessage getFakeJson() {
         RestTemplate restTemplate = new RestTemplate();
