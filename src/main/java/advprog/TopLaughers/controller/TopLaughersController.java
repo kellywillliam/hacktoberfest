@@ -1,28 +1,31 @@
 package advprog.TopLaughers.controller;
 
-import advprog.example.bot.controller.EchoController;
+import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.logging.Logger;
-
+@SpringBootApplication
 @LineMessageHandler
 public class TopLaughersController{
 
-    private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
+    public static void main(String[] args) {
+        SpringApplication.run(TopLaughersController.class, args);
+    }
 
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event){
-        LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
-                event.getTimestamp(), event.getMessage()));
-        TextMessageContent content = event.getMessage();
-        String contentText = content.getText();
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+        System.out.println("event: " + event);
+        return new TextMessage(event.getMessage().getText());
+    }
 
-        String replyText = contentText.replace("/toplaughers", "");
-        return new TextMessage(replyText.substring(1));
+    @EventMapping
+    public void handleDefaultMessageEvent(Event event) {
+        System.out.println("event: " + event);
     }
 
 
