@@ -11,11 +11,8 @@ public class BotExampleApplication {
     private static final Logger LOGGER = Logger.getLogger(BotExampleApplication.class.getName());
 
     public static void main(String[] args) {
-        System.setProperty("line.bot.channelSecret", "e536048652b5bf93d0b66f1823707152");
-        System.setProperty("line.bot.channelToken", "sM5HIm/Pn5FS1br38o32QGaFOF14NNdJXQIW"
-                + "EuvHLzGTIGc7FP7AJ3SNUXZ8xXQ9jj5Zv/VOwoztvblYJuv31iA5b61"
-                + "V2R0wpn7/w3SndoOj04h/2APkIlt5YBLbRF6fKMgetQPHA8t"
-                + "sWAu96b0tMAdB04t89/1O/w1cDnyilFU=");
+        System.setProperty("line.bot.channelSecret", System.getenv("LINE_BOT_CHANNELSECRET"));
+        System.setProperty("line.bot.channelToken", System.getenv("LINE_BOT_CHANNELTOKEN"));
         LOGGER.info("Application starting ...");
         SpringApplication.run(BotExampleApplication.class, args);
     }
