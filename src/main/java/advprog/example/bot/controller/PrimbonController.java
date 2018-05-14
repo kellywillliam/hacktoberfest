@@ -42,6 +42,11 @@ public class PrimbonController {
         String replyText = contentText.replace("/primbon", "");
         
         String[] arrInput = replyText.substring(1).split("-");
+        
+        if (arrInput.length == 1) {
+            return new TextMessage("Wrong input, please try again!");
+        }
+
         String tahun = arrInput[0];
         String bulan = arrInput[1];
         String tanggal = arrInput[2];
@@ -50,7 +55,7 @@ public class PrimbonController {
             int thn = Integer.parseInt(tahun);
             int bln = Integer.parseInt(bulan);
             int tgl = Integer.parseInt(tanggal);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             return new TextMessage("Wrong input, please try again!");
         }
 
