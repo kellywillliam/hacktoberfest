@@ -50,7 +50,7 @@ public class PrimbonController {
             int thn = Integer.parseInt(tahun);
             int bln = Integer.parseInt(bulan);
             int tgl = Integer.parseInt(tanggal);
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             return new TextMessage("Wrong input, please try again!");
         }
 
