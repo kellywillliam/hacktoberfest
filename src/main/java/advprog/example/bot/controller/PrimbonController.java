@@ -46,6 +46,20 @@ public class PrimbonController {
         String bulan = arrInput[1];
         String tanggal = arrInput[2];
         
+        try {
+            int thn = Integer.parseInt(tahun);
+            int bln = Integer.parseInt(bulan);
+            int tgl = Integer.parseInt(tanggal);
+        } catch (NumberFormatException e) {
+            return new TextMessage("Wrong input, please try again!");
+        }
+
+        if (Integer.parseInt(bulan) > 12 
+                || Integer.parseInt(bulan) < 1 || tahun.length() != 4 
+                || Integer.parseInt(tanggal) < 1 ||  Integer.parseInt(tanggal) > 31) {
+            return new TextMessage("Wrong input, please try again!");
+        }
+
         return new TextMessage(makePostCall(tanggal, bulan, tahun));
     }
 
