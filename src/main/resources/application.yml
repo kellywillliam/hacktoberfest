@@ -17,7 +17,7 @@
 #Please copy as `application.yml` and change your value.
 
 line.bot:
-  channel-token: X30BWP5vY+J3kbsEvzmTBZ7F0/Q7F11uA0RjnlYdlHE/fJ7PXqfhn2hSayuvJihq/iECJv3f35FTxumwtq6PdtC3aiAxE6w+fdjMI+po3DzfMCP/+v3aC1VsgItePR6KEq01rWnsB1f0WSj/ZsjH7AdB04t89/1O/w1cDnyilFU=
+  channel-token: GuX2e3L580Ljde8VdoPLmeZIMIzqWauZRwr6+EiHjP30t0b1+2pXboUOcibsSTLG/iECJv3f35FTxumwtq6PdtC3aiAxE6w+fdjMI+po3Dwt+PHsGCF6AGplRvXOflG/Ae508WcWy6cFRifOQPKi8gdB04t89/1O/w1cDnyilFU=
   channel-secret: cff1f3efd8e2875d352c4a69e41fc0a1
   handler.path: /callback
 
