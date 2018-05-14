@@ -39,16 +39,6 @@ public class EchoControllerTest {
     }
 
     @Test
-    void testHandleTextMessageEvent() {
-        MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
-
-        TextMessage reply = echoController.handleTextMessageEvent(event);
-
-        assertEquals("Lorem Ipsum", reply.getText());
-    }
-
-    @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
@@ -57,4 +47,53 @@ public class EchoControllerTest {
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
     }
+
+    @Test
+    void testHandleTextMessageEventInputWithoutFormat() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("Sample text message");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertEquals("Halo, terima kasih atas pesan yang dikirimkan. \n" +
+                "Untuk menggunakan bot ini, silakkan kirimkan pesan dengan format" +
+                "'/oricon bluray [weekly/daily] [YYYY-MM-DD]' \n" +
+                "Contoh: /oricon bluray weekly 2018-05-14", reply.getText());
+    }
+
+    @Test
+    void testHandleTextMessageEventInputFail() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/oricon bluray weekly");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertEquals("Pesan yang kamu kirimkan belum sesuai format." +
+                "Pastikan format yang kamu kirimkan sudah lengkap.", reply.getText());
+    }
+
+    @Test
+    void testHandleTextMessageEventInputWeeklyDaily() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/oricon bluray weekl 2018-05-14");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertEquals("Pesan yang kamu kirimkan belum sesuai format." +
+                "Pastikan kamu menuliskan 'weekly' atau 'daily' dengan benar.", reply.getText());
+    }
+
+    @Test
+    void testHandleTextMessageUserInputSuccess() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/oricon bluray weekly 2018-05-14");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        String[] lines = reply.getText().split("\r\n|\r|\n");
+        int num = lines.length;
+
+        assertEquals(10, num);
+    }
+
 }
