@@ -8,7 +8,6 @@ import com.google.common.io.ByteStreams;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.client.MessageContentResponse;
-import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.ImageMessageContent;
@@ -16,7 +15,6 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.ImageMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
@@ -49,7 +47,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 public class SfwCheckerController {
 
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
-
+    private static String reply = "";
 
     public static void main(String[] args) throws IOException {
         System.out.println(ConfidencePercentage.getConfidencePercentage("https://en.wikipedia.org/wiki/File:Brazilian_amazon_rainforest.jpg"));
@@ -86,7 +84,7 @@ public class SfwCheckerController {
     }
 
     @EventMapping
-    public void handleImageMessage(MessageEvent<ImageMessageContent> event) {
+    public TextMessage handleImageMessage(MessageEvent<ImageMessageContent> event) {
         LOGGER.fine(String.format("ImageMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
 
@@ -118,35 +116,18 @@ public class SfwCheckerController {
                     temp = new JSONObject(ImgurApi.upload(image));
                     JSONObject data = (JSONObject) temp.get("data");
                     String img = (String) data.get("link");
-                    String replyText = "";
-                    replyText = ConfidencePercentage.getConfidencePercentage(img);
-
-                    final TextMessage textMessage = new TextMessage(replyText);
-                    final ReplyMessage replyMessage = new ReplyMessage(
-                            replyToken,
-                            textMessage);
-                    final BotApiResponse botApiResponse;
-                    try {
-                        botApiResponse = client.replyMessage(replyMessage).get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                        return;
-                    }
-
-                    System.out.println(botApiResponse);
-
+                    reply = ConfidencePercentage.getConfidencePercentage(img);
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     return;
                 }
 
+
+
+
             });
-
-
-
-
-
+        return new TextMessage(reply);
 
     }
 
