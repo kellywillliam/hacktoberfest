@@ -48,7 +48,9 @@ public class ConfidencePercentage {
         System.out.println(jsonResponse);
         JSONArray parentArr = bigObj.getJSONArray("results");
         if (parentArr.length() == 0) {
-            return "Link bukan image";
+            JSONArray notSuccess = bigObj.getJSONArray("unsuccessful");
+            String reason = notSuccess.getJSONObject(0).getString("reason");
+            return reason;
         } else {
             JSONObject smallObj = parentArr.getJSONObject(0);
             return isSfw(smallObj);
