@@ -68,7 +68,7 @@ public class SfwCheckerController {
         try {
             switch (chatText[0].toLowerCase()) {
                 case "/is_sfw":
-                    replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
+                    replyText = ConfidencePercentage.getConfidencePercentage(img);
                     break;
                 case "/echo":
                     replyText = contentText.replace("/echo", "")
