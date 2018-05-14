@@ -23,7 +23,7 @@ public class EchoController {
 
         
         String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1) + "halo");
+        return new TextMessage(replyText.substring(1) + " halo");
     }
 
     @EventMapping
