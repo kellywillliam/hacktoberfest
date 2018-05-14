@@ -28,9 +28,7 @@ public class EchoController {
         if (replyText[0].equalsIgnoreCase("/echo")) {
             String replyEchoText = contentText.replace("/echo","");
             return new TextMessage(replyEchoText.substring(1));
-        }
-
-        else if (replyText[0].equalsIgnoreCase("/billboard")
+        } else if (replyText[0].equalsIgnoreCase("/billboard")
                 && replyText[1].equalsIgnoreCase("hot100")) {
             Top100Chart top100Chart = new Top100Chart();
             ArrayList<SongInfo> top100 = top100Chart.getDataFromBillboard();
@@ -55,9 +53,7 @@ public class EchoController {
             }
 
             return new TextMessage(replyBillboardText);
-        }
-
-        else if (replyText[0].equalsIgnoreCase("/billboard")
+        } else if (replyText[0].equalsIgnoreCase("/billboard")
                 && replyText[1].equalsIgnoreCase("hot100")
                 && replyText.length==2) {
             Top100Chart top100Chart = new Top100Chart();
@@ -71,9 +67,7 @@ public class EchoController {
             }
 
             return new TextMessage(replyTopTenBillboardText);
-
-        }
-        else {
+        } else {
             return new TextMessage("input tidak dapat dibaca");
         }
     }
