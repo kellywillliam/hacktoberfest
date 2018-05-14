@@ -30,11 +30,12 @@ public class EchoController {
             return new TextMessage(replyEchoText.substring(1));
         } else if (replyText[0].equalsIgnoreCase("/billboard")
                 && replyText[1].equalsIgnoreCase("hot100")
-                && replyText.length != 2) {
+                && replyText.length > 2) {
             Top100Chart top100Chart = new Top100Chart();
             ArrayList<SongInfo> top100 = top100Chart.getDataFromBillboard();
             ArrayList<SongInfo> listLagu = new ArrayList<>();
-            String artistName = replyText[2];
+            String contentArtist = contentText.replace("/billboard hot100","");
+            String artistName = contentArtist.substring(1);
             String replyBillboardText = "";
 
             for (int i = 0; i < top100.size(); i++) {
@@ -63,7 +64,7 @@ public class EchoController {
 
             for(int i = 0; i < 10; i++) {
                 replyTopTenBillboardText += top100.get(i).getSongArtist()
-                        + ("\n" + top100.get(i).getSongArtist() + "\n"
+                        + ("\n" + top100.get(i).getSongTitle() + "\n"
                         + top100.get(i).getRank() + "\n\n");
             }
 
