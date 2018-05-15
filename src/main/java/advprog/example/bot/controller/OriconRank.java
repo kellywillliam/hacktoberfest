@@ -1,7 +1,8 @@
 package advprog.example.bot.controller;
 
 import java.io.IOException;
-import java.net.SocketTimeoutException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
@@ -10,25 +11,63 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class OriconRank {
-    private String param;
     private String date;
     private String url;
+
+    String weeklyDailyWrong = "Pesan yang kamu kirimkan belum sesuai format. "
+            + "Pastikan kamu menuliskan 'weekly' atau 'daily' dengan benar.";
+    String notEnoughInput = "Pesan yang kamu kirimkan belum sesuai format. "
+            + "Pastikan format yang kamu kirimkan sudah lengkap.";
+    String randomInput = "Halo, terima kasih atas pesan yang dikirimkan. \n"
+            + "Untuk menggunakan bot ini, silakkan kirimkan pesan dengan format"
+            + "'/oricon bluray [weekly/daily] [YYYY-MM-DD]' \n"
+            + "Contoh: /oricon bluray weekly 2018-05-14";
+    String invalidDate = "Tanggal yang kamu masukkan tidak valid. Silakkan coba lagi.";
+    String noRecord = "Tidak ada data yang ditemukan.";
 
     public OriconRank() {
         this.url = "https://www.oricon.co.jp/rank/bd/";
     }
 
-    public String weekly(String date) {
-        this.param = "w";
-        this.date = date;
-        this.url += param + "/" + date + "/";
+    public String execute(String contentText) {
+        String[] command = contentText.split(" ");
+        String replyText = "";
+
+        if (command[0].equals("/oricon") && command[1].equals("bluray")) {
+            try {
+                String dateGiven = command[3];
+                if (isValidDate(dateGiven)) {
+                    this.date = dateGiven;
+                } else {
+                    return invalidDate;
+                }
+
+                if (command[2].equals("weekly")) {
+                    replyText = weekly();
+                } else if (command[2].equals("daily")) {
+                    replyText = daily();
+                } else {
+                    replyText = weeklyDailyWrong;
+                }
+
+            } catch (ArrayIndexOutOfBoundsException e) {
+                replyText = notEnoughInput;
+            }
+
+        } else {
+            replyText = randomInput;
+        }
+
+        return replyText;
+    }
+
+    public String weekly() {
+        this.url += "w" + "/" + date + "/";
         return search();
     }
 
-    public String daily(String date) {
-        this.param = "d";
-        this.date = date;
-        this.url += param + "/" + date + "/";
+    public String daily() {
+        this.url += "d" + "/" + date + "/";
         return search();
     }
 
@@ -61,17 +100,23 @@ public class OriconRank {
                     result += str.get(i) + "\n";
                 }
             }
-        } catch (SocketTimeoutException e) {
-            System.out.println("Timeout occured");
+
         } catch (IOException e) {
-            System.out.println("Invalid input");
+            return noRecord;
         }
 
         return result;
     }
 
-    public void setParam(String param) {
-        this.param = param;
+    public boolean isValidDate(String inDate) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        try {
+            dateFormat.parse(inDate.trim());
+        } catch (ParseException pe) {
+            return false;
+        }
+        return true;
     }
 
     public void setDate(String date) {
@@ -82,9 +127,6 @@ public class OriconRank {
         this.url = url;
     }
 
-    public String getParam() {
-        return param;
-    }
 
     public String getDate() {
         return date;

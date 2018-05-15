@@ -68,7 +68,7 @@ public class EchoControllerTest {
 
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
-        assertEquals("Pesan yang kamu kirimkan belum sesuai format."
+        assertEquals("Pesan yang kamu kirimkan belum sesuai format. "
                 + "Pastikan format yang kamu kirimkan sudah lengkap.", reply.getText());
     }
 
@@ -79,7 +79,7 @@ public class EchoControllerTest {
 
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
-        assertEquals("Pesan yang kamu kirimkan belum sesuai format."
+        assertEquals("Pesan yang kamu kirimkan belum sesuai format. "
                 + "Pastikan kamu menuliskan 'weekly' atau 'daily' dengan benar.", reply.getText());
     }
 
