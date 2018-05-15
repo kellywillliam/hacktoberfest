@@ -60,7 +60,7 @@ public class OriconController {
             String chartPosition = e.getElementsByClass("num").text();
             String title = e.getElementsByClass("title").text();
             String author = e.getElementsByClass("name").text();
-            Elements list = e.getElementsByClass("list");
+            Elements list = e.getElementsByClass("list").get(0).getElementsByTag("li");
             String releaseMonth = list.get(1).text();
             String estimatedSales = list.get(3).text();
             result += "(" + chartPosition + ") " + title + " - " + author + " - " + releaseMonth + " - " + estimatedSales;
