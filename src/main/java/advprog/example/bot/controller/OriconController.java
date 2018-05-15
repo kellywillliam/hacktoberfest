@@ -70,7 +70,7 @@ public class OriconController {
     }
 
     public static String makeGetCall(String date) throws Exception {
-        String url = "https://www.oricon.co.jp/rank/ob/";
+        String url = "https://www.oricon.co.jp/rank/ob/w/";
         url += date + "/";
         final HttpClient client = HttpClientBuilder.create().build();
         final HttpGet get = new HttpGet(url);
