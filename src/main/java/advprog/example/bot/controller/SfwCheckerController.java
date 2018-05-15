@@ -54,7 +54,8 @@ public class SfwCheckerController {
         RestTemplate restTemplate = new RestTemplate();
         byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
         Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
-        System.out.println(LineImage.uploadImage("src/main/resources/image.jpg"));
+        idUpload = LineImage.uploadImage("src/main/resources/image.jpg");
+        System.out.println(idUpload);
     }
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -90,7 +91,7 @@ public class SfwCheckerController {
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
         idUpload = LineImage.getImage(id);
-        return new TextMessage( ConfidencePercentage.getFromUserImage(idUpload));
+        return new TextMessage(idUpload);
 
     }
 
