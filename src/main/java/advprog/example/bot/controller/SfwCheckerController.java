@@ -84,12 +84,13 @@ public class SfwCheckerController {
     }
 
     @EventMapping
-    public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
+    public TextMessage handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
         idUpload = LineImage.getImage(id);
+        return new TextMessage( ConfidencePercentage.getFromUserImage(idUpload));
 
     }
 
