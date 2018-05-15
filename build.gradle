@@ -52,6 +52,9 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5_version"
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$junit5_version"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.2.0"
+
+    compileOnly'org.projectlombok:lombok:1.16.16'
+    implementation "org.json:json:20170516"
 }
 
 // Configure Checkstyle plugin
