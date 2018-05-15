@@ -12,6 +12,7 @@ import java.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.web.client.RestTemplate;
 
 public class ConfidencePercentage {
 
@@ -54,6 +55,13 @@ public class ConfidencePercentage {
             return isSfw(smallObj);
         }
 
+    }
+
+    public static String getFromUserImage(String id){
+        String url = "https://api.imagga.com/v1/categorizations/nsfw_beta?content=" + id;
+        RestTemplate restTemplate = new RestTemplate();
+        String jsonResponse = restTemplate.getForObject(url, String.class);
+        return jsonResponse;
     }
 
     public static String isSfw(JSONObject smallObj) {
