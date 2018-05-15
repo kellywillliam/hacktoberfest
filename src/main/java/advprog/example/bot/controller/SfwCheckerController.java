@@ -91,8 +91,8 @@ public class SfwCheckerController {
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
         String idUpload = LineImage.getImage(id);
-        String theStr = ConfidencePercentage.getFromUserImage(idUpload);
-        return new TextMessage(theStr);
+        //String theStr = ConfidencePercentage.getFromUserImage(idUpload);
+        return new TextMessage(idUpload);
 
     }
 
