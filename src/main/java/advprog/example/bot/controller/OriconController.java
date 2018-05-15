@@ -1,14 +1,5 @@
 package advprog.example.bot.controller;
 
-import com.linecorp.bot.model.event.Event;
-import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.message.TextMessage;
-import com.linecorp.bot.spring.boot.annotation.EventMapping;
-import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
@@ -19,6 +10,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+
+import com.linecorp.bot.model.event.Event;
+import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.spring.boot.annotation.EventMapping;
+import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 @LineMessageHandler
 public class OriconController {
@@ -33,9 +31,9 @@ public class OriconController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-
+        
         if (contentText.startsWith("/echo")) {
-            return new TextMessage("echo dari oricon");
+            return new TextMessage("echo from oricon");
         }
         if (!contentText.startsWith("/oricon books weekly")) {
             return new TextMessage("Wrong input, use /oricon books weekly "
@@ -54,8 +52,12 @@ public class OriconController {
     
     public static String getBook(String date) throws Exception {
         Elements elements = screenScrapeGetBooks(makeGetCall(date));
-        
         String result = "";
+        
+        if(elements.size()!=10) {
+        	return "weekly ranking on that date is not exist, please input a date that has monday as the day.";
+        }
+        
         for (Element e: elements) {
             String chartPosition = e.getElementsByClass("num").text();
             String title = e.getElementsByClass("title").text();
@@ -74,6 +76,12 @@ public class OriconController {
     public static String makeGetCall(String date) throws Exception {
         String url = "https://www.oricon.co.jp/rank/ob/w/";
         url += date + "/";
+//        final HttpClient client = HttpClientBuilder.create().build();
+//        final HttpGet get = new HttpGet(url);
+//        HttpResponse response = client.execute(get);
+//        if(response.getStatusLine().getStatusCode()!=200) {
+//        	System.out.println("weekly ranking on that date is not exist, please input a date that has monday as the day.");
+//        }
         Document d = Jsoup.connect(url).get();
         return d.html();
     }
