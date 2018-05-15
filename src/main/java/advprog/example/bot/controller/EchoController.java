@@ -186,13 +186,12 @@ public class EchoController {
         }
     }
 
-    private void handleHeavyContent(String replyToken, String messageId,
-                                    Consumer<MessageContentResponse> messageConsumer) {
+    private void handleHeavyContent(String replyToken, String messageId,Consumer<MessageContentResponse> messageConsumer) {
         final MessageContentResponse response;
         try {
-            response = lineMessagingClient.getMessageContent(messageId)
-                    .get();
+            response = lineMessagingClient.getMessageContent(messageId).get();
         } catch (InterruptedException | ExecutionException e) {
+            LOGGER.warning(e.toString());
 //            reply(replyToken, new TextMessage("Cannot get image: " + e.getMessage()));
             throw new RuntimeException(e);
         }
@@ -211,7 +210,7 @@ public class EchoController {
 //                + URLEncoder.encode(IMAGE_URL, "UTF-8");
 //    }
 
-    
+
     @EventMapping
     public void handleDefaultMessage(Event event) {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
