@@ -7,15 +7,16 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.jsoup.select.Elements;
-
 import advprog.example.bot.EventTestUtil;
-import junit.framework.TestCase;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
+
+import junit.framework.TestCase;
+
+import org.jsoup.select.Elements;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,7 +35,8 @@ public class BillboardCountryControllerTest extends TestCase {
     }
 
     @Autowired
-    private BillboardCountryController billboardCountryController = new BillboardCountryController();;
+    private BillboardCountryController billboardCountryController = 
+        new BillboardCountryController();
 
     @Test
     public void testContextLoads() {
@@ -73,18 +75,21 @@ public class BillboardCountryControllerTest extends TestCase {
     
     @Test
     public void testArtistExists() throws Exception {
-    	//Tests correct input exists
-        Elements elements = billboardCountryController.screenScrapeGetArtists(billboardCountryController.makeGetCall());
+        //Tests correct input exists
+        Elements elements = billboardCountryController.screenScrapeGetArtists(
+                billboardCountryController.makeGetCall());
         String topArtistOnTheList = elements.get(0).getElementsByClass("chart-row__artist").text();
-        MessageEvent<TextMessageContent> event = EventTestUtil.createDummyTextMessage("/billboard hotcountry " + topArtistOnTheList);
+        MessageEvent<TextMessageContent> event = 
+                EventTestUtil.createDummyTextMessage("/billboard hotcountry " + topArtistOnTheList);
         TextMessage reply = billboardCountryController.handleTextMessageEvent(event);
         assertTrue(reply.getText().contains(topArtistOnTheList));
     }
     
     @Test
     public void testArtistNotExists() throws Exception {
-    	//Tests correct input not exists
-        MessageEvent<TextMessageContent> event = EventTestUtil.createDummyTextMessage("/billboard hotcountry Dummy Artist123");
+        //Tests correct input not exists
+        MessageEvent<TextMessageContent> event = 
+                EventTestUtil.createDummyTextMessage("/billboard hotcountry Dummy Artist123");
         TextMessage reply = billboardCountryController.handleTextMessageEvent(event);
         assertEquals(reply.getText(), "Your artist is not on the top 50 Hot Country Songs list");
     }
