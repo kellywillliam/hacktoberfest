@@ -92,7 +92,7 @@ public class SfwCheckerController {
         String id = content.getId();
         String idUpload = LineImage.getImage(id);
         String theStr = ConfidencePercentage.getFromUserImage(idUpload);
-        return new TextMessage(theStr);
+        return new TextMessage(id);
 
     }
 
