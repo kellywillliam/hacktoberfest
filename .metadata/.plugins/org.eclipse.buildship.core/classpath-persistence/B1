@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.2.31/50094b02ec8a4c2e4444073c722bb56c8a52b83c/kotlin-stdlib-jdk8-1.2.31.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk8/1.2.31/6b2b6e5fb34d9171d936033347431d89443373b0/kotlin-stdlib-jdk8-1.2.31-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.linecorp.bot/line-bot-spring-boot/1.15.0/73cd17c644f1bb4c83b8b4b5068bb59158a42585/line-bot-spring-boot-1.15.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.linecorp.bot/line-bot-spring-boot/1.15.0/320c29c0111ee181ef0b70969a2a1e2b0ed6731f/line-bot-spring-boot-1.15.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.2.31/95d6a67e8787280a82a2059e54e4db7ac6cfe74/kotlin-stdlib-jdk7-1.2.31.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib-jdk7/1.2.31/e20207522f93e04fbbf006b141e924d211335564/kotlin-stdlib-jdk7-1.2.31-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.2.31/153dcd9ed9db246a7e36f4d7609e2a9f4718c674/kotlin-stdlib-1.2.31.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/1.2.31/a1a0b714cb760f9bd0f4f9d04915c1748eaefc64/kotlin-stdlib-1.2.31-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.linecorp.bot/line-bot-servlet/1.15.0/a1f51d0bd3f5826b2fe0a55cd96f13d9e7507c46/line-bot-servlet-1.15.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.linecorp.bot/line-bot-servlet/1.15.0/730c8fb24560df4a2fe768798ff9cbb95382789c/line-bot-servlet-1.15.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.linecorp.bot/line-bot-api-client/1.15.0/77e6a31b1469fecc956cc09f847a0604cf396a3b/line-bot-api-client-1.15.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.linecorp.bot/line-bot-api-client/1.15.0/19f43a6f1f04fea63d05c876c622f486485e31b/line-bot-api-client-1.15.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.linecorp.bot/line-bot-model/1.15.0/27d40ff2de4502b65955182bcb8df3ad9702669d/line-bot-model-1.15.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.linecorp.bot/line-bot-model/1.15.0/f0963bfc850f742a284573e02cccce7fc3ba51ae/line-bot-model-1.15.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web/2.0.1.RELEASE/88751ed76791d12425ce5a80476baf1749a44cf4/spring-boot-starter-web-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-web/2.0.1.RELEASE/ac9c4e9638aef6822bc70ca87e3b33dd71a53e27/spring-boot-starter-web-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-json/2.0.1.RELEASE/f2e1aeeb1ac02bfa1b4f7254633484af1866fc65/spring-boot-starter-json-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-json/2.0.1.RELEASE/9f2c2b3d0aea5f57d0e77651a9f91394b1e80e1c/spring-boot-starter-json-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter/2.0.1.RELEASE/33abc1286b0aabea4f08ff4285d09e587835a716/spring-boot-starter-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter/2.0.1.RELEASE/3656ec41af78acd062999995f2a46853d749aeb8/spring-boot-starter-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-autoconfigure/2.0.1.RELEASE/b0bf9d34ed70c6987a86cd58a009065e5fa02545/spring-boot-autoconfigure-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-autoconfigure/2.0.1.RELEASE/e4f10fbe21036deaf8a127b5cff982cbde0be845/spring-boot-autoconfigure-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/919f0dfe192fb4e063e7dacadee7f8bb9a2672a9/annotations-13.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/13.0/5991ca87ef1fb5544943d9abc5a9a37583fabe03/annotations-13.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.9.5/d1f0d11e816bc04e222a261106ca138801841c2d/jackson-datatype-jsr310-2.9.5.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jsr310/2.9.5/3f6821e263aafe432286a0e5a0f028bdcb9e8b74/jackson-datatype-jsr310-2.9.5-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-parameter-names/2.9.5/f824c60751ffb7bfc3a0d30dfe0e42317d8e67f5/jackson-module-parameter-names-2.9.5.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.module/jackson-module-parameter-names/2.9.5/1f646ad214f99d908cccad438ce10b0a95679eee/jackson-module-parameter-names-2.9.5-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-jackson/2.3.0/121335a74bc432ab7a3caa5a84548fc9b5915a54/converter-jackson-2.3.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/converter-jackson/2.3.0/d4d98e18d771b52ead4219d37962ca58af4998e/converter-jackson-2.3.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.9.5/23e37f085279ba316c0df923513b81609e1d1f6/jackson-datatype-jdk8-2.9.5.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.datatype/jackson-datatype-jdk8/2.9.5/a7436a9187a81ee0869b39f6edd673138d8d72a5/jackson-datatype-jdk8-2.9.5-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.5/3490508379d065fe3fcb80042b62f630f7588606/jackson-databind-2.9.5.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.9.5/7f93f92d7ff619c1a49b5442ba77c0c297a88019/jackson-databind-2.9.5-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.5/a22ac51016944b06fd9ffbc9541c6e7ce5eea117/jackson-core-2.9.5.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.9.5/739ee692a42ee8c0cf9d3c504f0df568797b0a85/jackson-core-2.9.5-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/3.9.1/36e71ab9e903fc4d1b4a58d80572a91d9fd60caf/logging-interceptor-3.9.1.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/logging-interceptor/3.9.1/ac8b447cea008461c601875c377c6b430081bda8/logging-interceptor-3.9.1-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.3.0/bcacde6a8ccedcc56c127403d26b76072fe6214d/retrofit-2.3.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.retrofit2/retrofit/2.3.0/76f3c69879d3e01c082f49d8661c5590838148e1/retrofit-2.3.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/2.0.1.RELEASE/10681a28c95e9f9c0159327a1ed0c860517c7ad7/spring-boot-starter-logging-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-logging/2.0.1.RELEASE/cc0b4a4c34e7603b291a920ccaa9c3d82a2ba33b/spring-boot-starter-logging-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.2.3/7c4f3c474fb2c041d8028740440937705ebb473a/logback-classic-1.2.3.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.2.3/cfd5385e0c5ed1c8a5dce57d86e79cf357153a64/logback-classic-1.2.3-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-to-slf4j/2.10.0/f7e631ccf49cfc0aefa4a2a728da7d374c05bd3c/log4j-to-slf4j-2.10.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-to-slf4j/2.10.0/46a8b1af336942d55acf0cd64d19ea9656b926be/log4j-to-slf4j-2.10.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.25/af5364cd6679bfffb114f0dec8a157aaa283b76/jul-to-slf4j-1.7.25.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.slf4j/jul-to-slf4j/1.7.25/bcea1530927f59b5128841d3571f879ce3af2e86/jul-to-slf4j-1.7.25-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/da76ca59f6a57ee3102f8f9bd9cee742973efa8a/slf4j-api-1.7.25.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.25/962153db4a9ea71b79d047dfd1b2a0d80d8f4739/slf4j-api-1.7.25-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/7c10d545325e3a6e72e06381afe469fd40eb701/jackson-annotations-2.9.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.9.0/a0ad4e203304ccab7e01266fa814115850edb8a9/jackson-annotations-2.9.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.6-jre/c0b638df79e7b2e1ed98f8d68ac62538a715ab1d/guava-23.6-jre.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/23.6-jre/e9e7eabe1dd1ad3eddaa633acf01d239ebbfa887/guava-23.6-jre-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.0.1.RELEASE/b8c5b14cbb0e52fdded8f98a8c1493cc74c7cf59/spring-boot-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.0.1.RELEASE/6256c81ff81377b54b95e89817b93ba408513918/spring-boot-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-tomcat/2.0.1.RELEASE/4b46f4aaff6c8a5a1c8184996d5e9e8a9354db8d/spring-boot-starter-tomcat-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-tomcat/2.0.1.RELEASE/e99ebbcb347b1d3db49b815f5a422518ed20af84/spring-boot-starter-tomcat-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator/6.0.9.Final/b149e4cce82379f11f6129eb3187ca8ae5404005/hibernate-validator-6.0.9.Final.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.hibernate.validator/hibernate-validator/6.0.9.Final/7e11c321d34f623ea1e1f2a843961f2a15f74e99/hibernate-validator-6.0.9.Final-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/5.0.5.RELEASE/a7fd53c7ad06b0fa7dd4ff347de1b2dc508739e/spring-webmvc-5.0.5.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-webmvc/5.0.5.RELEASE/ad2966a310f11e6008aae7e19c10de2f4e88d115/spring-webmvc-5.0.5.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/5.0.5.RELEASE/d51dbb5cabe72ae02e400577bac48f7fc94088de/spring-web-5.0.5.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-web/5.0.5.RELEASE/b1827c1e00befeb9392df9c25b6f6dd9ea928202/spring-web-5.0.5.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.9.1/84b4b7d1c4a238e7899972b7446c250691e65f1f/okhttp-3.9.1.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.okhttp3/okhttp/3.9.1/7539531ecf9b6e082fcab195f0835d4f69ead95e/okhttp-3.9.1-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/1.3.9/40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf/jsr305-1.3.9.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.0.0/fc89b03860d11d6213d0154a62bcd1c2f69b9efa/checker-compat-qual-2.0.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.checkerframework/checker-compat-qual/2.0.0/eb7f7d588d0aef07a2c89178053c2a9e4613947f/checker-compat-qual-2.0.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.1.3/39b109f2cd352b2d71b52a3b5a1a9850e1dc304b/error_prone_annotations-2.1.3.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.google.errorprone/error_prone_annotations/2.1.3/990fe1fd48078a2befecdfcebcad8e6e1bd195a0/error_prone_annotations-2.1.3-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/ed28ded51a8b1c6b112568def5f4b455e6809019/j2objc-annotations-1.1.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.google.j2objc/j2objc-annotations/1.1/1efdf5b737b02f9b72ebdec4f72c37ec411302ff/j2objc-annotations-1.1-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.14/775b7e22fb10026eed3f86e8dc556dfafe35f2d5/animal-sniffer-annotations-1.14.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.codehaus.mojo/animal-sniffer-annotations/1.14/886474da3f761d39fcbb723d97ecc5089e731f42/animal-sniffer-annotations-1.14-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/5.0.5.RELEASE/9cca4bf5acb693249a01c218f471c677b951d6e2/spring-context-5.0.5.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-context/5.0.5.RELEASE/5a09407b3c27b88fcb9b07b1bc72cfab6034aa5d/spring-context-5.0.5.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/5.0.5.RELEASE/b11b61b94d7fb752a1c9bf3461d655c3084fae47/spring-aop-5.0.5.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-aop/5.0.5.RELEASE/ff468a53e7563a52987444bcd0ea1c76c7e72044/spring-aop-5.0.5.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/5.0.5.RELEASE/984445863c0bbdaaf860615762d998b471a6bf92/spring-beans-5.0.5.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-beans/5.0.5.RELEASE/453903789940dd64143b156a34906ff32acbae55/spring-beans-5.0.5.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/5.0.5.RELEASE/fc6c7a95aeb7d00f4c65c338b08d97767eb0dd99/spring-expression-5.0.5.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-expression/5.0.5.RELEASE/b0c3187b0c170d9829049599a2226f310bf8c758/spring-expression-5.0.5.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/5.0.5.RELEASE/1bd9feb1d9dac6accd27f5244b6c47cfcb55045c/spring-core-5.0.5.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-core/5.0.5.RELEASE/ab32a4d2b281d459b431a5494a270a64b207490f/spring-core-5.0.5.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/javax.annotation/javax.annotation-api/1.3.2/934c04d3cfef185a8008e7bf34331b79730a9d43/javax.annotation-api-1.3.2.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/javax.annotation/javax.annotation-api/1.3.2/65dfd2c47380bf72ec62a5b8c4ceb78a4eda1a53/javax.annotation-api-1.3.2-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.19/2d998d3d674b172a588e54ab619854d073f555b5/snakeyaml-1.19.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.yaml/snakeyaml/1.19/3110a637bd11c3094b8017dd1c29fd29baccf292/snakeyaml-1.19-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-websocket/8.5.29/37786f4ca8a1597a91a0f437e659a76d1fcc5bf1/tomcat-embed-websocket-8.5.29.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-websocket/8.5.29/d2371292754760e0499ee5aa348e7e8836245214/tomcat-embed-websocket-8.5.29-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/8.5.29/51eac5adde4bc019261b787cb99e5548206908e6/tomcat-embed-core-8.5.29.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-core/8.5.29/ae3f9bea9f746a6d7b1f6804935853846088df31/tomcat-embed-core-8.5.29-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-el/8.5.29/893fb2c87ec1aa248a7911d76c0c06b3fca6bc9b/tomcat-embed-el-8.5.29.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.tomcat.embed/tomcat-embed-el/8.5.29/624c2f46ee8fddb4fbf8699cc0605be7aaff70b7/tomcat-embed-el-8.5.29-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/2.0.1.Final/cb855558e6271b1b32e716d24cb85c7f583ce09e/validation-api-2.0.1.Final.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/javax.validation/validation-api/2.0.1.Final/4b714a5167580122e46ead3317ffcdcdbd67c5f0/validation-api-2.0.1.Final-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.2.Final/3789d00e859632e6c6206adc0c71625559e6e3b0/jboss-logging-3.3.2.Final.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.jboss.logging/jboss-logging/3.3.2.Final/a44f0f22bbd9ccb96952806e73f6cc16ef7d2f67/jboss-logging-3.3.2.Final-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.4/3d5f48f10bbe4eb7bd862f10c0583be2e0053c6/classmate-1.3.4.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.fasterxml/classmate/1.3.4/d5aa53c93626884209c1e82fdf44d2ccdaf8e9c2/classmate-1.3.4-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.13.0/a9283170b7305c8d92d25aff02a6ab7e45d06cbe/okio-1.13.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.squareup.okio/okio/1.13.0/f4c91e12121af963e3ef76e81c82aa75ba6e8533/okio-1.13.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jcl/5.0.5.RELEASE/f4a2854b9d865e8b86717595aec16f877f8c6489/spring-jcl-5.0.5.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-jcl/5.0.5.RELEASE/a5e61818e96b5a7645b65946af8e5a238137804d/spring-jcl-5.0.5.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.2.3/864344400c3d4d92dfeb0a305dc87d953677c03c/logback-core-1.2.3.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.2.3/3ebabe69eba0196af9ad3a814f723fb720b9101e/logback-core-1.2.3-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.10.0/fec5797a55b786184a537abd39c3fa1449d752d6/log4j-api-2.10.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.10.0/fd42afa6acbfb3801accec744106ee28b9342567/log4j-api-2.10.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="main,test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.2.0/9cd901df48d88d8e605a6ccb2c3f140c92db6bf2/junit-jupiter-api-5.2.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-api/5.2.0/cde9c7381febf2edf35949808b084c982045bafa/junit-jupiter-api-5.2.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-test/2.0.1.RELEASE/d6204ede44fa7e1df01d25509837bfa4b767fa28/spring-boot-starter-test-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-starter-test/2.0.1.RELEASE/1c90238196145f481d0cf48aab8c1b9d456b6ba6/spring-boot-starter-test-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test-autoconfigure/2.0.1.RELEASE/c7a68c07f2a04323a67740f91d20818ec2e783b3/spring-boot-test-autoconfigure-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test-autoconfigure/2.0.1.RELEASE/57dd815c752043071f1a63f45c003ed7d99aafb/spring-boot-test-autoconfigure-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.2.0/dbce1d822d3dc6c61703b340cd79018518685451/junit-platform-commons-1.2.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-commons/1.2.0/bf6544529adb99bb5b81454f44ab69f5935be4af/junit-platform-commons-1.2.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.0.0/3ef5276905e36f4d8055fe3cb0bdcc7503ffc85d/apiguardian-api-1.0.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.apiguardian/apiguardian-api/1.0.0/777508fa9f3e03cafb3c1fb2eba3dca317f4b1ee/apiguardian-api-1.0.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.1.0/c8e2a3e3bc7f3e4bb5075306452db5290f9b117a/opentest4j-1.1.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.opentest4j/opentest4j/1.1.0/80aaf67bc5cc5e749baf41b9b523f8939aaaca28/opentest4j-1.1.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test/2.0.1.RELEASE/77cede07b0e9da6c87d0dabcfe3e53ac56747d73/spring-boot-test-2.0.1.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-test/2.0.1.RELEASE/dcde22acaa16879454b517f9730740604dd89231/spring-boot-test-2.0.1.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.jayway.jsonpath/json-path/2.4.0/765a4401ceb2dc8d40553c2075eb80a8fa35c2ae/json-path-2.4.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.jayway.jsonpath/json-path/2.4.0/c43fc506196089da87a7bb36ec847b57072a818b/json-path-2.4.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/2973d150c0dc1fefe998f834810d68f278ea58ec/junit-4.12.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/junit/junit/4.12/a6c32b40bf3d76eca54e3c601e5d1470c86fcdfa/junit-4.12-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.assertj/assertj-core/3.9.1/c5ce126b15f28d56cd8f960c1a6a058b9c9aea87/assertj-core-3.9.1.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.assertj/assertj-core/3.9.1/ff4bb4ed665db8ba2d5fb9a3bf84aed3f5d25d00/assertj-core-3.9.1-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/2.15.0/b84bfbbc29cd22c9529409627af6ea2897f4fa85/mockito-core-2.15.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.mockito/mockito-core/2.15.0/46e8ee5e6fdfaee85be74093e324d53c881e0567/mockito-core-2.15.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-library/1.3/4785a3c21320980282f9f33d0d1264a69040538f/hamcrest-library-1.3.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-library/1.3/47a7ee46628ab7133129cd7cef1e92657bc275e/hamcrest-library-1.3-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/42a25dc3219429f0e5d060061f71acb49bf010a0/hamcrest-core-1.3.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.hamcrest/hamcrest-core/1.3/1dc37250fbc78e23a65a67fbbaf71d2e9cbc3c0b/hamcrest-core-1.3-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.skyscreamer/jsonassert/1.5.0/6c9d5fe2f59da598d9aefc1cfc6528ff3cf32df3/jsonassert-1.5.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.skyscreamer/jsonassert/1.5.0/d729b258165a2fd9b5d6156c05c4c4f7ca053117/jsonassert-1.5.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/5.0.5.RELEASE/f7e3b83447e54056a91de1294ae6888343648dff/spring-test-5.0.5.RELEASE.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.springframework/spring-test/5.0.5.RELEASE/970a3ead6eb81f6d67967913bf915f7565d1a39f/spring-test-5.0.5.RELEASE-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.xmlunit/xmlunit-core/2.5.1/4ffdb346572a7356f7521cd3119ce5287d2e339d/xmlunit-core-2.5.1.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.xmlunit/xmlunit-core/2.5.1/3a18fafaf3081b8f76dcc75fc9419c340722762a/xmlunit-core-2.5.1-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/net.minidev/json-smart/2.3/7396407491352ce4fa30de92efb158adb76b5b/json-smart-2.3.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/net.minidev/json-smart/2.3/36c61f1b839bde5b284528cb76f6811efbe0f08b/json-smart-2.3-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.7.11/f02857a4e2c66ccbe7aaad6100a0a6c461bce9b3/byte-buddy-1.7.11.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy/1.7.11/9785d11080136416a457c0d20ce0e404d14d1b01/byte-buddy-1.7.11-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.7.11/b425a8933ca07edd03c6dbc8bc3b595fba9780de/byte-buddy-agent-1.7.11.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.7.11/2198b6a0d067b10c9ea58ff78feb66cd59d985a/byte-buddy-agent-1.7.11-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.6/639033469776fd37c08358c6b92a4761feb2af4b/objenesis-2.6.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.objenesis/objenesis/2.6/96614f514a1031296657bf0dde452dc15e42fcb8/objenesis-2.6-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.vaadin.external.google/android-json/0.0.20131108.vaadin1/fa26d351fe62a6a17f5cda1287c1c6110dec413f/android-json-0.0.20131108.vaadin1.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/com.vaadin.external.google/android-json/0.0.20131108.vaadin1/bf42d7e47a3228513b626dd7d37ac6f072aeca4f/android-json-0.0.20131108.vaadin1-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/net.minidev/accessors-smart/1.2/c592b500269bfde36096641b01238a8350f8aa31/accessors-smart-1.2.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/net.minidev/accessors-smart/1.2/c837e3903ff07b478041f761915d764b98e71e05/accessors-smart-1.2-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/5.0.4/da08b8cce7bbf903602a25a3a163ae252435795/asm-5.0.4.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm/5.0.4/112ff54474f1f04ccf1384c92e39fdc566f0bb5e/asm-5.0.4-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.2.0/de87318ccd3dfa1a98ebfef792d362776f1914de/junit-jupiter-engine-5.2.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.jupiter/junit-jupiter-engine/5.2.0/ad0d47eb12682e65b371f1f7eb6a284ff2716d40/junit-jupiter-engine-5.2.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.vintage/junit-vintage-engine/5.2.0/ff11a5d0674df5e2264e50fe3f8a3485a4399ccb/junit-vintage-engine-5.2.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.vintage/junit-vintage-engine/5.2.0/a0b5a2846e566b5bd0ae2c291eac5e286877e8ca/junit-vintage-engine-5.2.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.2.0/ea230ba8c0b71943d4dd2bb215ca29041c89966e/junit-platform-launcher-1.2.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-launcher/1.2.0/b32581c04c824708e8e83a99365323c3cc4da8c8/junit-platform-launcher-1.2.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+<classpathentry kind="lib" path="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.2.0/35fa3529ce843ada1a10b0909ccb4a8148ee638d/junit-platform-engine-1.2.0.jar" sourcepath="C:/Users/Windows 10/.gradle/caches/modules-2/files-2.1/org.junit.platform/junit-platform-engine/1.2.0/1bfa9b12b39daca1113cf24c7dfa3ced520e08cd/junit-platform-engine-1.2.0-sources.jar">
+	<attributes>
+		<attribute name="gradle_used_by_scope" value="test"/>
+	</attributes>
+</classpathentry>
+</classpath>
