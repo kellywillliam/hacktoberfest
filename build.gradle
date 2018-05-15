@@ -41,6 +41,7 @@ repositories {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.linecorp.bot:line-bot-spring-boot:1.15.0"
+    implementation "org.json:json:20180130"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5_version"
