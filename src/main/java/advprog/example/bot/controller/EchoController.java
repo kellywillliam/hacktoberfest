@@ -192,6 +192,7 @@ public class EchoController {
             response = lineMessagingClient.getMessageContent(messageId).get();
         } catch (InterruptedException | ExecutionException e) {
             LOGGER.warning(e.toString());
+            System.out.println(e.toString());
 //            reply(replyToken, new TextMessage("Cannot get image: " + e.getMessage()));
             throw new RuntimeException(e);
         }
