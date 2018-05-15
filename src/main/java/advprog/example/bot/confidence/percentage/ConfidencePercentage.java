@@ -57,6 +57,12 @@ public class ConfidencePercentage {
 
     }
 
+    public static String getFromUserImage(String id){
+        String url = "https://api.imagga.com/v1/categorizations/nsfw_beta?content=" + id;
+        RestTemplate restTemplate = new RestTemplate();
+        String jsonResponse = restTemplate.getForObject(url, String.class);
+        return url;
+    }
 
     public static String isSfw(JSONObject smallObj) {
         double safe = 0;
