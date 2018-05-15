@@ -27,6 +27,7 @@ public class OriconController {
 
 		if (contentText.startsWith("/oricon comic ")) {
 			String replyText = contentText.replace("/oricon comic ", "");
+			replyText = replyText.replace("/", "-");
 			String reply = showComics(replyText);
 			if (reply.equals("")) {
 				return new TextMessage("Please Input Monday date");
@@ -53,7 +54,7 @@ public class OriconController {
 			String title = e.getElementsByClass("title").text();
 			String author = e.getElementsByClass("name").text();
 
-			comics += "(" + num + ")" + title + " - " + author + "\n";
+			comics += "(" + num + ") " + title + " - " + author + "\n";
 			num++;
 		}
 		return comics;
