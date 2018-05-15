@@ -63,7 +63,7 @@ public class OriconController {
             Elements list = e.getElementsByClass("list").get(0).getElementsByTag("li");
             String releaseMonth = list.get(1).text();
             String estimatedSales = list.get(3).text();
-            result += "(" + chartPosition + ") " + title + " - " + author + " - " + releaseMonth + " - " + estimatedSales;
+            result += "(" + chartPosition + ") " + title + " - " + author + " - " + releaseMonth + " - " + estimatedSales + "\n";
         }
 
         return result;
