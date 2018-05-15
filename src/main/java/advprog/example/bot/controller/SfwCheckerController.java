@@ -69,7 +69,7 @@ public class SfwCheckerController {
         String id = content.getId();
         //String idUpload = LineImage.getImage(id);
         //String theStr = ConfidencePercentage.getFromUserImage(idUpload);
-        return new TextMessage(getImage(id));
+        return new TextMessage("test");
 
     }
 
@@ -85,7 +85,7 @@ public class SfwCheckerController {
         RestTemplate restTemplate = new RestTemplate();
         byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
         Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
-        //String idImage = uploadImage("src/main/resources/image.jpg");
+        String idImage = uploadImage("src/main/resources/image.jpg");
         return url;
     }
 
