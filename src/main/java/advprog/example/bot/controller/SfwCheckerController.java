@@ -58,7 +58,7 @@ public class SfwCheckerController {
         System.out.println(idUpload);
     }
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -68,8 +68,8 @@ public class SfwCheckerController {
         //try {
             switch (chatText[0].toLowerCase()) {
                 case "/is_sfw":
-                    //replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
-                    replyText = ConfidencePercentage.getFromUserImage(idUpload);
+                    replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
+                    //replyText = ConfidencePercentage.getFromUserImage(idUpload);
                     break;
                 case "/echo":
                     replyText = contentText.replace("/echo", "")
@@ -90,8 +90,9 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
-        idUpload = LineImage.getImage(id);
-        return new TextMessage(id);
+        String idUpload = LineImage.getImage(id);
+        String theStr = ConfidencePercentage.getFromUserImage(idUpload);
+        return new TextMessage(theStr);
 
     }
 
