@@ -29,7 +29,8 @@ public class PrimbonController {
     private static final Logger LOGGER = Logger.getLogger(PrimbonController.class.getName());
 
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) 
+            throws Exception {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -74,41 +75,37 @@ public class PrimbonController {
                 event.getTimestamp(), event.getSource()));
     }
     
-    public String makePostCall(String tgl, String bln, String thn) { 
-        try {
-            String url = "http://www.primbon.com/ramalan_weton.php";
-            final HttpClient client = HttpClientBuilder.create().build();
-            final HttpPost post = new HttpPost(url);
+    public String makePostCall(String tgl, String bln, String thn) throws Exception {
+        String url = "http://www.primbon.com/ramalan_weton.php";
+        final HttpClient client = HttpClientBuilder.create().build();
+        final HttpPost post = new HttpPost(url);
 
-            // add header
-            List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-            urlParameters.add(new BasicNameValuePair("tgl", tgl));
-            urlParameters.add(new BasicNameValuePair("bln", bln));
-            urlParameters.add(new BasicNameValuePair("thn", thn));
-            urlParameters.add(new BasicNameValuePair("submit", "Submit!"));
+        // add header
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("tgl", tgl));
+        urlParameters.add(new BasicNameValuePair("bln", bln));
+        urlParameters.add(new BasicNameValuePair("thn", thn));
+        urlParameters.add(new BasicNameValuePair("submit", "Submit!"));
 
-            post.setEntity(new UrlEncodedFormEntity(urlParameters));
+        post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
-            HttpResponse response = client.execute(post);
-            System.out.println("\nSending 'POST' request to URL : " + url);
-            System.out.println("Post parameters : " + post.getEntity());
-            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+        HttpResponse response = client.execute(post);
+        System.out.println("\nSending 'POST' request to URL : " + url);
+        System.out.println("Post parameters : " + post.getEntity());
+        System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
-            BufferedReader rd = new BufferedReader(new 
-                    InputStreamReader(response.getEntity().getContent()));
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
-            }
-
-            System.out.println(result.toString());
-            return screenScrapeGetNamaWeton(result.toString());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        BufferedReader rd = new BufferedReader(new 
+                InputStreamReader(response.getEntity().getContent()));
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
         }
+
+        System.out.println(result.toString());
+        return screenScrapeGetNamaWeton(result.toString());
+
+        
     }
 
     public String screenScrapeGetNamaWeton(String html) {
