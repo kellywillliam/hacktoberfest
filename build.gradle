@@ -83,7 +83,7 @@ compileJava {
 
 // Configure Gradle test to use JUnit 5 platform
 test {
-    useJUnitPlatform()
+//    useJUnitPlatform()
 
     reports {
         html.enabled = true

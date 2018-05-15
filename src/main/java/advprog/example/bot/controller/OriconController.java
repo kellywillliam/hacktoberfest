@@ -62,7 +62,9 @@ public class OriconController {
             String author = e.getElementsByClass("name").text();
             Elements list = e.getElementsByClass("list").get(0).getElementsByTag("li");
             String releaseMonth = list.get(1).text();
+            releaseMonth = releaseMonth.substring(4, 11).replace("年", "-");
             String estimatedSales = list.get(3).text();
+            estimatedSales = estimatedSales.substring(7).replace("部", "").replace(",", "");
             result += "(" + chartPosition + ") " + title + " - " + author + " - " + releaseMonth + " - " + estimatedSales + "\n";
         }
 
