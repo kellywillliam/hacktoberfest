@@ -41,7 +41,7 @@ public class SfwCheckerControllerTest {
         assertNotNull(sfwCheckerController);
     }
 
-    //@Test
+    @Test
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
@@ -51,7 +51,8 @@ public class SfwCheckerControllerTest {
         assertEquals("Lorem Ipsum", reply.getText());
 
         MessageEvent<TextMessageContent> eventSfwCaseOne =
-                EventTestUtil.createDummyTextMessage("/is_sfw https://en.wikipedia.org/wiki/File:Brazilian_amazon_rainforest.jpg");
+                EventTestUtil.createDummyTextMessage("/is_sfw https://image.freepik.com/free-photo"
+                        + "/smiling-girl-on-street_23-2147654274.jpg");
 
         TextMessage replySfwCaseOne = sfwCheckerController.handleTextMessageEvent(eventSfwCaseOne);
 
@@ -70,8 +71,7 @@ public class SfwCheckerControllerTest {
         TextMessage replySfwCaseThree = sfwCheckerController.handleTextMessageEvent(
                 eventSfwCaseThree);
 
-        assertEquals("An error prevented image from "
-                + "being categorized. Please try again.", replySfwCaseThree.getText());
+        assertEquals("Error terjadi", replySfwCaseThree.getText());
     }
 
     @Test

@@ -48,9 +48,7 @@ public class ConfidencePercentage {
         System.out.println(jsonResponse);
         JSONArray parentArr = bigObj.getJSONArray("results");
         if (parentArr.length() == 0) {
-            JSONArray notSuccess = bigObj.getJSONArray("unsuccessful");
-            String reason = notSuccess.getJSONObject(0).getString("reason");
-            return reason;
+            return "Error terjadi";
         } else {
             JSONObject smallObj = parentArr.getJSONObject(0);
             return isSfw(smallObj);
