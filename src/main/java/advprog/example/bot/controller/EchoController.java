@@ -155,37 +155,7 @@ public class EchoController {
 //                            new ImageMessage(jpg.getUri(), jpg.getUri()));
                 });
 
-        //Get Content
-        try {
-            messageContentResponse = client.getMessageContent(imageID).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return;
-        }
-        Path filePath = Files.createTempFile("foo", "bar");
-        //Potential Error
-        Files.copy(messageContentResponse.getStream(),
-                filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        String result = obtainResult(filePath.toUri().toString());
-
-        URL url = new URL(filePath.toUri().toURL().toString());
-        BufferedImage img = ImageIO.read(url);
-
-        final TextMessage textMessage = new TextMessage(filePath.toUri().toString() + "----" + filePath.toUri().toURL().toString());
-        final ReplyMessage replyMessage = new ReplyMessage(
-                replyToken,
-                textMessage);
-
-        final BotApiResponse botApiResponse;
-        try {
-            botApiResponse = client.replyMessage(replyMessage).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        System.out.println(botApiResponse);
 
     }
 
