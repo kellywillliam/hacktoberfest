@@ -33,7 +33,7 @@ import org.springframework.web.client.RestTemplate;
 public class SfwCheckerController {
 
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
-    
+
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event){
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
@@ -85,8 +85,8 @@ public class SfwCheckerController {
         RestTemplate restTemplate = new RestTemplate();
         byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
         Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
-        String idImage = uploadImage("src/main/resources/image.jpg");
-        return idImage;
+        //String idImage = uploadImage("src/main/resources/image.jpg");
+        return url;
     }
 
     public static String uploadImage(String path) throws Exception{
