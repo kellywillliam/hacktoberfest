@@ -64,7 +64,7 @@ public class OriconController {
 		Document document;
 		try {
 			String url = "https://www.oricon.co.jp/rank/obc/w/";
-			url += date;
+			url += date + "/";
 			document = Jsoup.connect(url).get();
 			return document;
 
