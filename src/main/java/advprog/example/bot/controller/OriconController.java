@@ -72,23 +72,8 @@ public class OriconController {
     public static String makeGetCall(String date) throws Exception {
         String url = "https://www.oricon.co.jp/rank/ob/w/";
         url += date + "/";
-        final HttpClient client = HttpClientBuilder.create().build();
-        final HttpGet get = new HttpGet(url);
-
-        HttpResponse response = client.execute(get);
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
-
-        BufferedReader rd = new BufferedReader(new 
-                InputStreamReader(response.getEntity().getContent()));
-        StringBuffer result = new StringBuffer();
-        String line = "";
-        while ((line = rd.readLine()) != null) {
-            result.append(line);
-        }
-
-        System.out.println(result.toString());
-        return result.toString();
+        Document d = Jsoup.connect(url).get();
+        return d.html();
     }
 
     public static Elements screenScrapeGetBooks(String html) {
