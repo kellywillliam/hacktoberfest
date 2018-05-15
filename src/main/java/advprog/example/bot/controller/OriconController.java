@@ -54,7 +54,8 @@ public class OriconController {
     
     public static String getBook(String date) throws Exception {
         Elements elements = screenScrapeGetBooks(makeGetCall(date));
-
+        
+        String result = "";
         for (Element e: elements) {
             String chartPosition = e.getElementsByClass("num").text();
             String title = e.getElementsByClass("title").text();
@@ -62,10 +63,10 @@ public class OriconController {
             Elements list = e.getElementsByClass("list");
             String releaseMonth = list.get(1).text();
             String estimatedSales = list.get(3).text();
-            
+            result += "(" + chartPosition + ") " + title + " - " + author + " - " + releaseMonth + " - " + estimatedSales;
         }
 
-        return "Your artist is not on the top 50 Hot Country Songs list";
+        return result;
     }
 
     public static String makeGetCall(String date) throws Exception {
