@@ -29,7 +29,8 @@ public class Top100PopularTracksWeeklyController {
             ArrayList<String> lstArtist = parser.getArrayArtist();
             ArrayList<String> lstSong  = parser.getArraySong();
             for (int i = 0; i < 10; i++) {
-                result += "(" + i + 1 + ") " + lstArtist.get(i);
+                int num = i+1;
+                result += "(" + num + ") " + lstArtist.get(i);
                 result += " - " + lstSong.get(i);
                 if (i != 9) {
                     result += "\n";

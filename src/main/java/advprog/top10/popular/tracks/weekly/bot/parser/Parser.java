@@ -13,16 +13,16 @@ public class Parser {
     Document doc;
 
     public Parser() {
-        doc = getHtml("https://www.billboard.com/charts/hot-100");
+        doc = getHtml("https://www.billboard.com/charts/tropical-songs");
         Elements artists = doc.select("article.chart-row");
         for (Element artist: artists) {
             String song = artist.select("h2.chart-row__song").text();
             String artisA = artist.select("a.chart-row__artist").text();
             String artisSpan = artist.select("span.chart-row__artist").text();
             if (artisA.equals("")) {
-                arrOfArtist.add(artisSpan.toLowerCase());
+                arrOfArtist.add(artisSpan);
             } else {
-                arrOfArtist.add(artisA.toLowerCase());
+                arrOfArtist.add(artisA);
             }
             arrOfSong.add(song);
         }
