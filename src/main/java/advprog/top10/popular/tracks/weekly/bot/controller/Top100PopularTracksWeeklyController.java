@@ -11,7 +11,8 @@ import java.util.logging.Logger;
 
 @LineMessageHandler
 public class Top100PopularTracksWeeklyController {
-    private static final Logger LOGGER = Logger.getLogger(Top100PopularTracksWeeklyController.class.getName());
+    private static final Logger LOGGER
+            = Logger.getLogger(Top100PopularTracksWeeklyController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {

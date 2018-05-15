@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class Top100PopularTracksWeeklyApp {
-    private static final Logger LOGGER = Logger.getLogger(Top100PopularTracksWeeklyApp.class.getName());
+    private static final Logger LOGGER
+            = Logger.getLogger(Top100PopularTracksWeeklyApp.class.getName());
 
     public static void main(String[] args) {
         LOGGER.info("Application starting ...");
