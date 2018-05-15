@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 
 import advprog.top10.popular.tracks.weekly.bot.Top100PopularTracksWeeklyAppTest;
 import advprog.top10.popular.tracks.weekly.bot.controller.Top100PopularTracksWeeklyController;
+import advprog.top10.popular.tracks.weekly.bot.parser.Parser;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -46,11 +47,8 @@ public class Top100PopularTracksWeeklyControllerTest {
 
         TextMessage reply = top100PopularTracksWeeklyController.handleTextMessageEvent(event);
 
-        assertEquals("(1) Darude - Sandstorm\r\n"
-                + "(2) Simon & Garfunkel - Scarborough Fair\r\n"
-                + "(3) Lazy Town - We Are Number One\r\n" + "...\r\n"
-                + "(10) Christopher Tin - Sogno di Volare\r\n"
-                + "", reply.getText());
+        int lines = reply.getText().split("\\r?\\n").length;
+        assertEquals(10, lines);
     }
 
     @Test
@@ -60,7 +58,7 @@ public class Top100PopularTracksWeeklyControllerTest {
 
         TextMessage reply = top100PopularTracksWeeklyController.handleTextMessageEvent(event);
 
-        assertEquals("error", reply.getText());
+        assertEquals("Error! Perintah Tidak Ditemukan", reply.getText());
     }
 
     @Test

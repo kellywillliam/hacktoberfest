@@ -30,11 +30,14 @@ public class Top100PopularTracksWeeklyController {
             ArrayList<String> lstSong  = parser.getArraySong();
             for (int i = 0; i < 10; i++) {
                 result += "(" + i + 1 + ") " + lstArtist.get(i);
-                result += " - " + lstSong.get(i) + "\r\n";
+                result += " - " + lstSong.get(i);
+                if (i != 9) {
+                    result += "\n";
+                }
             }
             return new TextMessage(result);
         } else {
-            return new TextMessage("error");
+            return new TextMessage("Error! Perintah Tidak Ditemukan");
         }
     }
 
