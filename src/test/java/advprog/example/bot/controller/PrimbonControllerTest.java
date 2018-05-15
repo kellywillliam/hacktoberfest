@@ -55,15 +55,19 @@ public class PrimbonControllerTest extends TestCase {
         reply = primbonController.handleTextMessageEvent(event);
         assertEquals("Wrong input, please try again!", reply.getText());
         
-        //Tests correct input
-        event = EventTestUtil.createDummyTextMessage("/primbon 1999-02-04");
-        reply = primbonController.handleTextMessageEvent(event);
-        assertEquals("Kamis Kliwon", reply.getText());
-        
         //Tests invalid month or date or year
         event = EventTestUtil.createDummyTextMessage("/primbon 999-22-00");
         reply = primbonController.handleTextMessageEvent(event);
         assertEquals("Wrong input, please try again!", reply.getText());
+    }
+
+    @Test
+    public void testInputIsCorrect() throws Exception {
+        //Tests correct input
+        MessageEvent<TextMessageContent> event = 
+                EventTestUtil.createDummyTextMessage("/primbon 1999-02-04");
+        TextMessage reply = primbonController.handleTextMessageEvent(event);
+        assertEquals("Kamis Kliwon", reply.getText());
     }
 
     @Test
