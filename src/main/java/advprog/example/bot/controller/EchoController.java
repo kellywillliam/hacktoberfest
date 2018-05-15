@@ -14,7 +14,7 @@ import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.ImgurSrc;
+import net.dv8tion.Uploader;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -58,7 +58,7 @@ import javax.imageio.ImageIO;
 public class EchoController {
 
     private static final String channelToken = "KSmqRwScpX3fa90zQNt2MDrmtpXwNTGtVyq2K0Jyi2/gfuMSO4cSEaPBkozhqSBrJDIcDJg/XrcVzmyrTTm7omrS1EcBpXLb/vpKckm1HUQIQAItWEZL3og1u7C2G+tK2c4TlJ+Xw0Dd/EpkFh1hsQdB04t89/1O/w1cDnyilFU=";
-    private static final Logger LOGGER = Logger.getLogger(HandwrittenController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws IOException {
@@ -122,14 +122,19 @@ public class EchoController {
 
                     JSONObject temp = null;
                     try {
-                        temp = new JSONObject(ImgurSrc.upload(image));
+                        temp = new JSONObject(Uploader.upload(image));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                   //JSONObject data = (JSONObject) temp.get("results").get("info").get("background");
-                    //String url = (String) data.get("link");
-                    String result = obtainResult(url);
+                    JSONObject data = (JSONObject) temp.get("data");
+                    String url = (String) data.get("link");
+                    String result = null;
+                    try {
+                        result = obtainResult(url);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                     final TextMessage textMessage = new TextMessage(result);
                     final ReplyMessage replyMessage = new ReplyMessage(
@@ -185,7 +190,7 @@ public class EchoController {
     }
 
 
-    private void convertImage(String replyToken, String url){
+    private void convertImage(String replyToken, String url) throws IOException {
         String result = obtainResult(url);
         TextMessage jawabanDalamBentukTextMessage = new TextMessage(result);
         try {

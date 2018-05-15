@@ -55,6 +55,7 @@ dependencies {
 
     compileOnly'org.projectlombok:lombok:1.16.16'
     implementation "org.json:json:20170516"
+    implementation "org.apache.httpcomponents:httpclient:4.5.3"
 }
 
 // Configure Checkstyle plugin
