@@ -46,17 +46,20 @@ public class OriconController {
 	}
 
 	public static String showComics(String date) {
-		Elements element = screenScrapeGetComics(makeGetCall(date));
+		Elements elements = screenScrapeGetComics(makeGetCall(date));
 		String comics = "";
-		int num = 1;
-		for (Element e : element) {
 
-			String title = e.getElementsByClass("title").text();
-			String author = e.getElementsByClass("name").text();
+		if (elements != null) {
+			for (int i = 0; i < 10; i++) {
+				Element elem = elements.get(i);
 
-			comics += "(" + num + ") " + title + " - " + author + "\n";
-			num++;
+				String title = elem.getElementsByClass("title").text();
+				String author = elem.getElementsByClass("name").text();
+
+				comics += "(" + (i + 1) + ") " + title + " - " + author + "\n";
+			}
 		}
+
 		return comics;
 	}
 
@@ -75,7 +78,10 @@ public class OriconController {
 	}
 
 	public static Elements screenScrapeGetComics(Document doc) {
-		Elements content = doc.select(".wrap-text");
-		return content;
+		if (doc != null) {
+			Elements content = doc.select(".wrap-text");
+			return content;
+		}
+		return null;
 	}
 }
