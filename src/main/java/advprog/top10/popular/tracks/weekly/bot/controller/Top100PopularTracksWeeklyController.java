@@ -1,5 +1,6 @@
 package advprog.top10.popular.tracks.weekly.bot.controller;
 
+import advprog.top10.popular.tracks.weekly.bot.parser.Parser;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -7,6 +8,7 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 @LineMessageHandler
@@ -22,11 +24,15 @@ public class Top100PopularTracksWeeklyController {
         String contentText = content.getText();
 
         if (contentText.equalsIgnoreCase("/billboard tropical")) {
-            return new TextMessage("(1) Darude - Sandstorm\r\n"
-                    + "(2) Simon & Garfunkel - Scarborough Fair\r\n"
-                    + "(3) Lazy Town - We Are Number One\r\n" + "...\r\n"
-                    + "(10) Christopher Tin - Sogno di Volare\r\n"
-                    + "");
+            String result = "";
+            Parser parser = new Parser();
+            ArrayList<String> lstArtist = parser.getArrayArtist();
+            ArrayList<String> lstSong  = parser.getArraySong();
+            for (int i = 0; i < 10; i++) {
+                result += "(" + i + 1 + ") " + lstArtist.get(i);
+                result += " - " + lstSong.get(i) + "\r\n";
+            }
+            return new TextMessage(result);
         } else {
             return new TextMessage("error");
         }
