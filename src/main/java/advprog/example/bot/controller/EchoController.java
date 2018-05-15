@@ -9,10 +9,12 @@ import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.Uploader;
 import org.apache.http.Header;
@@ -40,6 +42,7 @@ import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
@@ -70,14 +73,6 @@ public class EchoController {
 
         String replyToken = event.getReplyToken();
 
-        if(contentText.equalsIgnoreCase("cek foto")){
-
-        }
-
-        if(contentText.equalsIgnoreCase("cek foto adv")){
-//            convertImage(replyToken, "jawaban");
-        }
-
         if(contentText.split(" ")[0].equalsIgnoreCase("url")){
             String imageSource = contentText.split(" ")[1];
             String imageID = event.getMessage().getId();
@@ -94,7 +89,7 @@ public class EchoController {
             .build();
 
     @EventMapping
-    public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
+    public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) {
         LOGGER.fine(String.format("ImageMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
 
@@ -102,9 +97,9 @@ public class EchoController {
                 .builder(channelToken)
                 .build();
 
-        final MessageContentResponse messageContentResponse;
+        //final MessageContentResponse messageContentResponse;
         String replyToken = event.getReplyToken();
-        String imageID = event.getMessage().getId();
+        //String imageID = event.getMessage().getId();
 
         // You need to install ImageMagick
         handleHeavyContent(
@@ -186,14 +181,16 @@ public class EchoController {
         }
     }
 
-    private void handleHeavyContent(String replyToken, String messageId,Consumer<MessageContentResponse> messageConsumer) {
+
+
+    private void handleHeavyContent(String replyToken, String messageId,
+                                    Consumer<MessageContentResponse> messageConsumer) {
         final MessageContentResponse response;
         try {
-            response = lineMessagingClient.getMessageContent(messageId).get();
+            response = lineMessagingClient.getMessageContent(messageId)
+                    .get();
         } catch (InterruptedException | ExecutionException e) {
-            LOGGER.warning(e.toString());
-            System.out.println(e.toString());
-//            reply(replyToken, new TextMessage("Cannot get image: " + e.getMessage()));
+            //reply(replyToken, new TextMessage("Cannot get image: " + e.getMessage()));
             throw new RuntimeException(e);
         }
         messageConsumer.accept(response);
