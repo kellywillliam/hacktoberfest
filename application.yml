@@ -1,5 +1,5 @@
 #
-# Copyright 2018 LINE Corporation
+# Copyright 2016 LINE Corporation
 #
 # LINE Corporation licenses this file to you under the Apache License,
 # version 2.0 (the "License"); you may not use this file except in compliance
@@ -12,6 +12,9 @@
 # WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
 # License for the specific language governing permissions and limitations
 # under the License.
+
+#This is tempalte file for configuration.
+#Please copy as `application.yml` and change your value.
 
 line.bot:
   channel-token: TOcGbAJLnrwbw/M+ssEN6NSpmb7csSv93c5bpd7jI4NPGd3l2gPqO2PysvDnbwkIa6M1YapuuGhqMrH0oM05NBRAAWW3aE6ScU1F9Lm52fX2p+OW3diGZj3TC+SBolR+8W03DAJ45176MzNXwkkAWQdB04t89/1O/w1cDnyilFU=
