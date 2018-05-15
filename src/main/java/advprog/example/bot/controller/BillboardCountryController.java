@@ -27,14 +27,14 @@ public class BillboardCountryController {
             Logger.getLogger(BillboardCountryController.class.getName());
 
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
         if (contentText.startsWith("/echo")) {
-            return new TextMessage("echo dari primbon");
+            return new TextMessage("echo dari billboard");
         }
         if (!contentText.startsWith("/billboard hotcountry")) {
             return new TextMessage("Wrong input, use /billboard hotcountry "
@@ -50,7 +50,7 @@ public class BillboardCountryController {
                 event.getTimestamp(), event.getSource()));
     }
     
-    public static String getArtist(String name) {
+    public static String getArtist(String name) throws Exception {
         Elements elements = screenScrapeGetArtists(makeGetCall());
 
         for (Element elm: elements) {
@@ -66,31 +66,25 @@ public class BillboardCountryController {
         return "Your artist is not on the top 50 Hot Country Songs list";
     }
 
-    public static String makeGetCall() {
-        try {
-            String url = "https://www.billboard.com/charts/country-songs";
-            final HttpClient client = HttpClientBuilder.create().build();
-            final HttpGet get = new HttpGet(url);
+    public static String makeGetCall() throws Exception {
+        String url = "https://www.billboard.com/charts/country-songs";
+        final HttpClient client = HttpClientBuilder.create().build();
+        final HttpGet get = new HttpGet(url);
 
-            HttpResponse response = client.execute(get);
-            System.out.println("\nSending 'GET' request to URL : " + url);
-            System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
+        HttpResponse response = client.execute(get);
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + response.getStatusLine().getStatusCode());
 
-            BufferedReader rd = new BufferedReader(new 
-                    InputStreamReader(response.getEntity().getContent()));
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
-            }
-
-            System.out.println(result.toString());
-            return result.toString();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        BufferedReader rd = new BufferedReader(new 
+                InputStreamReader(response.getEntity().getContent()));
+        StringBuffer result = new StringBuffer();
+        String line = "";
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
         }
+
+        System.out.println(result.toString());
+        return result.toString();
     }
 
     public static Elements screenScrapeGetArtists(String html) {
