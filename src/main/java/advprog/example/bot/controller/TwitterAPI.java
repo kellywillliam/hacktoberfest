@@ -8,6 +8,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.StringBuilder;
 
 public class TwitterAPI {
 
@@ -25,38 +26,36 @@ public class TwitterAPI {
         twitter = twitterFactory.getInstance();
     }
 
-    public List<String> getTimeLine(String user) {
+    public String getUserTimeLine(String user) {
 
-        List<String> strings = new ArrayList<String>();
+        StringBuilder strings = new StringBuilder();
 
         try {
 
             List<Status> listStatus = twitter.getUserTimeline(user);
             System.out.println("Showing @" + user + "'s 5 recent tweets.");
             for(Status status : listStatus){
-                strings.add("@" + status.getUser().getScreenName()+ " - " + status.getText());
+                strings.append("@" + status.getUser().getScreenName()+ " - " + status.getText());
             }
 
         } catch (TwitterException te) {
             String msg = te.getErrorMessage();
 
             if(msg == null)
-                strings.add("We can't retrieve tweets from @" + user + ". Please make sure His/Her profile is not protected.");
+                strings.append("We can't retrieve tweets from @" + user + ". Please make sure His/Her profile is not protected.");
             else
-                strings.add("Failed to retrieve tweets caused by " + msg);
+                strings.append("Failed to retrieve tweets caused by " + msg);
         }
-
-        return strings.subList(0,5);
+        return strings.toString();
     }
 
-    public String getUserTimeLine(String user){
+    /*public String getUserTimeLine(String user){
         List<String> listStatus = getTimeLine(user);
         String result = "";
         for(String status : listStatus){
             result += (status + "\n");
         }
-
         return result;
 
-    }
+    }*/
 }

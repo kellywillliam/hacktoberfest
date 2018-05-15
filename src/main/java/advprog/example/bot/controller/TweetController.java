@@ -19,7 +19,7 @@ public class TweetController {
 
         TwitterAPI api = new TwitterAPI();
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
-                    event.getTimestamp(), event.getMessage()));
+                event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
         String[] contentList = contentText.split(" ");
@@ -29,9 +29,9 @@ public class TweetController {
                 contentList[1].equalsIgnoreCase("recent")){
             String user = contentList[2];
             reply = api.getUserTimeLine(user);
-        }
-        else
+        } else {
             reply = "Oops, Sorry. Please use this command format: /n /recent tweet [username]";
+        }
 
         return new TextMessage(reply);
 

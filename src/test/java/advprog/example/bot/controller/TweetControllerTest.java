@@ -45,16 +45,16 @@ public class TweetControllerTest {
 
     @Test
     void testHandleProtectedProfile() {
-        MessageEvent<TextMessage> event =
-                EventTestUtil.createDummyTextMessage("/recent tweet debskiww");
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/tweet recent vi_aviliani");
 
         TextMessage reply = tweetController.handleTextMessageEvent(event);
-        assertEquals("We can't retrieve tweets from @debskiww. Please make sure His/Her profile is not protected.",reply.getText());
+        assertEquals("We can't retrieve tweets from @vi_aviliani. Please make sure His/Her profile is not protected.",reply.getText());
     }
 
     @Test
     void testHandleErrorFormattMessage() {
-        MessageEvent<TextMessage> event =
+        MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("mau kepoin twitter orang dong gan");
         TextMessage reply = tweetController.handleTextMessageEvent(event);
         assertEquals("Oops, Sorry. Please use this command format: /n /recent tweet [username]", reply.getText());
@@ -62,10 +62,10 @@ public class TweetControllerTest {
 
     @Test
     void testHandleUserNotFound(){
-        MessageEvent<TextMessage> event =
-                EventTestUtil.createDummyTextMessage("/recent tweet hwhwhw123");
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/tweet recent hwhwhw123");
         TextMessage reply = tweetController.handleTextMessageEvent(event);
-        assertEquals("Failed to retrieve tweets caused by Sorry, that page does not exist.", reply.getText());
+        assertEquals("We can't retrieve tweets from @hwhwhw123. Please make sure His/Her profile is not protected.",reply.getText());
     }
 
     @Test
