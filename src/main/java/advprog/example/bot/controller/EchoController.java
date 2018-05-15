@@ -211,6 +211,7 @@ public class EchoController {
 //                + URLEncoder.encode(IMAGE_URL, "UTF-8");
 //    }
 
+    
     @EventMapping
     public void handleDefaultMessage(Event event) {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
