@@ -92,6 +92,7 @@ public class EchoController {
     public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) {
         LOGGER.fine(String.format("ImageMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
+        LOGGER.warning("masuk");
 
         final LineMessagingClient client = LineMessagingClient
                 .builder(channelToken)
