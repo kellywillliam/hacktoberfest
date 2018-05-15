@@ -61,7 +61,7 @@ class OriconRankTest {
         assertEquals("Tanggal yang kamu masukkan tidak valid. Silakkan coba lagi.",
                 or.execute("/oricon bluray daily 2018-02-31"));
         assertEquals("Halo, terima kasih atas pesan yang dikirimkan. \n"
-                        + "Untuk menggunakan bot ini, silakkan kirimkan pesan dengan format"
+                        + "Untuk menggunakan bot ini, silakkan kirimkan pesan dengan format "
                         + "'/oricon bluray [weekly/daily] [YYYY-MM-DD]' \n"
                         + "Contoh: /oricon bluray weekly 2018-05-14",
                 or.execute("Sample text message"));

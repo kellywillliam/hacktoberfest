@@ -19,7 +19,7 @@ public class OriconRank {
     String notEnoughInput = "Pesan yang kamu kirimkan belum sesuai format. "
             + "Pastikan format yang kamu kirimkan sudah lengkap.";
     String randomInput = "Halo, terima kasih atas pesan yang dikirimkan. \n"
-            + "Untuk menggunakan bot ini, silakkan kirimkan pesan dengan format"
+            + "Untuk menggunakan bot ini, silakkan kirimkan pesan dengan format "
             + "'/oricon bluray [weekly/daily] [YYYY-MM-DD]' \n"
             + "Contoh: /oricon bluray weekly 2018-05-14";
     String invalidDate = "Tanggal yang kamu masukkan tidak valid. Silakkan coba lagi.";
