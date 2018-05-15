@@ -26,7 +26,7 @@ import org.json.JSONObject;
 @LineMessageHandler
 public class MusicBrainzController {
 
-    private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(MusicBrainzController.class.getName());
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) 
