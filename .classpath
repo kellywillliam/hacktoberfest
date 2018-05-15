@@ -14,6 +14,5 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8/"/>
 	<classpathentry kind="con" path="org.eclipse.buildship.core.gradleclasspathcontainer"/>
-	<classpathentry kind="lib" path="C:/Users/Bram Sedana/Downloads/Compressed/musicbrainzws2-java v.1.01r31 20120103/musicbrainzws2-java/musicbrainzws2-java/dist/musicbrainzws2-java.jar"/>
 	<classpathentry kind="output" path="bin/default"/>
 </classpath>

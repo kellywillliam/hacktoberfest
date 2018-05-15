@@ -6,9 +6,12 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.io.IOException;
+
+import org.json.JSONException;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.musicbrainz.MBWS2Exception;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -31,23 +34,45 @@ public class MusicBrainzControllerTest {
 
     @Autowired
     private MusicBrainzController musicBrainzController;
-
+    
     @Test
     void testContextLoads() {
         assertNotNull(musicBrainzController);
     }
-
+    
     @Test
-    void testHandleTextMessageEvent() throws MBWS2Exception {
-        MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/10albums Panic! at the Disco");
+    void testHandleTextMessageEvent() throws IOException, JSONException {
+    	MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/10albums Fall Out Boy");
 
         TextMessage reply = musicBrainzController.handleTextMessageEvent(event);
 
         System.out.println(reply.getText());
         String[] lines = reply.getText().split("\n");
-        assertEquals(lines.length, 6);
+        assertEquals(lines.length, 8);
     }
+    
+    @Test
+    void testHandleTextMessageEventIfArtistDontExist() throws IOException, JSONException {
+    	MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/10albums testabc12345");
+
+        TextMessage reply = musicBrainzController.handleTextMessageEvent(event);
+
+        assertEquals(reply.getText(), "Artist tidak ditemukan");
+    }
+    
+//    @Test
+//    void testHandleTextMessageEventIfArtistHaveTenOrMoreAlbum() throws IOException, JSONException {
+//        MessageEvent<TextMessageContent> event =
+//                EventTestUtil.createDummyTextMessage("/10albums mariah carey");
+//
+//        TextMessage reply = musicBrainzController.handleTextMessageEvent(event);
+//
+//        System.out.println(reply.getText());
+//        String[] lines = reply.getText().split("\n");
+//        assertEquals(lines.length, 10);
+//    }
 
     @Test
     void testHandleDefaultMessage() {

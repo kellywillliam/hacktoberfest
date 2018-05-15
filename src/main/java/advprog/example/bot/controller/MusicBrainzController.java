@@ -1,16 +1,20 @@
 package advprog.example.bot.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.musicbrainz.MBWS2Exception;
-import org.musicbrainz.controller.Artist;
-import org.musicbrainz.model.entity.ArtistWs2;
-import org.musicbrainz.model.entity.ReleaseGroupWs2;
-import org.musicbrainz.model.searchresult.ArtistResultWs2;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -25,7 +29,7 @@ public class MusicBrainzController {
     private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
 
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws MBWS2Exception {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws IOException, JSONException {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
 //        TextMessageContent content = event.getMessage();
@@ -40,54 +44,109 @@ public class MusicBrainzController {
         return new TextMessage(albumSearch(artistName.toLowerCase()));
     }
 
-    public String albumSearch(String artistName) throws MBWS2Exception {
-    	String res = "";
-
-    	Artist artistSearch = new Artist();
-    	artistSearch.search(artistName);
-
-    	List<ArtistResultWs2> result = artistSearch.getFullSearchResultList();
-    	ArtistWs2 artist = new ArtistWs2();
-
-    	for (ArtistResultWs2 x : result) {
-    		if (x.getArtist().getName().toLowerCase().equals(artistName)) {
-    			artist = x.getArtist();
-    		}
+    public String albumSearch(String namaArtis) throws IOException, JSONException {
+    	JSONObject artistSearch = null;
+    	try {
+    		artistSearch = readJsonFromUrl("https://musicbrainz.org/ws/2/artist/?query=" + formatString(namaArtis) + "&fmt=json");
     	}
-
-    	artistSearch = new Artist();
-    	artistSearch.lookUp(artist);
-
-    	List<ReleaseGroupWs2> release_groups = artistSearch.getFullReleaseGroupList();
-    	List<ReleaseGroupWs2> albums = new ArrayList<>();
-
-    	for (ReleaseGroupWs2 x : release_groups) {
-    
-    		if (x.getTypeString().equals("Album")) {
-    			albums.add(x);
-    			if (albums.size() == 10) {
-    				break;
-    			}
+    	catch (IOException e) {
+    		return "Artist tidak ditemukan";
+    	}
+    	String artistId = "";
+    	int artistCount = artistSearch.getInt("count");
+    	
+    	if (artistCount == 0) {
+    		return "Artist tidak ditemukan";
+    	}
+    	
+    	for (int x = 0; x < artistCount; x++) {
+    		JSONObject tempArtist = artistSearch.getJSONArray("artists").getJSONObject(x);
+    		if (tempArtist.getString("name").toLowerCase().equals(namaArtis)) {
+    			artistId = tempArtist.getString("id");
+    			namaArtis = tempArtist.getString("name");
     		}
     	}
     	
-    	Collections.sort(albums, new Comparator<ReleaseGroupWs2>() {
+    	JSONObject releaseGroupSearch = readJsonFromUrl("https://musicbrainz.org/ws/2/release-group/?query=arid:" + artistId + "%20AND%20type:Album&fmt=json");
+    	
+    	List<String> albums = new ArrayList<String>();
+    	
+    	int releaseGroupCount = releaseGroupSearch.getInt("count");
+    	for (int x = 0; x < releaseGroupCount; x++) {
+    		String releaseGroupName = "";
+    		String releaseYear = "";
+    		try {
+    			JSONObject releaseGroup = releaseGroupSearch.getJSONArray("release-groups").getJSONObject(x);
+    			JSONObject release = releaseGroup.getJSONArray("releases").getJSONObject(0);
+    			String releaseId = release.getString("id");
+    			System.out.println(releaseId);
     		
+    			String url = "http://musicbrainz.org/ws/2/release/?query=reid:" + releaseId + "&fmt=json";
+    			JSONObject releaseSearch = readJsonFromUrl(url);
+
+    			release = releaseSearch.getJSONArray("releases").getJSONObject(0);
+    			releaseGroupName = releaseGroup.getString("title");
+    			releaseYear = "";
+    		
+    			releaseYear = release.getString("date").substring(0, 4);
+    		}
+    		catch (JSONException e) {
+    			continue;
+    		}
+    		System.out.println(releaseYear);
+    		albums.add(namaArtis + " - " + releaseGroupName + " - " + releaseYear);
+    		System.out.println(albums.size());
+    	}
+    	
+    	Collections.sort(albums, new Comparator<String>() {
     		@Override
-    		public int compare(ReleaseGroupWs2 o1, ReleaseGroupWs2 o2) {
-    			return o2.getYear().compareTo(o1.getYear());
+    		public int compare(String o1, String o2) {
+    			return o2.substring(o2.length()-4, o2.length()).compareTo(o1.substring(o1.length()-4, o1.length()));
     		}
     	});
     	
-    	for (ReleaseGroupWs2 x : albums) {
-    		res+= artistName + "-" + x.getTitle() + "-" + x.getYear() + "\n";
+    	String result = "";
+    	int counter = 0;
+    	for (int x = 0; x < albums.size(); x++) {
+    		result+= (x+1) + ". " + albums.get(x) + "\n";
+    		counter++;
+    		if (counter == 10) {
+    			break;
+    		}
     	}
     	
-    	if (res.length() == 0) {
-    		return "Sorry, we cannot find " + artistName + "'s album";
-    	}
-    	return res.substring(0, res.length() - 1);
+    	return result.substring(0, result.length() - 1);
     }
+    
+    private static String formatString(String input) {
+    	String[] str = input.split(" ");
+    	String res = "%22";
+    	for (String x : str) {
+    		res+= x + "%20";
+    	}
+    	return res.substring(0, res.length() - 1) + "2";
+    }
+    
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+          sb.append((char) cp);
+        }
+        return sb.toString();
+      }
+
+      public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+        InputStream is = new URL(url).openStream();
+        try {
+          BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+          String jsonText = readAll(rd);
+          JSONObject json = new JSONObject(jsonText);
+          return json;
+        } finally {
+          is.close();
+        }
+      }
     
     @EventMapping
     public void handleDefaultMessage(Event event) {
