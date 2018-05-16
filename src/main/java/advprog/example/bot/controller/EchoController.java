@@ -176,7 +176,12 @@ public class EchoController {
                 textMessage);
 
         final BotApiResponse botApiResponse;
-        botApiResponse = lineMessagingClient.replyMessage(replyMessage).get();
+        try {
+            botApiResponse = lineMessagingClient.replyMessage(replyMessage).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return;
+        }
     }
 
     public void system(String... args) {
