@@ -99,6 +99,7 @@ public class EchoController {
     public TextMessage handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
         LOGGER.warning("masuk ke image handling");
         final String[] result = new String[1];
+        this.convertReq = true;
         if(this.convertReq == false){
             return new TextMessage("aaa");
         }
