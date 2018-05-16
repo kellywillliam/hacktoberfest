@@ -96,14 +96,13 @@ public class EchoController {
 
     // Handle Image Input From User
     @EventMapping
-    public TextMessage handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
+    public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
         LOGGER.warning("masuk ke image handling");
-        final String[] result = new String[1];
         this.convertReq = true;
         if(this.convertReq == false){
-            return new TextMessage("aaa");
+            return;
         }
-        this.convertReq = true;
+        //this.convertReq = true;
         LOGGER.fine(String.format("abbccc " + "ImageMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
 
@@ -137,16 +136,16 @@ public class EchoController {
                     }
                     // Convert JSONObject Data into String n Extract Needed Data (URL)
                     String url = JsonToLink(temp);
-
+                    String result = null;
                     try {
-                        result[0] = obtainResult(url);
+                        result = obtainResult(url);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    replyText(replyToken, result[0]);
+                    replyText(replyToken, result);
                 });
-            return new TextMessage(result[0]);
+
     }
 
     @EventMapping
