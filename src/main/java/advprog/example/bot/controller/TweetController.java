@@ -30,7 +30,7 @@ public class TweetController {
             String user = contentList[2];
             reply = api.getUserTimeLine(user);
         } else {
-            reply = "Oops, Sorry. Please use this command format: /n /recent tweet [username]";
+            reply = "Oops, Sorry. Please use this command format: /tweet recent [username]";
         }
 
         return new TextMessage(reply);

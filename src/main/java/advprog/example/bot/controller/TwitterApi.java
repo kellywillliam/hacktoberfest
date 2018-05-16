@@ -38,7 +38,8 @@ public class TwitterApi {
             for (int i = 0; i < 5; i++) {
                 if (i == listStatus.size())
                     break;
-                strings.append("@" + listStatus.get(i).getUser().getScreenName() + " - " + listStatus.get(i).getText());
+                strings.append("@" + listStatus.get(i).getUser().getScreenName()); 
+                strings.append(" - " + listStatus.get(i).getText() + "\n");
             }
 
         } catch (TwitterException te) {
