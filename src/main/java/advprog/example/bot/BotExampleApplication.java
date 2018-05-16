@@ -1,9 +1,10 @@
 package advprog.example.bot;
 
 import java.util.logging.Logger;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
 
 @SpringBootApplication
 public class BotExampleApplication {
@@ -13,5 +14,5 @@ public class BotExampleApplication {
     public static void main(String[] args) {
         LOGGER.info("Application starting ...");
         SpringApplication.run(BotExampleApplication.class, args);
-     }
+    }
 }
