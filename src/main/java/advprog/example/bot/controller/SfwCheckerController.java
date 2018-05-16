@@ -4,6 +4,7 @@ package advprog.example.bot.controller;
 import advprog.example.bot.confidence.percentage.ConfidencePercentage;
 //import advprog.example.bot.line.ImgurApi;
 
+import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.ImageMessageContent;
@@ -26,21 +27,26 @@ import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 
 
 @LineMessageHandler
 public class SfwCheckerController {
-    private static final String channelToken = "+uFmWifpVZJBF1ZuxCaIeiFA7v4FF6D4djy+NitngehBdGNjpKc7ICYgFZHLFP7L/yuaH+YAIxi22WOgCGGVkwHhjWuJyE+l38fBNOhb+A2G6gNJgwFBHQ2f+B5ud6ofr7V7oH3ZNKD9scEl+FMTkwdB04t89/1O/w1cDnyilFU=";
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
 
     public static void main(String[] args) throws Exception{
-        String url = "http://i0.kym-cdn.com/photos/images/masonry/000/911/850/e0a.jpg";
-        RestTemplate restTemplate = new RestTemplate();
-        byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
-        Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.set("Authorization","Bearer " + channelToken);
+//        String url = "https://api.line.me/v2/bot/message/7965121869188/content";
+//        RestTemplate restTemplate = new RestTemplate();
+//        HttpEntity<String> entity = new HttpEntity<String>(headers);
+//
+//        byte[] imageBytes = restTemplate.exchange(url, HttpMethod.GET,entity,byte[].class).getBody();
+//        Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
 
     }
 
@@ -92,14 +98,15 @@ public class SfwCheckerController {
     }
 
     public static String getImage(String id) throws Exception {
-        String credentialsToEncode = "acc_7131bd91f718dd6" + ":" + "0438f48b7ba34d253d4df8f7e52485af";
-        String basicAuth = Base64.getEncoder().encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
+        final String channelToken = "+uFmWifpVZJBF1ZuxCaIeiFA7v4FF6D4djy+NitngehBdGNjpK"
+                + "c7ICYgFZHLFP7L/yuaH+YAIxi22WOgCGGVkwHhjWuJyE+l38fBNOhb+A2G6gNJgwFBHQ2f+B5ud6ofr7V"
+                + "7oH3ZNKD9scEl+FMTkwdB04t89/1O/w1cDnyilFU=";
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic " + basicAuth);
-
-        String url = "https://api.line.me/v2/bot/message/"+ id + "/content";
+        headers.set("Authorization","Bearer " + channelToken);
+        String url = "https://api.line.me/v2/bot/message/7965121869188/content";
         RestTemplate restTemplate = new RestTemplate();
-        byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        byte[] imageBytes = restTemplate.exchange(url, HttpMethod.GET,entity,byte[].class).getBody();
         Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
         String idImage = uploadImage("src/main/resources/image.jpg");
         return idImage;
