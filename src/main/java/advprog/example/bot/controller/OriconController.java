@@ -47,7 +47,7 @@ public class OriconController {
 		Elements elements = screenScrapeGetBooks(makeGetCall(date));
 		String result = "";
 
-		if (elements.size() != 10) {
+		if (elements.get(0).getElementsByClass("title").text()==null) {
 			result += "weekly ranking on that date is not exist, please input a date that has monday as the day.";
 		} else {
 			for (Element e : elements) {
