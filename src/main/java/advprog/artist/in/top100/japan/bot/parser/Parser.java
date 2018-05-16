@@ -13,12 +13,12 @@ public class Parser {
     Document doc;
 
     public Parser() {
-        doc = getHtml("https://www.billboard.com/charts/hot-100");
+        doc = getHtml("https://www.billboard.com/charts/japan-hot-100");
         Elements artists = doc.select("article.chart-row");
         for (Element artist: artists) {
-            String song = artist.select("h2.chart-row__song").text();
-            String artisA = artist.select("a.chart-row__artist").text();
-            String artisSpan = artist.select("span.chart-row__artist").text();
+            String song = artist.select("h2.chart-row__song").text().toLowerCase();
+            String artisA = artist.select("a.chart-row__artist").text().toLowerCase();
+            String artisSpan = artist.select("span.chart-row__artist").text().toLowerCase();
             if (artisA.equals("")) {
                 arrOfArtist.add(artisSpan);
             } else {

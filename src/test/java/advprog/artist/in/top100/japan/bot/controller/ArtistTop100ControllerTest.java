@@ -8,8 +8,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import advprog.artist.in.top100.japan.bot.ArtistTop100AppTest;
-
 import advprog.artist.in.top100.japan.bot.parser.Parser;
+import advprog.artist.in.top100.japan.bot.controller.ArtistTop100Controller;
+
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -46,20 +47,30 @@ public class ArtistTop100ControllerTest {
         MessageEvent<TextMessageContent> event =
                 ArtistTop100AppTest.createDummyTextMessage("/billboard japan100 Azhar");
         TextMessage reply = artistTop100Controller.handleTextMessageEvent(event);
-
         assertEquals("Sorry, your artist doesn't make it to the top 100", reply.getText());
     }
 
+    @Test
+    void testHandleWrongInput() {
+        MessageEvent<TextMessageContent> event =
+                ArtistTop100AppTest.createDummyTextMessage("/billboard japan00 Azhar");
+        TextMessage reply = artistTop100Controller.handleTextMessageEvent(event);
+        assertEquals("Error! Perintah Tidak Ditemukan", reply.getText());
+    }
     @Test
     void testHandleTextMessageEventSuccess() {
         Parser parser = new Parser();
         ArrayList<String> arrArtist = parser.getArrayArtist();
         MessageEvent<TextMessageContent> event =
                 ArtistTop100AppTest.createDummyTextMessage("/billboard japan100 "
-                + arrArtist.get(0));
+                + arrArtist.get(0).toLowerCase());
 
         TextMessage reply = artistTop100Controller.handleTextMessageEvent(event);
-        assertNotNull(reply.getText());
+        ArrayList<String> arrSong = parser.getArraySong();
+        int position = arrArtist.indexOf(arrArtist.get(0)) + 1;
+        String result = (arrArtist.get(0) + "\n"
+                + arrSong.get(position - 1) + "\n" + position);
+        assertEquals(result, reply.getText());
 
 
     }
