@@ -33,19 +33,20 @@ public class JapanHot100 {
             Elements artist = doc.getElementsByClass("chart-row__artist");
             Elements title = doc.getElementsByClass("chart-row__song");
 
-            for (int i = 0; i < 10; i++ ) {
+            for (int i = 0; i < 10; i++) {
                 Element e = artist.get(i);
                 arrArtist.add(e.text());
             }
 
-            for (int i = 0; i < 10; i++ ) {
+            for (int i = 0; i < 10; i++) {
                 Element e = title.get(i);
                 arrTitle.add(e.text());
             }
         }
         String replyText = "";
-        for (int i = 0; i < arrArtist.size(); i++ ) {
-            replyText = replyText + ("(" + (i+1) + ") " + arrArtist.get(i) + " - " + arrTitle.get(i)) + "\n";
+        for (int i = 0; i < arrArtist.size(); i++) {
+            replyText = replyText + ("(" + (i + 1) + ") " + arrArtist.get(i) +
+                    " - " + arrTitle.get(i)) + "\n";
         }
         replyText = replyText + "\nThank you for using our service";
         return new TextMessage(replyText);
