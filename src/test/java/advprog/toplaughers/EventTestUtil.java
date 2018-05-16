@@ -1,18 +1,20 @@
-package advprog.TopLaughers;
+package advprog.toplaughers;
+
+import static org.mockito.Mockito.when;
 
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.source.GroupSource;
 import com.linecorp.bot.model.event.source.UserSource;
-import org.mockito.stubbing.OngoingStubbing;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import java.io.IOException;
 import java.time.Instant;
 
-import static org.mockito.Mockito.when;
+import org.mockito.stubbing.OngoingStubbing;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EventTestUtil {
 
@@ -26,7 +28,8 @@ public class EventTestUtil {
                 Instant.parse("2018-01-01T00:00:00.000Z"));
     }
 
-    public static MessageEvent<TextMessageContent> createDummyGroupMessage(String text, String userId){
+    public static MessageEvent<TextMessageContent> createDummyGroupMessage(
+            String text, String userId) {
         return new MessageEvent<>("replyToken", new GroupSource("groupId",userId),
                 new TextMessageContent("id", text),
                 Instant.parse("2018-01-01T00:00:00.000Z"));
