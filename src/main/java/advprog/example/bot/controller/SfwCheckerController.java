@@ -38,7 +38,7 @@ import org.springframework.web.client.RestTemplate;
 @LineMessageHandler
 public class SfwCheckerController {
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
-    //private static String imageUrl = "";
+    private static String imageUrl = "";
 
     public static void main(String[] args) throws Exception{
         final String channelToken = "+uFmWifpVZJBF1ZuxCaIeiFA7v4FF6D4djy+NitngehBdGNjpK"
@@ -81,8 +81,8 @@ public class SfwCheckerController {
                     if (chatText.length > 1 && chatText.length < 3) {
                         replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
                     } else {
-                        //replyText = ConfidencePercentage.getConfidencePercentage(imageUrl);
-                        //mageUrl = "";
+                        replyText = ConfidencePercentage.getConfidencePercentage(imageUrl);
+                        imageUrl = "";
                     }
 
                     break;
@@ -105,7 +105,7 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
-        String imageUrl = getImage(id);
+        imageUrl = getImage(id);
 
 
         return new TextMessage(imageUrl);
@@ -125,7 +125,7 @@ public class SfwCheckerController {
                 "7oH3ZNKD9scEl+FMTkwdB04t89/1O/w1cDnyilFU=";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization","Bearer " + channelToken);
-        String url = "https://api.line.me/v2/bot/message/7965121869188/content";
+        String url = "https://api.line.me/v2/bot/message/" + id +"/content";
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         byte[] imageBytes = restTemplate.exchange(url, HttpMethod.GET,entity,byte[].class).getBody();
