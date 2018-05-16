@@ -36,8 +36,9 @@ public class TwitterApi {
             System.out.println("Showing @" + user + "'s 5 recent tweets.");
 
             for (int i = 0; i < 5; i++) {
-                if (i == listStatus.size())
+                if (i == listStatus.size()) {
                     break;
+                }
                 strings.append("@" + listStatus.get(i).getUser().getScreenName());
                 strings.append(" - " + listStatus.get(i).getText() + "\n");
             }
