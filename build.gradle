@@ -39,6 +39,7 @@ repositories {
 }
 
 dependencies {
+    implementation "org.json:json:20180130"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "com.linecorp.bot:line-bot-spring-boot:1.15.0"
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junit5_version"
