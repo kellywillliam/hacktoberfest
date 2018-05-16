@@ -116,12 +116,22 @@ public class EchoController {
                 .builder(channelToken)
                 .build();
 
-        final MessageContentResponse responseBody = null;
 
-        LOGGER.warning("masuk");
-        DownloadedContent jpg = saveContent(replyToken,"jpg", responseBody);
-        File image = new File(jpg.path.toString());
-        JSONObject temp = null;
+
+        handleHeavyContent(
+                replyToken,
+                imageID,
+                responseBody -> {
+                    DownloadedContent jpg = saveContent(replyToken,"jpg", responseBody);
+                    DownloadedContent previewImage = createTempFile(replyToken, "jpg");
+                    system(
+                            "convert",
+                            "-resize", "240x",
+                            jpg.path.toString(),
+                            previewImage.path.toString());
+                    File image = new File(jpg.path.toString());
+
+                    JSONObject temp = null;
                     try {
                         temp = new JSONObject(Uploader.upload(image));
                     } catch (Exception e) {
@@ -136,37 +146,8 @@ public class EchoController {
                         e.printStackTrace();
                     }
 
-
-//        handleHeavyContent(
-//                replyToken,
-//                imageID,
-//                responseBody -> {
-//                    DownloadedContent jpg = saveContent(replyToken,"jpg", responseBody);
-//                    DownloadedContent previewImage = createTempFile(replyToken, "jpg");
-//                    system(
-//                            "convert",
-//                            "-resize", "240x",
-//                            jpg.path.toString(),
-//                            previewImage.path.toString());
-//                    File image = new File(jpg.path.toString());
-//
-//                    JSONObject temp = null;
-//                    try {
-//                        temp = new JSONObject(Uploader.upload(image));
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                    // Convert JSONObject Data into String n Extract Needed Data (URL)
-//                    String url = JsonToLink(temp);
-//
-//                    try {
-//                        result[0] = obtainResult(url);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    replyText(replyToken, result[0]);
-//                });
+                    replyText(replyToken, result[0]);
+                });
 
 
         LOGGER.warning("uda jalan");
