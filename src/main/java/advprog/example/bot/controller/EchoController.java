@@ -2,6 +2,7 @@ package advprog.example.bot.controller;
 
 import advprog.example.bot.countryhot.HotCountrySong;
 import advprog.example.bot.countryhot.SongInfo;
+import advprog.example.bot.countryhot.TopSong;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -44,6 +45,33 @@ public class EchoController {
             }
 
             return new TextMessage(replyTopTenBillboardText);
+        } else if (replyText[0].equalsIgnoreCase("/billboard")
+                && replyText[1].equalsIgnoreCase("bill200")
+                && replyText.length > 2) {
+            TopSong top200Chart = new TopSong();
+            ArrayList<SongInfo> top200 = top200Chart.getDataFromBillboard();
+            ArrayList<SongInfo> listLagu = new ArrayList<>();
+            String contentArtist = contentText.replace("/billboard bill200","");
+            String artistName = contentArtist.substring(1);
+            String replyBillboardText = "";
+
+            for (int i = 0; i < top200.size(); i++) {
+                if (top200.get(i).getSongArtist().contains(artistName)) {
+                    listLagu.add(top200.get(i));
+                }
+            }
+
+            if (listLagu.size() == 0) {
+                return new TextMessage("Artist " + artistName + " tidak terdapat dalam billboard");
+            }
+
+            for (int j = 0; j < listLagu.size(); j++) {
+                replyBillboardText += listLagu.get(j).getSongArtist()
+                        + ("\n" + listLagu.get(j).getSongTitle() + "\n"
+                        + listLagu.get(j).getRank() + "\n\n");
+            }
+
+            return new TextMessage(replyBillboardText);
         } else {
             return new TextMessage("input tidak dapat dibaca");
         }

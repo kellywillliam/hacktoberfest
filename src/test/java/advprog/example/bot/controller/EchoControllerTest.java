@@ -48,11 +48,21 @@ public class EchoControllerTest {
 
         assertEquals("Lorem Ipsum", reply.getText());
     }
-    
+
+    @Test
+    void testHandleTextMessageEvent2() {
+        MessageEvent<TextMessageContent> event2 =
+                EventTestUtil.createDummyTextMessage("/billboard bill200 kezia");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event2);
+
+        assertEquals("Artist kezia tidak terdapat dalam billboard", reply.getText());
+    }
+
     @Test
     void testHandleTextMessageEvent3() {
         MessageEvent<TextMessageContent> event3 =
-                EventTestUtil.createDummyTextMessage("asdfhalsdfjalshf");
+                EventTestUtil.createDummyTextMessage("mengapamengapa");
 
         TextMessage reply = echoController.handleTextMessageEvent(event3);
 
