@@ -1,6 +1,8 @@
-package advprog.example.bot.HotCountry;
+package advprog.example.bot.countryhot;
 
 import static org.junit.Assert.assertEquals;
+
+import advprog.example.bot.countryhot.SongInfo;
 
 import org.junit.Test;
 

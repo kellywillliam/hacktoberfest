@@ -1,4 +1,4 @@
-package advprog.example.bot.HotCountry;
+package advprog.example.bot.countryhot;
 
 public class SongInfo {
     private String songArtist;

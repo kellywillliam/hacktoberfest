@@ -1,6 +1,9 @@
-package advprog.example.bot.HotCountry;
+package advprog.example.bot.countryhot;
 
 import static org.junit.Assert.assertEquals;
+
+import advprog.example.bot.countryhot.HotCountrySong;
+import advprog.example.bot.countryhot.SongInfo;
 
 import java.util.ArrayList;
 
@@ -17,7 +20,7 @@ public class HotCountrySongTest {
     }
 
     @Test
-    public void testIfArraySizeIs100() {
-        assertEquals(topCountry.size(), 100);
+    public void testIfArraySizeIs50() {
+        assertEquals(50, topCountry.size());
     }
 }
