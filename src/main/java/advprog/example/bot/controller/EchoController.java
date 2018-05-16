@@ -119,6 +119,7 @@ public class EchoController {
                     JSONObject temp = null;
                     try {
                         temp = new JSONObject(Uploader.upload(image));
+                        LOGGER.warning("masuk ke sinii");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -131,6 +132,8 @@ public class EchoController {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+                    LOGGER.warning(result);
 
                     final TextMessage textMessage = new TextMessage(result);
                     final ReplyMessage replyMessage = new ReplyMessage(
