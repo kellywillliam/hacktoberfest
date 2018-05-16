@@ -44,7 +44,7 @@ public class SfwCheckerController {
                 "7oH3ZNKD9scEl+FMTkwdB04t89/1O/w1cDnyilFU=";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization","Bearer " + channelToken);
-        String url = "https://api.line.me/v2/bot/message/7965121869188/content";
+        String url = "https://api.line.me/v2/bot/message/7965831312251/content";
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         byte[] imageBytes = restTemplate.exchange(url, HttpMethod.GET,entity,byte[].class).getBody();
@@ -89,10 +89,10 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
-//        String idUpload = getImage(id);
-//        String theStr = ConfidencePercentage.getFromUserImage(idUpload);
+        String idUpload = getImage(id);
+        String theStr = ConfidencePercentage.getFromUserImage(idUpload);
 
-        return new TextMessage(id);
+        return new TextMessage(theStr);
 
     }
 
