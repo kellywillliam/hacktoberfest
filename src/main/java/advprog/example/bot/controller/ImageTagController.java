@@ -88,11 +88,11 @@ public class ImageTagController {
             JSONObject imageTagsJsonResponse = new JSONObject(imageTagsresponse);
             JSONArray resultsArray = imageTagsJsonResponse.getJSONArray("results");
             JSONArray tagsArray = resultsArray.getJSONObject(0).getJSONArray("tags");
-            String result = "Here's the related tags of your image: \n";
+            String result = "Here's the related tags of your image: \n\n";
             for (int i = 0; i < 5; i++) {
                 String tag = tagsArray.getJSONObject(i).getString("tag");
                 Double confidence = tagsArray.getJSONObject(i).getDouble("confidence");
-                result += "Tag: " + tag + " Confidence: " + Double.toString(confidence) + "\n\n";
+                result += "Tag: " + tag + "\nConfidence: " + Double.toString(confidence) + "\n\n";
             }
             isTags = false;
             // delete file
