@@ -45,8 +45,8 @@ public class JapanHot100 {
         }
         String replyText = "";
         for (int i = 0; i < arrArtist.size(); i++) {
-            replyText = replyText + ("(" + (i + 1) + ") " + arrArtist.get(i) +
-                    " - " + arrTitle.get(i)) + "\n";
+            replyText = replyText + ("(" + (i + 1) + ") " + arrArtist.get(i)
+                    + " - " + arrTitle.get(i)) + "\n";
         }
         replyText = replyText + "\nThank you for using our service";
         return new TextMessage(replyText);
