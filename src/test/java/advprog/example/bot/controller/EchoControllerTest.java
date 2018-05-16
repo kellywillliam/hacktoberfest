@@ -39,6 +39,16 @@ public class EchoControllerTest {
     }
 
     @Test
+    void testHandleTextMessageEvent() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertEquals("Lorem Ipsum", reply.getText());
+    }
+
+    @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
@@ -53,7 +63,7 @@ public class EchoControllerTest {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("Sample text message");
 
-        TextMessage reply = echoController.handleTextMessageEvent(event);
+        TextMessage reply = echoController.handleTextMessageEventNew(event);
 
         assertEquals("Halo, terima kasih atas pesan yang dikirimkan. \n"
                 + "Untuk menggunakan bot ini, silakkan kirimkan pesan dengan format "
@@ -66,7 +76,7 @@ public class EchoControllerTest {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/oricon bluray weekly");
 
-        TextMessage reply = echoController.handleTextMessageEvent(event);
+        TextMessage reply = echoController.handleTextMessageEventNew(event);
 
         assertEquals("Pesan yang kamu kirimkan belum sesuai format. "
                 + "Pastikan format yang kamu kirimkan sudah lengkap.", reply.getText());
@@ -77,7 +87,7 @@ public class EchoControllerTest {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/oricon bluray weekl 2018-05-14");
 
-        TextMessage reply = echoController.handleTextMessageEvent(event);
+        TextMessage reply = echoController.handleTextMessageEventNew(event);
 
         assertEquals("Pesan yang kamu kirimkan belum sesuai format. "
                 + "Pastikan kamu menuliskan 'weekly' atau 'daily' dengan benar.", reply.getText());
@@ -86,23 +96,23 @@ public class EchoControllerTest {
     @Test
     void testHandleTextMessageUserInputSuccess() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/oricon bluray weekly 2018-05-14");
+                EventTestUtil.createDummyTextMessage("/oricon bluray weekly 2018-04-16");
 
-        TextMessage reply = echoController.handleTextMessageEvent(event);
+        TextMessage reply = echoController.handleTextMessageEventNew(event);
 
-        assertEquals("(1) スター・ウォーズ/最後のジェダイ MovieNEX(初回版) - 推定売上枚数：29,846枚 - 2018-04-25 \n"
-                + "(2) ヴァイオレット・エヴァーガーデン&#xfffd;A - 推定売上枚数：5,026枚 - 2018-05-02 \n"
-                + "(3) オリエント急行殺人事件 2枚組ブルーレイ&amp;DVD - 推定売上枚数：4,162枚 - 2018-05-02 \n"
-                + "(4) 斉木楠雄のΨ難 豪華版ブルーレイ&amp;DVDセット【初回生産限定】 - 推定売上枚数：3,817枚 - 2018-05-02 \n"
-                + "(5) ラブライブ!サンシャイン!! 2nd Season 5【特装限定版】 - 推定売上枚数：3,292枚 - 2018-04-24 \n"
-                + "(6) ミックス。 豪華版Blu-ray - 推定売上枚数：3,063枚 - 2018-05-02 \n"
-                + "(7) GREEN MIND AT BUDOKAN - 推定売上枚数：2,523枚 - 2018-05-02 \n"
-                + "(8) THE IDOLM@STER SideM GREETING TOUR 2017 〜BEYOND THE DREAM〜 LIVE Blu-ray - "
-                + "推定売上枚数：2,292枚 - 2018-04-25 \n"
-                + "(9) SHOGO HAMADA ON THE ROAD 2015-2016“Journey of a Songwriter” - 推定売上枚数：2,118枚 "
-                + "- 2018-04-25 \n"
-                + "(10) ラブライブ!サンシャイン!! Aqours 2nd LoveLive! HAPPY PARTY TRAIN TOUR Blu-ray "
-                + "Memorial BOX - 推定売上枚数：2,033枚 - 2018-04-25 ", reply.getText());
+        assertEquals("(1) 舞台『刀剣乱舞』ジョ伝 三つら星刀語り - マーベラス - 2018-04-04 \n"
+                + "(2) がらくたライブ - ビクターエンタテインメント - 2018-04-04 \n"
+                + "(3) 茅ヶ崎物語 〜MY LITTLE HOMETOWN〜 - アミューズソフト - 2018-04-04 \n"
+                + "(4) キングスマン:ゴールデン・サークル 2枚組ブルーレイ&amp;DVD - "
+                + "20世紀フォックス ホーム エンターテイメント - 2018-04-06 \n"
+                + "(5) 関西ジャニーズJr.のお笑いスター誕生! 豪華版(初回限定生産) - 松竹ホームビデオ - 2018-04-04 \n"
+                + "(6) Inori Minase 1st LIVE Ready Steady Go! - キングレコード - 2018-04-04 \n"
+                + "(7) キングスマン:ゴールデン・サークル ブルーレイ プレミアム・エディション"
+                + "(4K ULTRA HD付)〔数量限定生産〕 - 20世紀フォックス ホーム エンターテイメント - 2018-04-06 \n"
+                + "(8) ヴァイオレット・エヴァーガーデン&#xfffd;@ - ポニーキャニオン - 2018-04-04 \n"
+                + "(9) アトミック・ブロンド - ハピネット - 2018-04-03 \n"
+                + "(10) 【BD】2.5次元ダンスライブ「ツキウタ。」ステージ 第4幕『Lunatic Party』通常版 "
+                + "- ムービック - 2018-04-06 ", reply.getText());
     }
 
 }

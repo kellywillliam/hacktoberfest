@@ -23,6 +23,17 @@ public class EchoController {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
+        String contentText = content.getText();
+
+        String replyText = contentText.replace("/echo", "");
+        return new TextMessage(replyText.substring(1));
+    }
+
+    @EventMapping
+    public TextMessage handleTextMessageEventNew(MessageEvent<TextMessageContent> event) {
+        LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
+                event.getTimestamp(), event.getMessage()));
+        TextMessageContent content = event.getMessage();
         String contentText = content.getText().toLowerCase();
         String replyText = eventHandler.execute(contentText);
 
