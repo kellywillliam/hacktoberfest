@@ -9,6 +9,7 @@ import static org.mockito.Mockito.verify;
 
 import advprog.artist.in.top100.japan.bot.ArtistTop100AppTest;
 
+import advprog.artist.in.top100.japan.bot.parser.Parser;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -20,6 +21,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.ArrayList;
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
@@ -41,21 +44,24 @@ public class ArtistTop100ControllerTest {
     @Test
     void testHandleTextMessageEventError() {
         MessageEvent<TextMessageContent> event =
-                ArtistTop100AppTest.createDummyTextMessage("/billboard japan100 Coldplay");
-
+                ArtistTop100AppTest.createDummyTextMessage("/billboard japan100 Azhar");
         TextMessage reply = artistTop100Controller.handleTextMessageEvent(event);
 
-        assertEquals("We're sorry to tell you that Coldplay isn't on the list", reply.getText());
+        assertEquals("Sorry, your artist doesn't make it to the top 100", reply.getText());
     }
 
     @Test
     void testHandleTextMessageEventSuccess() {
+        Parser parser = new Parser();
+        ArrayList<String> arrArtist = parser.getArrayArtist();
         MessageEvent<TextMessageContent> event =
-                ArtistTop100AppTest.createDummyTextMessage("/billboard hotcountry Bruno Mars");
+                ArtistTop100AppTest.createDummyTextMessage("/billboard japan100 "
+                + arrArtist.get(0));
 
         TextMessage reply = artistTop100Controller.handleTextMessageEvent(event);
+        assertNotNull(reply.getText());
 
-        assertEquals("Bruno Mars\nJust The Way You Are\n1", reply.getText());
+
     }
 
     @Test
