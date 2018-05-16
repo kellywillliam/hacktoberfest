@@ -31,11 +31,11 @@ public class OriconControllerTest {
     }
 
     @Autowired
-    private OriconController OriconController;
+    private OriconController oriconController;
 
     @Test
     void testContextLoads() {
-        assertNotNull(OriconController);
+        assertNotNull(oriconController);
     }
 
     @Test
@@ -43,40 +43,43 @@ public class OriconControllerTest {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/oricon books weekly 2018-05-14");
 
-        TextMessage reply = OriconController.handleTextMessageEvent(event);
+        TextMessage reply = oriconController.handleTextMessageEvent(event);
         String[] lines = reply.getText().split("\n");
         assertEquals(10, lines.length);
     }
     
     @Test
     void testBebas() throws Exception {
-    	MessageEvent<TextMessageContent> event =
+        MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/oricon books weekly 2018-05-13");
-    	TextMessage reply = OriconController.handleTextMessageEvent(event);
-    	assertEquals(reply.getText(), "weekly ranking on that date is not exist, please input a date that has monday as the day.");
+        TextMessage reply = oriconController.handleTextMessageEvent(event);
+        assertEquals(reply.getText(),
+                "weekly ranking on that date is not exist,"
+                + " please input a date that has monday as the day.");
     }
 
     @Test
     void testBebas1() throws Exception {
-    	MessageEvent<TextMessageContent> event =
+        MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/hehe");
-    	TextMessage reply = OriconController.handleTextMessageEvent(event);
-    	assertEquals(reply.getText(), "Wrong input, use /oricon books weekly <date(YYYY-MM-DD)> to access the feature");
+        TextMessage reply = oriconController.handleTextMessageEvent(event);
+        assertEquals(reply.getText(), 
+                "Wrong input, use /oricon books weekly <date(YYYY-MM-DD)> to access the feature");
     }
     
     @Test
     void testBebas2() throws Exception {
-    	MessageEvent<TextMessageContent> event =
+        MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo books weekly 2018-05-13");
-    	TextMessage reply = OriconController.handleTextMessageEvent(event);
-    	assertEquals(reply.getText(), "echo from oricon");
+        TextMessage reply = oriconController.handleTextMessageEvent(event);
+        assertEquals(reply.getText(), "echo from oricon");
     }
     
     @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
-        OriconController.handleDefaultMessage(event);
+        oriconController.handleDefaultMessage(event);
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
