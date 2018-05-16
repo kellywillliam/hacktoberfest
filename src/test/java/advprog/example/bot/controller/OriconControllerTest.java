@@ -49,7 +49,7 @@ public class OriconControllerTest {
     }
     
     @Test
-    void testBebas() throws Exception {
+    void testHandleTextMessageEventInvalidDate() throws Exception {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/oricon books weekly 2018-05-13");
         TextMessage reply = oriconController.handleTextMessageEvent(event);
@@ -59,7 +59,7 @@ public class OriconControllerTest {
     }
 
     @Test
-    void testBebas1() throws Exception {
+    void testHandleTextMessageEventInvalidInputFormat() throws Exception {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/hehe");
         TextMessage reply = oriconController.handleTextMessageEvent(event);
@@ -68,7 +68,7 @@ public class OriconControllerTest {
     }
     
     @Test
-    void testBebas2() throws Exception {
+    void testHandleTextMessageEventEchoInput() throws Exception {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo books weekly 2018-05-13");
         TextMessage reply = oriconController.handleTextMessageEvent(event);
