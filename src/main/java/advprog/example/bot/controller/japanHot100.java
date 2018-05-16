@@ -5,14 +5,15 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
-
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+
+import java.io.IOException;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
@@ -26,11 +27,10 @@ public class japanHot100 {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        ArrayList<String> arrArtist = new ArrayList();
-        ArrayList<String> arrTitle = new ArrayList();
+        ArrayList<String> arrArtist = new ArrayList<>();
+        ArrayList<String> arrTitle = new ArrayList<>();
 
         if (contentText.equalsIgnoreCase("japan100")) {
-
             String url = "https://www.billboard.com/charts/japan-hot-100";
             Document doc = Jsoup.connect(url).get();
 
@@ -53,6 +53,8 @@ public class japanHot100 {
         for (int i = 0; i < arrArtist.size(); i++) {
             replyText = replyText + ("(" + (i+1) + ") " + arrArtist.get(i) + " - " + arrTitle.get(i)) + "\n";
         }
+
+        replyText = replyText + "\nThank you for using our service";
 
         return new TextMessage(replyText);
     }
