@@ -111,6 +111,7 @@ public class EchoController {
                 .builder(channelToken)
                 .build();
 
+        replyText(replyToken, obtainResult("abc"));
         handleHeavyContent(
                 replyToken,
                 imageID,
@@ -262,7 +263,7 @@ public class EchoController {
         String basicAuth = Base64.getEncoder().encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
 
         String endpoint_url = "https://api.imagga.com/v1/colors";
-        String image_url = urlbaru;
+        String image_url = "https://imagga.com/static/images/tagging/wind-farm-538576_640.jpg";
 
         String url = endpoint_url + "?url=" + image_url;
         URL urlObject = new URL(url);
