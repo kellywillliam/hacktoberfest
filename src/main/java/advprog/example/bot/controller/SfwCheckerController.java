@@ -105,6 +105,7 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
+        imageUrl = "";
         imageUrl = getImage(id);
 
 
