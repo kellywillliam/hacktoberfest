@@ -208,6 +208,7 @@ public class EchoController {
 
     public void handleHeavyContent(String replyToken, String messageId,
                                    Consumer<MessageContentResponse> messageConsumer) {
+        LOGGER.warning("masuk ke heavy content");
         final MessageContentResponse response;
         try {
             response = lineMessagingClient.getMessageContent(messageId)
