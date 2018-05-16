@@ -13,6 +13,7 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import java.io.File;
 
+import java.io.IOException;
 import java.nio.file.Files;
 
 import java.nio.file.Paths;
@@ -87,7 +88,7 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    public static String getImage(String id) throws Exception {
+    public static String getImage(String id) throws IOException {
         final String channelToken = "+uFmWifpVZJBF1ZuxCaIeiFA7v4FF6D4djy+NitngehBdGNjpK"
                 + "c7ICYgFZHLFP7L/yuaH+YAIxi22WOgCGGVkwHhj"
                 + "WuJyE+l38fBNOhb+A2G6gNJgwFBHQ2f+B5ud6ofr7V"

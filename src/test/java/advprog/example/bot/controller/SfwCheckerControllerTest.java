@@ -14,6 +14,7 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
+import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +22,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
@@ -73,8 +76,29 @@ public class SfwCheckerControllerTest {
                 eventSfwCaseThree);
 
         assertEquals("Error terjadi", replySfwCaseThree.getText());
+
+        MessageEvent<TextMessageContent> eventSfwCaseFour =
+                EventTestUtil.createDummyTextMessage("/is_sfw");
+
+        TextMessage replySfwCaseFour = sfwCheckerController.handleTextMessageEvent(
+                eventSfwCaseFour);
+
+        assertEquals("SFW", replySfwCaseFour.getText());
+
+
+
     }
-    
+
+    @Test
+    void testHandleImageMessageEventDefault() throws Exception {
+        MessageEvent<ImageMessageContent> event =
+                EventTestUtil.createDummyImageMessage("7960851021266");
+
+        TextMessage reply = sfwCheckerController.handleImageMessageEvent(event);
+
+        assertEquals("berhasil! sekarang checkimage dengan /is_sfw", reply.getText());
+    }
+
     @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
@@ -83,6 +107,11 @@ public class SfwCheckerControllerTest {
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
+    }
+
+    @Test
+    void testGetImage() throws IOException {
+
     }
 
 

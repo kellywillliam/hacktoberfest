@@ -1,6 +1,7 @@
 package advprog.example.bot;
 
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.source.UserSource;
 
@@ -17,4 +18,11 @@ public class EventTestUtil {
                 new TextMessageContent("id", text),
                 Instant.parse("2018-01-01T00:00:00.000Z"));
     }
+    public static MessageEvent<ImageMessageContent> createDummyImageMessage(String id) {
+        return new MessageEvent<>("replyToken", new UserSource("userId"),
+                new ImageMessageContent(id),
+                Instant.parse("2018-01-01T00:00:00.000Z"));
+    }
+
+
 }
