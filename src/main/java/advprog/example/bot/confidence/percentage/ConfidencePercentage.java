@@ -12,6 +12,9 @@ import java.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.client.RestTemplate;
 
 public class ConfidencePercentage {
@@ -58,10 +61,18 @@ public class ConfidencePercentage {
     }
 
     public static String getFromUserImage(String id){
-        String url = "https://api.imagga.com/v1/categorizations/nsfw_beta?content=" + id;
         RestTemplate restTemplate = new RestTemplate();
-        String jsonResponse = restTemplate.getForObject(url, String.class);
-        return url;
+        String url = "https://api.imagga.com/v1/categorizations/nsfw_beta?content=" + id;
+        String credentialsToEncode = "acc_7131bd91f718dd6" + ":"
+                + "0438f48b7ba34d253d4df8f7e52485af";
+        String basicAuth = Base64.getEncoder()
+                .encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", "Basic " + basicAuth);
+        HttpEntity<String> request = new HttpEntity<String>(headers);
+
+        String jsonResponse = restTemplate.exchange(url, HttpMethod.GET, request, String.class).getBody();
+        return jsonResponse;
     }
 
     public static String isSfw(JSONObject smallObj) {

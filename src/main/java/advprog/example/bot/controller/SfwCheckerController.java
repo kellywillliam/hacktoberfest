@@ -39,14 +39,20 @@ public class SfwCheckerController {
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
 
     public static void main(String[] args) throws Exception{
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.set("Authorization","Bearer " + channelToken);
-//        String url = "https://api.line.me/v2/bot/message/7965121869188/content";
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpEntity<String> entity = new HttpEntity<String>(headers);
-//
-//        byte[] imageBytes = restTemplate.exchange(url, HttpMethod.GET,entity,byte[].class).getBody();
-//        Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
+        final String channelToken = "+uFmWifpVZJBF1ZuxCaIeiFA7v4FF6D4djy+NitngehBdGNjpK"
+                + "c7ICYgFZHLFP7L/yuaH+YAIxi22WOgCGGVkwHhjWuJyE+l38fBNOhb+A2G6gNJgwFBHQ2f+B5ud6ofr7V" +
+                "7oH3ZNKD9scEl+FMTkwdB04t89/1O/w1cDnyilFU=";
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization","Bearer " + channelToken);
+        String url = "https://api.line.me/v2/bot/message/7965121869188/content";
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<String>(headers);
+        byte[] imageBytes = restTemplate.exchange(url, HttpMethod.GET,entity,byte[].class).getBody();
+        Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
+        String idUpload = uploadImage("src/main/resources/image.jpg");;
+        String theStr = ConfidencePercentage.getFromUserImage(idUpload);
+        System.out.println(theStr);
+
 
     }
 
@@ -83,10 +89,10 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
-        String idUpload = getImage(id);
-        String theStr = ConfidencePercentage.getFromUserImage(idUpload);
+//        String idUpload = getImage(id);
+//        String theStr = ConfidencePercentage.getFromUserImage(idUpload);
 
-        return new TextMessage(theStr);
+        return new TextMessage(id);
 
     }
 
@@ -99,8 +105,8 @@ public class SfwCheckerController {
 
     public static String getImage(String id) throws Exception {
         final String channelToken = "+uFmWifpVZJBF1ZuxCaIeiFA7v4FF6D4djy+NitngehBdGNjpK"
-                + "c7ICYgFZHLFP7L/yuaH+YAIxi22WOgCGGVkwHhjWuJyE+l38fBNOhb+A2G6gNJgwFBHQ2f+B5ud6ofr7V"
-                + "7oH3ZNKD9scEl+FMTkwdB04t89/1O/w1cDnyilFU=";
+                + "c7ICYgFZHLFP7L/yuaH+YAIxi22WOgCGGVkwHhjWuJyE+l38fBNOhb+A2G6gNJgwFBHQ2f+B5ud6ofr7V" +
+                "7oH3ZNKD9scEl+FMTkwdB04t89/1O/w1cDnyilFU=";
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization","Bearer " + channelToken);
         String url = "https://api.line.me/v2/bot/message/7965121869188/content";
