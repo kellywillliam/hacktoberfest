@@ -2,27 +2,28 @@ package advprog.example.bot.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import advprog.example.bot.EventTestUtil;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 
-import advprog.example.bot.EventTestUtil;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
-public class OriconControllerTest extends TestCase {
+public class OriconControllerTest {
 
     static {
         System.setProperty("line.bot.channelSecret", "SECRET");
@@ -30,41 +31,54 @@ public class OriconControllerTest extends TestCase {
     }
 
     @Autowired
-    private OriconController oriconController = new OriconController();
+    private OriconController OriconController;
 
     @Test
-    public void testContextLoads() {
-        assertNotNull(oriconController);
+    void testContextLoads() {
+        assertNotNull(OriconController);
     }
 
     @Test
-    public void testHandleTextMessageEvent() throws Exception {
+    void testHandleTextMessageEvent() throws Exception {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/oricon 2018-05-11");
+                EventTestUtil.createDummyTextMessage("/oricon books weekly 2018-05-14");
 
-        TextMessage reply = oriconController.handleTextMessageEvent(event);
-
-        assertEquals("2018-05-11", "2018-05-11");
+        TextMessage reply = OriconController.handleTextMessageEvent(event);
+        String[] lines = reply.getText().split("\n");
+        assertEquals(10, lines.length);
+    }
+    
+    @Test
+    void testBebas() throws Exception {
+    	MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/oricon books weekly 2018-05-13");
+    	TextMessage reply = OriconController.handleTextMessageEvent(event);
+    	assertEquals(reply.getText(), "weekly ranking on that date is not exist, please input a date that has monday as the day.");
     }
 
     @Test
-    public void testHandleDefaultMessage() {
+    void testBebas1() throws Exception {
+    	MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/hehe");
+    	TextMessage reply = OriconController.handleTextMessageEvent(event);
+    	assertEquals(reply.getText(), "Wrong input, use /oricon books weekly <date(YYYY-MM-DD)> to access the feature");
+    }
+    
+    @Test
+    void testBebas2() throws Exception {
+    	MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/echo books weekly 2018-05-13");
+    	TextMessage reply = OriconController.handleTextMessageEvent(event);
+    	assertEquals(reply.getText(), "echo from oricon");
+    }
+    
+    @Test
+    void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
-        oriconController.handleDefaultMessage(event);
+        OriconController.handleDefaultMessage(event);
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
     }
-
-    @Test
-    public void testMakeGetCall() throws Exception {
-    	assertEquals(null, null);
-    }
-    
-    @Test
-    public void testScreenScrapeGetBooks() {
-    	assertNotNull(oriconController.screenScrapeGetBooks("<html></html>"));
-    }
-
 }
