@@ -17,7 +17,7 @@ public class TweetController {
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
 
-        TwitterAPI api = new TwitterAPI();
+        TwitterApi api = new TwitterApi();
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -25,8 +25,8 @@ public class TweetController {
         String[] contentList = contentText.split(" ");
         String reply;
 
-        if(contentList.length == 3 && contentList[0].equalsIgnoreCase("/tweet") &&
-                contentList[1].equalsIgnoreCase("recent")){
+        if (contentList.length == 3 && contentList[0].equalsIgnoreCase("/tweet") 
+            && contentList[1].equalsIgnoreCase("recent")) {
             String user = contentList[2];
             reply = api.getUserTimeLine(user);
         } else {

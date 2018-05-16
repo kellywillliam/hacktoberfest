@@ -1,21 +1,21 @@
 package advprog.example.bot.controller;
 
+import java.lang.StringBuilder;
+import java.util.ArrayList;
+import java.util.List;
+
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
-import java.util.List;
-import java.util.ArrayList;
-import java.lang.StringBuilder;
-
-public class TwitterAPI {
+public class TwitterApi {
 
     ConfigurationBuilder config;
     Twitter twitter;
 
-    public TwitterAPI(){
+    public TwitterApi() {
         config = new ConfigurationBuilder();
         config.setDebugEnabled(true)
                 .setOAuthConsumerKey("PJv91Il9VxZCQQWEqxuNVC3Vu")
@@ -34,28 +34,24 @@ public class TwitterAPI {
 
             List<Status> listStatus = twitter.getUserTimeline(user);
             System.out.println("Showing @" + user + "'s 5 recent tweets.");
-            for(Status status : listStatus){
-                strings.append("@" + status.getUser().getScreenName()+ " - " + status.getText());
+
+            for (int i = 0; i < 5; i++) {
+                if (i == listStatus.size())
+                    break;
+                strings.append("@" + listStatus.get(i).getUser().getScreenName() + " - " + listStatus.get(i).getText());
             }
 
         } catch (TwitterException te) {
             String msg = te.getErrorMessage();
 
-            if(msg == null)
-                strings.append("We can't retrieve tweets from @" + user + ". Please make sure His/Her profile is not protected.");
-            else
-                strings.append("Failed to retrieve tweets caused by " + msg);
+            if (msg == null) {
+                StringBuilder hasil = new StringBuilder();
+                hasil.append("We can't retrieve tweets from @");
+                hasil.append(user);
+                hasil.append(". Please make sure His/Her profile is not protected.");
+                strings.append(hasil.toString());
+            }
         }
         return strings.toString();
     }
-
-    /*public String getUserTimeLine(String user){
-        List<String> listStatus = getTimeLine(user);
-        String result = "";
-        for(String status : listStatus){
-            result += (status + "\n");
-        }
-        return result;
-
-    }*/
 }

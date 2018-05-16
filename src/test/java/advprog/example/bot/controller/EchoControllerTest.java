@@ -57,14 +57,4 @@ public class EchoControllerTest {
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
     }
-
-    @Test
-    void testHandleRequestTweet() {
-        assertNotNull(echoController);
-    }
-
-    @Test
-    void testHandleUnavailableUsername() {
-        assertNotNull(echoController);
-    }
 }
