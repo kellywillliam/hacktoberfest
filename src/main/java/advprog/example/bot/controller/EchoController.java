@@ -102,7 +102,7 @@ public class EchoController {
             return;
         }
         this.convertReq = false;
-        LOGGER.fine(String.format("ImageMessageContent(timestamp='%s',content='%s')",
+        LOGGER.fine(String.format("abbccc " + "ImageMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
 
         String replyToken = event.getReplyToken();
@@ -281,15 +281,6 @@ public class EchoController {
 
         connectionInput.close();
 
-
         return jsonResponse;
-    }
-
-    public static String getChannelToken() {
-        return channelToken;
-    }
-
-    public boolean isConvertReq() {
-        return convertReq;
     }
 }
