@@ -11,6 +11,7 @@ import org.jsoup.nodes.Document;
 
 import advprog.example.bot.EventTestUtil;
 import advprog.example.bot.controller.OriconController;
+import junit.framework.TestCase;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -28,38 +29,34 @@ import org.jsoup.select.Elements;
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
-public class OriconControllerTest {
-
-	static {
-		System.setProperty("line.bot.channelSecret", "SECRET");
-		System.setProperty("line.bot.channelToken", "TOKEN");
-	}
+public class OriconControllerTest extends TestCase {
 
 	@Autowired
-	private OriconController oriconController;
+	// private OriconController = oriconController;
+	OriconController oriconController = new OriconController();
 
 	@Test
-	void testContextLoads() {
+	public void testContextLoads() {
 		assertNotNull(oriconController);
 	}
 
 	@Test
-	void testHandleTextMessageEvent() {
+	public void testHandleTextMessageEvent() {
 
 		MessageEvent<TextMessageContent> event = EventTestUtil.createDummyTextMessage("/oricon comic 2018-05-14");
 		TextMessage reply = oriconController.handleTextMessageEvent(event);
 
-		event = EventTestUtil.createDummyTextMessage("/oricon comic 2018-05-15");
+		event = EventTestUtil.createDummyTextMessage("/oricon comic 2018-05-17");
 		reply = oriconController.handleTextMessageEvent(event);
-		assertEquals("Ranking does not available at this date, Please Input a date on Monday", reply);
+		assertEquals("Ranking does not available at this date, Please Input a date on Monday", reply.getText());
 
 		event = EventTestUtil.createDummyTextMessage("wrong input");
 		reply = oriconController.handleTextMessageEvent(event);
-		assertEquals("Wrong Input,Please Input with correct format '/oricon comic YYYY/MM/DD'", reply);
+		assertEquals("Wrong Input,Please Input with correct format '/oricon comic YYYY/MM/DD'", reply.getText());
 	}
 
 	@Test
-	void testHandleDefaultMessage() {
+	public void testHandleDefaultMessage() {
 		Event event = mock(Event.class);
 		oriconController.handleDefaultMessage(event);
 
@@ -68,23 +65,23 @@ public class OriconControllerTest {
 	}
 
 	@Test
-	void testMakeGetCall() {
+	public void testMakeGetCall() {
 		assertNotNull(oriconController.makeGetCall("2018-05-14"));
 		assertEquals(null, oriconController.makeGetCall("2018-05-15"));
 	}
 
 	@Test
-	void testshowComics() {
+	public void testshowComics() {
 		oriconController.showComics("2018-05-14");
 	}
 
 	@Test
-	void testscreenScrapeGetComics() {
+	public void testscreenScrapeGetComics() {
 		Document doc = oriconController.makeGetCall("2018-05-14");
 		Elements elements = oriconController.screenScrapeGetComics(doc);
 
 		doc = oriconController.makeGetCall("2018-05-15");
 		elements = oriconController.screenScrapeGetComics(doc);
-		assertEquals(null,elements);
+		assertEquals(null, elements);
 	}
 }
