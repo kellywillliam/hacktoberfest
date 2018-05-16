@@ -8,8 +8,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import advprog.artist.in.top100.japan.bot.ArtistTop100AppTest;
-import advprog.artist.in.top100.japan.bot.parser.Parser;
 import advprog.artist.in.top100.japan.bot.controller.ArtistTop100Controller;
+import advprog.artist.in.top100.japan.bot.parser.Parser;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -57,6 +57,7 @@ public class ArtistTop100ControllerTest {
         TextMessage reply = artistTop100Controller.handleTextMessageEvent(event);
         assertEquals("Error! Perintah Tidak Ditemukan", reply.getText());
     }
+
     @Test
     void testHandleTextMessageEventSuccess() {
         Parser parser = new Parser();
