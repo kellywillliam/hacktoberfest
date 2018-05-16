@@ -1,6 +1,7 @@
 package advprog.example.bot.controller;
 
 import advprog.example.bot.countryhot.HotCountrySong;
+import advprog.example.bot.countryhot.HotNewAgeSong;
 import advprog.example.bot.countryhot.SongInfo;
 import advprog.example.bot.countryhot.TopSong;
 
@@ -58,6 +59,33 @@ public class EchoController {
             for (int i = 0; i < top200.size(); i++) {
                 if (top200.get(i).getSongArtist().contains(artistName)) {
                     listLagu.add(top200.get(i));
+                }
+            }
+
+            if (listLagu.size() == 0) {
+                return new TextMessage("Artist " + artistName + " tidak terdapat dalam billboard");
+            }
+
+            for (int j = 0; j < listLagu.size(); j++) {
+                replyBillboardText += listLagu.get(j).getSongArtist()
+                        + ("\n" + listLagu.get(j).getSongTitle() + "\n"
+                        + listLagu.get(j).getRank() + "\n\n");
+            }
+
+            return new TextMessage(replyBillboardText);
+        } else if (replyText[0].equalsIgnoreCase("/billboard")
+                && replyText[1].equalsIgnoreCase("newage")
+                && replyText.length > 2) {
+            HotNewAgeSong topNewAge = new HotNewAgeSong();
+            ArrayList<SongInfo> topNew = topNewAge.getDataFromBillboard();
+            ArrayList<SongInfo> listLagu = new ArrayList<>();
+            String contentArtist = contentText.replace("/billboard newage","");
+            String artistName = contentArtist.substring(1);
+            String replyBillboardText = "";
+
+            for (int i = 0; i < topNew.size(); i++) {
+                if (topNew.get(i).getSongArtist().contains(artistName)) {
+                    listLagu.add(topNew.get(i));
                 }
             }
 

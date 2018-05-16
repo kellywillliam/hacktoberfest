@@ -89,6 +89,16 @@ public class EchoControllerTest {
     }
 
     @Test
+    void testHandleTextMessageEvent5() {
+        MessageEvent<TextMessageContent> event2 =
+                EventTestUtil.createDummyTextMessage("/billboard newage kezia");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event2);
+
+        assertEquals("Artist kezia tidak terdapat dalam billboard", reply.getText());
+    }
+
+    @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
