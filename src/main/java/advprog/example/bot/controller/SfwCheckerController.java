@@ -38,7 +38,7 @@ import org.springframework.web.client.RestTemplate;
 @LineMessageHandler
 public class SfwCheckerController {
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
-    private static String imageUrl = "";
+    //private static String imageUrl = "";
 
     public static void main(String[] args) throws Exception{
         final String channelToken = "+uFmWifpVZJBF1ZuxCaIeiFA7v4FF6D4djy+NitngehBdGNjpK"
@@ -81,8 +81,8 @@ public class SfwCheckerController {
                     if (chatText.length > 1 && chatText.length < 3) {
                         replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
                     } else {
-                        replyText = ConfidencePercentage.getConfidencePercentage(imageUrl);
-                        imageUrl = "";
+                        //replyText = ConfidencePercentage.getConfidencePercentage(imageUrl);
+                        //mageUrl = "";
                     }
 
                     break;
@@ -105,8 +105,8 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
-        imageUrl = "";
-        imageUrl = getImage(id);
+        //imageUrl = "";
+        String imageUrl = getImage(id);
 
 
         return new TextMessage(imageUrl);
