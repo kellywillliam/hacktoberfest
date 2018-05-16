@@ -1,5 +1,7 @@
 package advprog.example.bot.controller;
 
+import com.linecorp.bot.model.event.FollowEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import advprog.example.bot.BotExampleApplication;
 import com.google.common.io.ByteStreams;
 import com.linecorp.bot.client.LineMessagingClient;
@@ -7,15 +9,12 @@ import com.linecorp.bot.client.MessageContentResponse;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.message.ImageMessage;
 import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.Uploader;
 import org.apache.http.Header;
@@ -30,20 +29,15 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
@@ -55,15 +49,20 @@ import java.net.*;
 import lombok.Value;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.imageio.ImageIO;
 
 @Slf4j
 @LineMessageHandler
 public class EchoController {
 
+    // Core Variable Initialize
     private static final String channelToken = "KSmqRwScpX3fa90zQNt2MDrmtpXwNTGtVyq2K0Jyi2/gfuMSO4cSEaPBkozhqSBrJDIcDJg/XrcVzmyrTTm7omrS1EcBpXLb/vpKckm1HUQIQAItWEZL3og1u7C2G+tK2c4TlJ+Xw0Dd/EpkFh1hsQdB04t89/1O/w1cDnyilFU=";
     private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
+    private boolean convertReq = false;
 
+    @Autowired
+    public LineMessagingClient lineMessagingClient;
+
+    // Handle Text Input From User
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws IOException {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
@@ -71,63 +70,68 @@ public class EchoController {
 
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-
         String replyToken = event.getReplyToken();
 
-        if(contentText.split(" ")[0].equalsIgnoreCase("url")){
+        if(contentText.split(" ")[0].equalsIgnoreCase("/url") && contentText.length()==2){
             String imageSource = contentText.split(" ")[1];
-            String imageID = event.getMessage().getId();
-            convertImage(replyToken, imageSource);
+            String result = obtainResult(imageSource);
+            return new TextMessage(result);
         }
 
+        if(contentText.equalsIgnoreCase("/ocr this")){
+            this.convertReq = true;
+            return new TextMessage("Send the img bitj");
+        }
+
+//        if(contentText.equalsIgnoreCase("/help")) {
+//            String result = "Command : "
+//                    + "\n/Ocr this : Memerintahkan bot untuk convert gambar tulisan tangan"
+//                    + "yang dilanjutkan dengan user mengirimkan gambar setelah pemanggilan command ini"
+//                    + "\n/Help : Memerintahkan bot untuk menampilkan command list";
+//            return new TextMessage(result);
+//        }
         String replyText = contentText.replace("/echo", "");
         return new TextMessage(replyText.substring(1));
     }
 
-
-    final LineMessagingClient lineMessagingClient = LineMessagingClient
-            .builder(channelToken)
-            .build();
-
+    // Handle Image Input From User
     @EventMapping
-    public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) {
+    public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
+        if(this.convertReq == false){
+            return;
+        }
+        this.convertReq = false;
         LOGGER.fine(String.format("ImageMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
-        LOGGER.warning("masuk");
 
-        final LineMessagingClient client = LineMessagingClient
+        String replyToken = event.getReplyToken();
+        String imageID = event.getMessage().getId();
+
+        lineMessagingClient = LineMessagingClient
                 .builder(channelToken)
                 .build();
 
-        //final MessageContentResponse messageContentResponse;
-        String replyToken = event.getReplyToken();
-        //String imageID = event.getMessage().getId();
-
-        // You need to install ImageMagick
         handleHeavyContent(
-                event.getReplyToken(),
-                event.getMessage().getId(),
+                replyToken,
+                imageID,
                 responseBody -> {
-                    DownloadedContent jpg = saveContent("jpg", responseBody);
-                    LOGGER.warning("hehehehehehehehe");
-                    DownloadedContent previewImg = createTempFile("jpg");
+                    DownloadedContent jpg = saveContent(replyToken,"jpg", responseBody);
+                    DownloadedContent previewImage = createTempFile(replyToken, "jpg");
                     system(
                             "convert",
                             "-resize", "240x",
                             jpg.path.toString(),
-                            previewImg.path.toString());
+                            previewImage.path.toString());
                     File image = new File(jpg.path.toString());
 
                     JSONObject temp = null;
                     try {
                         temp = new JSONObject(Uploader.upload(image));
-                        LOGGER.warning("masuk ke sinii");
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-                    JSONObject data = (JSONObject) temp.get("data");
-                    String url = (String) data.get("link");
+                    // Convert JSONObject Data into String n Extract Needed Data (URL)
+                    String url = JsonToLink(temp);
                     String result = null;
                     try {
                         result = obtainResult(url);
@@ -135,75 +139,55 @@ public class EchoController {
                         e.printStackTrace();
                     }
 
-                    LOGGER.warning(result);
-                    final TextMessage textMessage = new TextMessage(result);
-                    final ReplyMessage replyMessage = new ReplyMessage(
-                            replyToken,
-                            textMessage);
-
-                    final BotApiResponse botApiResponse;
-                    try {
-                        botApiResponse = client.replyMessage(replyMessage).get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        e.printStackTrace();
-                        return;
-                    }
-
-                    System.out.println(botApiResponse);
-
-//                    reply(((MessageEvent) event).getReplyToken(),
-//                            new ImageMessage(jpg.getUri(), jpg.getUri()));
+                    replyText(replyToken, result);
                 });
-
-//        handleHeavyContent(
-//                event.getReplyToken(),
-//                event.getMessage().getId(),
-//                responseBody -> {
-//                    DownloadedContent jpg = saveContent("jpg", responseBody);
-//                    DownloadedContent previewImg = createTempFile("jpg");
-//                    system(
-//                            "convert",
-//                            "-resize", "240x",
-//                            jpg.path.toString(),
-//                            previewImg.path.toString());
-//                    reply(((MessageEvent) event).getReplyToken(),
-//                            new ImageMessage(jpg.getUri(), jpg.getUri()));
-//                });
-
-
-
     }
 
-    private void reply(@NonNull String replyToken, @NonNull Message message) {
-        reply(replyToken, Collections.singletonList(message));
+    @EventMapping
+    public void handleDefaultMessage(Event event) {
+        LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
+                event.getTimestamp(), event.getSource()));
     }
 
-    private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
+    @EventMapping
+    public TextMessage handleFollowEvent(FollowEvent event) {
+        return new TextMessage("Hai! Kenalin aku TulisanBot. \n Untuk menu mengetahui" +
+                "command dan bantuan yang tersedia" +
+                " bisa menggunakan command /help");
+    }
+
+    public String JsonToLink(JSONObject temp){
+        JSONObject dataExtract = (JSONObject) temp.get("data");
+        String url = (String) dataExtract.get("link");
+        return url;
+    }
+
+    // Line Reply Message API
+    public void replyText(String replyToken, String result){
+        lineMessagingClient = LineMessagingClient
+                .builder(channelToken)
+                .build();
+
+        String opening = "Yay Selesai! ini dia hasil convert tulisan tangan yang kamu "
+                + "kirim tadi : \n\n";
+
+        final TextMessage textMessage = new TextMessage(opening+result);
+        final ReplyMessage replyMessage = new ReplyMessage(
+                replyToken,
+                textMessage);
+
+        final BotApiResponse botApiResponse;
         try {
-            BotApiResponse apiResponse = lineMessagingClient
-                    .replyMessage(new ReplyMessage(replyToken, messages))
-                    .get();
-            log.info("Sent messages: {}", apiResponse);
+            botApiResponse = lineMessagingClient.replyMessage(replyMessage).get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            return;
         }
     }
 
-
-    private void convertImage(String replyToken, String url) throws IOException {
-        String result = obtainResult(url);
-        TextMessage jawabanDalamBentukTextMessage = new TextMessage(result);
-        try {
-            lineMessagingClient
-                    .replyMessage(new ReplyMessage(replyToken, jawabanDalamBentukTextMessage))
-                    .get();
-        } catch (InterruptedException | ExecutionException e) {
-            System.out.println("Ada error saat ingin membalas chat");
-        }
-    }
-
-    private void system(String... args) {
+    public void system(String... args) {
         ProcessBuilder processBuilder = new ProcessBuilder(args);
+
         try {
             Process start = processBuilder.start();
             int i = start.waitFor();
@@ -217,83 +201,30 @@ public class EchoController {
     }
 
 
-
-    private void handleHeavyContent(String replyToken, String messageId,
-                                    Consumer<MessageContentResponse> messageConsumer) {
+    public void handleHeavyContent(String replyToken, String messageId,
+                                   Consumer<MessageContentResponse> messageConsumer) {
         final MessageContentResponse response;
         try {
             response = lineMessagingClient.getMessageContent(messageId)
                     .get();
         } catch (InterruptedException | ExecutionException e) {
-            //reply(replyToken, new TextMessage("Cannot get image: " + e.getMessage()));
+            replyText(replyToken, "Cannot get image: " + e.getMessage());
             throw new RuntimeException(e);
         }
         messageConsumer.accept(response);
     }
 
-//    public void imgurUpload() throws Exception {
-//        String IMGUR_POST_URI = "http://api.imgur.com/2/upload.xml";
-//        String IMGUR_API_KEY = "MY API KEY";
-//
-//        String file = "C:\\Users\\Shane\\Pictures\\Misc\\001.JPG";
-//
-//        URL url = new URL("https://api.imgur.com/3/image");
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        String data = URLEncoder.encode("image", "UTF-8") + "="
-//                + URLEncoder.encode(IMAGE_URL, "UTF-8");
-//    }
-
-
-    @EventMapping
-    public void handleDefaultMessage(Event event) {
-        LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
-                event.getTimestamp(), event.getSource()));
-    }
-
-    public String accessAPI(){
-        return "";
-    }
-
-    public static String obtainResult(String urlbaru) throws IOException {
-
-        String credentialsToEncode = "acc_17a23647a8d18a1" + ":" + "0a829afc68674b632d1b10cda130bfad";
-        String basicAuth = Base64.getEncoder().encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
-
-        String endpoint_url = "https://api.imagga.com/v1/tagging";
-        String image_url = urlbaru;
-
-        String url = endpoint_url + "?url=" + image_url;
-        URL urlObject = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
-
-        connection.setRequestProperty("Authorization", "Basic " + basicAuth);
-
-        int responseCode = connection.getResponseCode();
-
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
-
-        BufferedReader connectionInput = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-        String jsonResponse = connectionInput.readLine();
-
-        connectionInput.close();
-
-        System.out.println(jsonResponse);
-
-        return jsonResponse;
-    }
-
-    private static String createUri(String path) {
+    // Create URI using Servlet URI Builder
+    public static String createUri(String path) {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(path).build()
                 .toUriString();
     }
 
-    private static DownloadedContent saveContent(String ext, MessageContentResponse responseBody) {
+    // Save URL to Downloaded Content Directory via createTempFile
+    public static DownloadedContent saveContent(String replyToken, String ext, MessageContentResponse responseBody) {
         log.info("Got content-type: {}", responseBody);
-
-        DownloadedContent tempFile = createTempFile(ext);
+        DownloadedContent tempFile = createTempFile(replyToken, ext);
         try (OutputStream outputStream = Files.newOutputStream(tempFile.path)) {
             ByteStreams.copy(responseBody.getStream(), outputStream);
             log.info("Saved {}: {}", ext, tempFile);
@@ -303,7 +234,8 @@ public class EchoController {
         }
     }
 
-    private static DownloadedContent createTempFile(String ext) {
+    // Create Temp File
+    public static DownloadedContent createTempFile(String replyToken, String ext) {
         String fileName = LocalDateTime.now().toString() + '-' + UUID.randomUUID().toString() + '.' + ext;
         Path tempFile = BotExampleApplication.downloadedContentDir.resolve(fileName);
         tempFile.toFile().deleteOnExit();
@@ -323,4 +255,41 @@ public class EchoController {
         }
     }
 
+
+
+    public static String obtainResult(String urlbaru) throws IOException {
+        String credentialsToEncode = "acc_17a23647a8d18a1" + ":" + "0a829afc68674b632d1b10cda130bfad";
+        String basicAuth = Base64.getEncoder().encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
+
+        String endpoint_url = "https://api.imagga.com/v1/colors";
+        String image_url = urlbaru;
+
+        String url = endpoint_url + "?url=" + image_url;
+        URL urlObject = new URL(url);
+        HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
+
+        connection.setRequestProperty("Authorization", "Basic " + basicAuth);
+
+        int responseCode = connection.getResponseCode();
+
+        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Response Code : " + responseCode);
+
+        BufferedReader connectionInput = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+        String jsonResponse = connectionInput.readLine();
+
+        connectionInput.close();
+
+
+        return jsonResponse;
+    }
+
+    public static String getChannelToken() {
+        return channelToken;
+    }
+
+    public boolean isConvertReq() {
+        return convertReq;
+    }
 }
