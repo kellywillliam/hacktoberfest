@@ -8,12 +8,15 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import advprog.artist.in.weekly.tropical.bot.ArtistInTopTropicalAppTest;
+import advprog.artist.in.weekly.tropical.bot.controller.ArtistInTopTropicalController;
+import advprog.artist.in.weekly.tropical.bot.parser.Parser;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 
+import java.util.ArrayList;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -31,38 +34,52 @@ public class ArtistInTopTropicalControllerTest {
     }
 
     @Autowired
-    private ArtistInTopTropicalController artistInTopTropicalController;
+    private ArtistInTopTropicalController artistTop100Controller;
 
     @Test
     void testContextLoads() {
-        assertNotNull(artistInTopTropicalController);
+        assertNotNull(artistTop100Controller);
     }
 
     @Test
-    void testHandleTextMessageEvent() {
+    void testHandleTextMessageEventError() {
         MessageEvent<TextMessageContent> event =
-                ArtistInTopTropicalAppTest.createDummyTextMessage("/billboard tropical Drake");
+                ArtistInTopTropicalAppTest.createDummyTextMessage("/billboard tropical Azhar");
+        TextMessage reply = artistTop100Controller.handleTextMessageEvent(event);
+        assertEquals("Sorry, your artist doesn't make it to the top 100", reply.getText());
+    }
 
-        TextMessage reply = artistInTopTropicalController.handleTextMessageEvent(event);
-
-        assertEquals("We're sorry to tell you that Drake isn't on the list", reply.getText());
+    @Test
+    void testHandleWrongInput() {
+        MessageEvent<TextMessageContent> event =
+                ArtistInTopTropicalAppTest.createDummyTextMessage("/billboard trop Azhar");
+        TextMessage reply = artistTop100Controller.handleTextMessageEvent(event);
+        assertEquals("Error! Perintah Tidak Ditemukan", reply.getText());
     }
 
     @Test
     void testHandleTextMessageEventSuccess() {
+        Parser parser = new Parser();
+        ArrayList<String> arrArtist = parser.getArrayArtist();
         MessageEvent<TextMessageContent> event =
-                ArtistInTopTropicalAppTest.createDummyTextMessage("/billboard tropical Coldplay");
+                ArtistInTopTropicalAppTest.createDummyTextMessage("/billboard tropical "
+                        + arrArtist.get(0).toLowerCase());
 
-        TextMessage reply = artistInTopTropicalController.handleTextMessageEvent(event);
+        TextMessage reply = artistTop100Controller.handleTextMessageEvent(event);
+        ArrayList<String> arrSong = parser.getArraySong();
+        int position = arrArtist.indexOf(arrArtist.get(0)) + 1;
+        String result = (arrArtist.get(0) + "\n"
+                + arrSong.get(position - 1) + "\n" + position);
+        assertEquals(result, reply.getText());
 
-        assertEquals("Coldplay\nYellow\n1", reply.getText());
+
     }
 
     @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
-        artistInTopTropicalController.handleDefaultMessage(event);
+        artistTop100Controller.handleDefaultMessage(event);
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
