@@ -5,10 +5,10 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
+import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
-import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -21,7 +21,8 @@ public class NewAgeAlbums {
     private static final Logger LOGGER = Logger.getLogger(BotExampleApplication.class.getName());
 
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws IOException {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event)
+            throws IOException {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
@@ -45,7 +46,8 @@ public class NewAgeAlbums {
             }
 
             for (int i = 0; i < arrArtist.size(); i++) {
-                System.out.println("(" + (i + 1) + ") " + arrArtist.get(i) + " - " + arrTitle.get(i));
+                System.out.println("(" + (i + 1) + ") " + arrArtist.get(i)
+                        + " - " + arrTitle.get(i));
             }
 
         }
@@ -53,7 +55,8 @@ public class NewAgeAlbums {
         String replyText = "";
 
         for (int i = 0; i < arrArtist.size(); i++) {
-            replyText = replyText + ("(" + (i + 1) + ") " + arrArtist.get(i) + " - " + arrTitle.get(i)) + "\n";
+            replyText = replyText + ("(" + (i + 1) + ") " + arrArtist.get(i)
+                    + " - " + arrTitle.get(i)) + "\n";
         }
 
         replyText = replyText + "\nThank you for using our service";
