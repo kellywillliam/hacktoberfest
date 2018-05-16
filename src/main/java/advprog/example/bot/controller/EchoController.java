@@ -111,6 +111,7 @@ public class EchoController {
                 .builder(channelToken)
                 .build();
 
+        LOGGER.warning("masuk");
         replyText(replyToken, imageID);
         handleHeavyContent(
                 replyToken,
