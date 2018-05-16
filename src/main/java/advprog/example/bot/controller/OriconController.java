@@ -30,12 +30,12 @@ public class OriconController {
 			replyText = replyText.replace("/", "-");
 			String reply = showComics(replyText);
 			if (reply.equals("")) {
-				return new TextMessage("Please Input Monday date");
+				return new TextMessage("Ranking does not available at this date, Please Input a date on Monday");
 			} else {
 				return new TextMessage(reply);
 			}
 		} else {
-			return new TextMessage("Wrong Input, Format Input '/oricon comic DD/MM/YYYY'");
+			return new TextMessage("Wrong Input,Please Input with correct format '/oricon comic YYYY/MM/DD'");
 		}
 
 	}

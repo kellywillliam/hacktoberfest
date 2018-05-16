@@ -51,11 +51,11 @@ public class OriconControllerTest {
 
 		event = EventTestUtil.createDummyTextMessage("/oricon comic 2018-05-15");
 		reply = oriconController.handleTextMessageEvent(event);
-		assertEquals("Please Input Monday date", reply);
+		assertEquals("Ranking does not available at this date, Please Input a date on Monday", reply);
 
 		event = EventTestUtil.createDummyTextMessage("wrong input");
 		reply = oriconController.handleTextMessageEvent(event);
-		assertEquals("Wrong Input, Format Input '/oricon comic DD/MM/YYYY'", reply);
+		assertEquals("Wrong Input,Please Input with correct format '/oricon comic YYYY/MM/DD'", reply);
 	}
 
 	@Test
@@ -85,5 +85,6 @@ public class OriconControllerTest {
 
 		doc = oriconController.makeGetCall("2018-05-15");
 		elements = oriconController.screenScrapeGetComics(doc);
+		assertEquals(null,elements);
 	}
 }
