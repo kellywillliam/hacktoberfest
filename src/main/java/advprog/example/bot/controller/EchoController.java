@@ -170,21 +170,13 @@ public class EchoController {
                 .builder(channelToken)
                 .build();
 
-        String opening = "Yay Selesai! ini dia hasil convert tulisan tangan yang kamu "
-                + "kirim tadi : \n\n";
-
-        final TextMessage textMessage = new TextMessage(opening+result);
+        final TextMessage textMessage = new TextMessage(result);
         final ReplyMessage replyMessage = new ReplyMessage(
                 replyToken,
                 textMessage);
 
         final BotApiResponse botApiResponse;
-        try {
-            botApiResponse = lineMessagingClient.replyMessage(replyMessage).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return;
-        }
+        botApiResponse = lineMessagingClient.replyMessage(replyMessage).get();
     }
 
     public void system(String... args) {
