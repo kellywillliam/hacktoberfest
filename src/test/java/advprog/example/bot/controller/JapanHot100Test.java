@@ -11,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
 
-public class japanHot100Test {
+public class JapanHot100Test {
 
     static {
         System.setProperty("line.bot.channelSecret", "SECRET");
@@ -19,11 +19,11 @@ public class japanHot100Test {
     }
 
     @Autowired
-    private japanHot100 japanHot100;
+    private JapanHot100 JapanHot100;
 
     @Test
     void testContextLoads() {
-        assertNotNull(japanHot100);
+        assertNotNull(JapanHot100);
     }
 
 }

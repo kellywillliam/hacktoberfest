@@ -8,17 +8,17 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
-import java.util.logging.Logger;
 
 @LineMessageHandler
-public class japanHot100 {
+public class JapanHot100 {
 
     private static final Logger LOGGER = Logger.getLogger(BotExampleApplication.class.getName());
 
@@ -30,7 +30,8 @@ public class japanHot100 {
         ArrayList<String> arrArtist = new ArrayList<>();
         ArrayList<String> arrTitle = new ArrayList<>();
 
-        if (contentText.equalsIgnoreCase("japan100")) {
+        if (contentText.equalsIgnoreCase("/japan100")) {
+
             String url = "https://www.billboard.com/charts/japan-hot-100";
             Document doc = Jsoup.connect(url).get();
 
