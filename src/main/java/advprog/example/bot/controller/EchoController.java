@@ -97,53 +97,56 @@ public class EchoController {
     // Handle Image Input From User
     @EventMapping
     public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
-        LOGGER.warning("masuk ke image handling");
-        if(this.convertReq == false){
-            return;
-        }
-        this.convertReq = false;
-        LOGGER.fine(String.format("abbccc " + "ImageMessageContent(timestamp='%s',content='%s')",
-                event.getTimestamp(), event.getMessage()));
-
+//        LOGGER.warning("masuk ke image handling");
+//        if(this.convertReq == false){
+//            return;
+//        }
+//        this.convertReq = false;
+//        LOGGER.fine(String.format("abbccc " + "ImageMessageContent(timestamp='%s',content='%s')",
+//                event.getTimestamp(), event.getMessage()));
+//
+//        String replyToken = event.getReplyToken();
+//        String imageID = event.getMessage().getId();
+//
+//        lineMessagingClient = LineMessagingClient
+//                .builder(channelToken)
+//                .build();
+//
+//        LOGGER.warning("masuk");
+//        replyText(replyToken, "bisa");
+//        handleHeavyContent(
+//                replyToken,
+//                imageID,
+//                responseBody -> {
+//                    DownloadedContent jpg = saveContent(replyToken,"jpg", responseBody);
+//                    DownloadedContent previewImage = createTempFile(replyToken, "jpg");
+//                    system(
+//                            "convert",
+//                            "-resize", "240x",
+//                            jpg.path.toString(),
+//                            previewImage.path.toString());
+//                    File image = new File(jpg.path.toString());
+//
+//                    JSONObject temp = null;
+//                    try {
+//                        temp = new JSONObject(Uploader.upload(image));
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    // Convert JSONObject Data into String n Extract Needed Data (URL)
+//                    String url = JsonToLink(temp);
+//                    String result = null;
+//                    try {
+//                        result = obtainResult(url);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    replyText(replyToken, result);
+//                });
         String replyToken = event.getReplyToken();
-        String imageID = event.getMessage().getId();
+        replyText(replyToken, "berhasil");
 
-        lineMessagingClient = LineMessagingClient
-                .builder(channelToken)
-                .build();
-
-        LOGGER.warning("masuk");
-        replyText(replyToken, "bisa");
-        handleHeavyContent(
-                replyToken,
-                imageID,
-                responseBody -> {
-                    DownloadedContent jpg = saveContent(replyToken,"jpg", responseBody);
-                    DownloadedContent previewImage = createTempFile(replyToken, "jpg");
-                    system(
-                            "convert",
-                            "-resize", "240x",
-                            jpg.path.toString(),
-                            previewImage.path.toString());
-                    File image = new File(jpg.path.toString());
-
-                    JSONObject temp = null;
-                    try {
-                        temp = new JSONObject(Uploader.upload(image));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    // Convert JSONObject Data into String n Extract Needed Data (URL)
-                    String url = JsonToLink(temp);
-                    String result = null;
-                    try {
-                        result = obtainResult(url);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                    replyText(replyToken, result);
-                });
     }
 
     @EventMapping
