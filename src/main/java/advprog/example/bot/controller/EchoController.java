@@ -116,21 +116,12 @@ public class EchoController {
                 .builder(channelToken)
                 .build();
 
-        LOGGER.warning("masuk");
-        handleHeavyContent(
-                replyToken,
-                imageID,
-                responseBody -> {
-                    DownloadedContent jpg = saveContent(replyToken,"jpg", responseBody);
-                    DownloadedContent previewImage = createTempFile(replyToken, "jpg");
-                    system(
-                            "convert",
-                            "-resize", "240x",
-                            jpg.path.toString(),
-                            previewImage.path.toString());
-                    File image = new File(jpg.path.toString());
+        final MessageContentResponse responseBody = null;
 
-                    JSONObject temp = null;
+        LOGGER.warning("masuk");
+        DownloadedContent jpg = saveContent(replyToken,"jpg", responseBody);
+        File image = new File(jpg.path.toString());
+        JSONObject temp = null;
                     try {
                         temp = new JSONObject(Uploader.upload(image));
                     } catch (Exception e) {
@@ -145,8 +136,39 @@ public class EchoController {
                         e.printStackTrace();
                     }
 
-                    replyText(replyToken, result[0]);
-                });
+
+//        handleHeavyContent(
+//                replyToken,
+//                imageID,
+//                responseBody -> {
+//                    DownloadedContent jpg = saveContent(replyToken,"jpg", responseBody);
+//                    DownloadedContent previewImage = createTempFile(replyToken, "jpg");
+//                    system(
+//                            "convert",
+//                            "-resize", "240x",
+//                            jpg.path.toString(),
+//                            previewImage.path.toString());
+//                    File image = new File(jpg.path.toString());
+//
+//                    JSONObject temp = null;
+//                    try {
+//                        temp = new JSONObject(Uploader.upload(image));
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    // Convert JSONObject Data into String n Extract Needed Data (URL)
+//                    String url = JsonToLink(temp);
+//
+//                    try {
+//                        result[0] = obtainResult(url);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    replyText(replyToken, result[0]);
+//                });
+
+
         LOGGER.warning("uda jalan");
             return new TextMessage(result[0]);
     }
@@ -211,8 +233,7 @@ public class EchoController {
         LOGGER.warning("masuk ke heavy content");
         final MessageContentResponse response;
         try {
-            response = lineMessagingClient.getMessageContent(messageId)
-                    .get();
+            response = lineMessagingClient.getMessageContent(messageId).get();
         } catch (InterruptedException | ExecutionException e) {
             replyText(replyToken, "Cannot get image: " + e.getMessage());
             throw new RuntimeException(e);
