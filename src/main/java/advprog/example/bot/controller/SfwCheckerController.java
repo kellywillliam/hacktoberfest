@@ -4,6 +4,7 @@ package advprog.example.bot.controller;
 import advprog.example.bot.confidence.percentage.ConfidencePercentage;
 //import advprog.example.bot.line.ImgurApi;
 
+import advprog.example.bot.confidence.percentage.ImgurSrc;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -37,6 +38,7 @@ import org.springframework.web.client.RestTemplate;
 @LineMessageHandler
 public class SfwCheckerController {
     private static final Logger LOGGER = Logger.getLogger(SfwCheckerController.class.getName());
+    private static String imageUrl = "";
 
     public static void main(String[] args) throws Exception{
         final String channelToken = "+uFmWifpVZJBF1ZuxCaIeiFA7v4FF6D4djy+NitngehBdGNjpK"
@@ -49,9 +51,18 @@ public class SfwCheckerController {
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         byte[] imageBytes = restTemplate.exchange(url, HttpMethod.GET,entity,byte[].class).getBody();
         Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
-        String idUpload = uploadImage("src/main/resources/image.jpg");;
-        String theStr = ConfidencePercentage.getFromUserImage(idUpload);
-        System.out.println(theStr);
+        File image = new File("src/main/resources/image.jpg");
+        JSONObject temp = null;
+        try {
+            temp = new JSONObject(ImgurSrc.upload(image));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        JSONObject dataExtract = (JSONObject) temp.get("data");
+        String theurl = (String) dataExtract.get("link");
+        //String idUpload = uploadImage("src/main/resources/image.jpg");;
+        //String theStr = ConfidencePercentage.getFromUserImage(idUpload);
+        System.out.println(theurl);
 
 
     }
@@ -67,7 +78,11 @@ public class SfwCheckerController {
         try {
             switch (chatText[0].toLowerCase()) {
                 case "/is_sfw":
-                    replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
+                    if (chatText.length > 1 && chatText.length < 3) {
+                        replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
+                    } else {
+                        replyText = ConfidencePercentage.getConfidencePercentage(imageUrl);
+                    }
                     //replyText = ConfidencePercentage.getFromUserImage(idUpload);
                     break;
                 case "/echo":
@@ -89,10 +104,10 @@ public class SfwCheckerController {
                 event.getTimestamp(), event.getMessage()));
         ImageMessageContent content = event.getMessage();
         String id = content.getId();
-        String idUpload = getImage(id);
-        String theStr = ConfidencePercentage.getFromUserImage(idUpload);
+        imageUrl = getImage(id);
 
-        return new TextMessage(theStr);
+
+        return new TextMessage("Berhasil!");
 
     }
 
@@ -114,68 +129,22 @@ public class SfwCheckerController {
         HttpEntity<String> entity = new HttpEntity<String>(headers);
         byte[] imageBytes = restTemplate.exchange(url, HttpMethod.GET,entity,byte[].class).getBody();
         Files.write(Paths.get("src/main/resources/image.jpg"), imageBytes);
-        String idImage = uploadImage("src/main/resources/image.jpg");
-        return idImage;
-    }
-
-    public static String uploadImage(String path) throws Exception{
-        /* Api calling */
-
-        String credentialsToEncode = "acc_7131bd91f718dd6" + ":" + "0438f48b7ba34d253d4df8f7e52485af";
-        String basicAuth = Base64.getEncoder().encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
-
-        URL urlObject = new URL("https://api.imagga.com/v1/content");
-        HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
-        connection.setRequestProperty("Authorization", "Basic " + basicAuth);
-
-        String boundaryString = "-Image Upload-";
-        String filepath = path;
-        File fileToUpload = new File(filepath);
-
-        connection.setDoOutput(true);
-        connection.setRequestMethod("POST");
-        connection.addRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundaryString);
-
-        OutputStream outputStreamToRequestBody = connection.getOutputStream();
-        BufferedWriter httpRequestBodyWriter =
-                new BufferedWriter(new OutputStreamWriter(outputStreamToRequestBody));
-
-        httpRequestBodyWriter.write("\n--" + boundaryString + "\n");
-        httpRequestBodyWriter.write("Content-Disposition: form-data;"
-                + "name=\"myFile\";"
-                + "filename=\""+ fileToUpload.getName() +"\""
-                + "\nContent-Type: text/plain\n\n");
-        httpRequestBodyWriter.flush();
-
-        FileInputStream inputStreamToLogFile = new FileInputStream(fileToUpload);
-
-        int bytesRead;
-        byte[] dataBuffer = new byte[1024];
-        while((bytesRead = inputStreamToLogFile.read(dataBuffer)) != -1) {
-            outputStreamToRequestBody.write(dataBuffer, 0, bytesRead);
+        File image = new File("src/main/resources/image.jpg");
+        JSONObject temp = null;
+        try {
+            temp = new JSONObject(ImgurSrc.upload(image));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        JSONObject dataExtract = (JSONObject) temp.get("data");
+        String theurl = (String) dataExtract.get("link");
 
-        outputStreamToRequestBody.flush();
 
-        httpRequestBodyWriter.write("\n--" + boundaryString + "--\n");
-        httpRequestBodyWriter.flush();
-
-        outputStreamToRequestBody.close();
-        httpRequestBodyWriter.close();
-
-        BufferedReader connectionInput = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-
-        String jsonResponse = connectionInput.readLine();
-
-        connectionInput.close();
-
-        System.out.println(jsonResponse);
-        JSONObject bigObj = new JSONObject(jsonResponse);
-        System.out.println(jsonResponse);
-        JSONArray parentArr = bigObj.getJSONArray("uploaded");
-        JSONObject smallObj = parentArr.getJSONObject(0);
-        return smallObj.getString("id");
+        //String idImage = uploadImage("src/main/resources/image.jpg");
+        return theurl;
     }
+
+
 
 
 
