@@ -97,6 +97,7 @@ public class EchoController {
     // Handle Image Input From User
     @EventMapping
     public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
+        LOGGER.warning("masuk ke image handling");
         if(this.convertReq == false){
             return;
         }
@@ -112,7 +113,7 @@ public class EchoController {
                 .build();
 
         LOGGER.warning("masuk");
-        replyText(replyToken, imageID);
+        replyText(replyToken, "bisa");
         handleHeavyContent(
                 replyToken,
                 imageID,
