@@ -100,7 +100,7 @@ public class EchoController {
         LOGGER.warning("masuk ke image handling");
         String result = null;
         if(this.convertReq == false){
-            return;
+            return new TextMessage("aaa");
         }
         this.convertReq = false;
         LOGGER.fine(String.format("abbccc " + "ImageMessageContent(timestamp='%s',content='%s')",
