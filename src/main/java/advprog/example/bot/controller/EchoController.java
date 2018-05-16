@@ -83,6 +83,8 @@ public class EchoController {
             return new TextMessage("Send the img bitj");
         }
 
+
+
 //        if(contentText.equalsIgnoreCase("/help")) {
 //            String result = "Command : "
 //                    + "\n/Ocr this : Memerintahkan bot untuk convert gambar tulisan tangan"
@@ -104,7 +106,7 @@ public class EchoController {
             return new TextMessage("aaa");
         }
         //this.convertReq = true;
-        LOGGER.fine(String.format("abbccc " + "ImageMessageContent(timestamp='%s',content='%s')",
+        LOGGER.fine(String.format("ImageMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
 
         String replyToken = event.getReplyToken();
@@ -115,7 +117,6 @@ public class EchoController {
                 .build();
 
         LOGGER.warning("masuk");
-        replyText(replyToken, "bisa");
         handleHeavyContent(
                 replyToken,
                 imageID,
@@ -146,6 +147,7 @@ public class EchoController {
 
                     replyText(replyToken, result[0]);
                 });
+        LOGGER.warning("uda jalan");
             return new TextMessage(result[0]);
     }
 
