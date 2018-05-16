@@ -47,7 +47,8 @@ public class NewAgeAlbumsTest {
                 + "(6) Sigur Ros - Route One (Soundtrack)\n"
                 + "(7) Marconi Union - Weightless (10 Hour Version)\n"
                 + "(8) Ryan Judd - The Rest & Relaxation 4 Album Set\n"
-                + "(9) Relaxing Piano Crew - Disney Dreams: Classic Disney Piano Ballads For Sleeping\n"
+                + "(9) Relaxing Piano Crew - Disney Dreams: Classic "
+                + "Disney Piano Ballads For Sleeping\n"
                 + "(10) Enigma - The Fall Of A Rebel Angel\n"
                 + "\n"
                 + "Thank you for using our service", reply.getText());
