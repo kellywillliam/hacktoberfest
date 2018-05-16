@@ -12,11 +12,7 @@ import java.util.Base64;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
+
 
 public class ConfidencePercentage {
 
@@ -61,20 +57,6 @@ public class ConfidencePercentage {
 
     }
 
-    public static String getFromUserImage(String id){
-        RestTemplate restTemplate = new RestTemplate();
-        //String url = "";
-        //String credentialsToEncode = "acc_7131bd91f718dd6" + ":"
-        //        + "0438f48b7ba34d253d4df8f7e52485af";
-        //String basicAuth = Base64.getEncoder()
-        //        .encodeToString(credentialsToEncode.getBytes(StandardCharsets.UTF_8));
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Basic YWNjXzcxMzFiZDkxZjcxOGRkNjowNDM4ZjQ4Yjd"
-                + "iYTM0ZDI1M2Q0ZGY4ZjdlNTI0ODVhZg==");
-        HttpEntity<?> request = new HttpEntity<Object>("parameters",headers);
-        ResponseEntity<String> result = restTemplate.exchange("https://api.imagga.com/v1/categorizations/nsfw_beta?content={id}", HttpMethod.GET, request, String.class, id);
-        return result.getBody();
-    }
 
     public static String isSfw(JSONObject smallObj) {
         double safe = 0;

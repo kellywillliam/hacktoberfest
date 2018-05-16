@@ -82,8 +82,9 @@ public class SfwCheckerController {
                         replyText = ConfidencePercentage.getConfidencePercentage(chatText[1]);
                     } else {
                         replyText = ConfidencePercentage.getConfidencePercentage(imageUrl);
+                        imageUrl = "";
                     }
-                    //replyText = ConfidencePercentage.getFromUserImage(idUpload);
+
                     break;
                 case "/echo":
                     replyText = contentText.replace("/echo", "")
@@ -107,7 +108,7 @@ public class SfwCheckerController {
         imageUrl = getImage(id);
 
 
-        return new TextMessage("Berhasil!");
+        return new TextMessage(imageUrl);
 
     }
 
@@ -139,8 +140,6 @@ public class SfwCheckerController {
         JSONObject dataExtract = (JSONObject) temp.get("data");
         String theurl = (String) dataExtract.get("link");
 
-
-        //String idImage = uploadImage("src/main/resources/image.jpg");
         return theurl;
     }
 
