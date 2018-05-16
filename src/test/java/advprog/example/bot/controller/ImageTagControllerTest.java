@@ -16,6 +16,7 @@ import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.json.JSONException;
@@ -42,16 +43,11 @@ public class ImageTagControllerTest {
                         + "+OjbHUR9weySIoM5YzuXsRrbjSyaYAdB04t89/1O/w1cDnyilFU=");
     }
 
-    @Autowired
-    private ImageTagController imageTagController;
-
-    @Test
-    void testContextLoads() {
-        assertNotNull(imageTagController);
-    }
 
     @Test
     void testHandleTextMessageEvent() throws IOException, JSONException {
+        ImageTagController imageTagController = new ImageTagController();
+
         MessageEvent<TextMessageContent> eventText = EventTestUtil.createDummyTextMessage("/tags");
         TextMessage replyText = imageTagController.handleTextMessageEvent(eventText);
         MessageEvent<ImageMessageContent> event =
@@ -65,6 +61,7 @@ public class ImageTagControllerTest {
 
     @Test
     void testHandleTextMessageEventNotTags() throws IOException, JSONException {
+        ImageTagController imageTagController = new ImageTagController();
         MessageEvent<TextMessageContent> eventText = EventTestUtil.createDummyTextMessage("/ping");
         TextMessage replyText = imageTagController.handleTextMessageEvent(eventText);
         assertEquals(replyText.getText(), "not available");
@@ -74,9 +71,18 @@ public class ImageTagControllerTest {
         assertEquals(reply.getText(), "succesfully uploaded your image");
     }
 
+    @Test
+    void testHandleImageDoesNotExist() throws IOException {
+        ImageTagController imageTagController = new ImageTagController();
+        String result = imageTagController.uploadContentToImagga();
+        assertEquals(result, "file does not exists");
+    }
+
 
     @Test
     void testHandleDefaultMessage() {
+
+        ImageTagController imageTagController = new ImageTagController();
         Event event = mock(Event.class);
 
         imageTagController.handleDefaultMessage(event);
