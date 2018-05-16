@@ -42,7 +42,6 @@ public class ImageTagController {
 
     private static final Logger LOGGER = Logger.getLogger(ImageTagController.class.getName());
     static boolean isTags = false;
-    static boolean isFileWritten = false;
     private static final String ALPHA_NUMERIC_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private String fileName = "";
 
@@ -96,7 +95,7 @@ public class ImageTagController {
             }
             isTags = false;
             // delete file
-            File fileToBeDeleted = new File("src/main/resources/image.jpg");
+            File fileToBeDeleted = new File("src/main/resources/imagetags.jpg");
             fileToBeDeleted.delete();
             return new TextMessage(result);
         }
@@ -120,14 +119,14 @@ public class ImageTagController {
         HttpEntity<String> entity = new HttpEntity<>("parameters", headers);
         ResponseEntity<byte[]> result = restTemplate.exchange("https://api.line.me/v2/bot/message/{id}/content", HttpMethod.GET, entity, byte[].class, contentId);
         fileName = randomAlphaNumeric(10) + ".jpg";
-        FileOutputStream fos = new FileOutputStream(new File("src/main/resources/image.jpg"));
+        FileOutputStream fos = new FileOutputStream(new File("src/main/resources/imagetags.jpg"));
         fos.write(result.getBody());
         fos.flush();
         fos.close();
     }
 
     public String uploadContentToImagga() throws IOException {
-        File imageFile = new File("src/main/resources/image.jpg");
+        File imageFile = new File("src/main/resources/imagetags.jpg");
         if (imageFile.exists()) {
             String credentialsToEncode =
                     "acc_08cefb13b0cb9c0" + ":" + "e43ccf7254ce48cdb6bcca09b848f4d8";
@@ -147,7 +146,7 @@ public class ImageTagController {
                     new BufferedWriter(new OutputStreamWriter(outputStreamToRequestBody));
 
             httpRequestBodyWriter.write("\n--" + boundaryString + "\n");
-            String filepath = "src/main/resources/image.jpg";
+            String filepath = "src/main/resources/imagetags.jpg";
             File fileToUpload = new File(filepath);
             httpRequestBodyWriter.write("Content-Disposition: form-data;"
                     + "name=\"myFile\";"
@@ -179,17 +178,6 @@ public class ImageTagController {
             connectionInput.close();
 
             return jsonResponse;
-            //RestTemplate restTemplate = new RestTemplate();
-            //HttpHeaders headers = new HttpHeaders();
-            //headers.add("Authorization",
-            //        "Basic YWNjXzA4Y2VmYjEzYjBjYjljMDplNDNjY2Y3MjU"
-            //                + "0Y2U0OGNkYjZiY2NhMDliODQ4ZjRkOA==");
-            //LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-            //body.add("image", imageFile.getCanonicalPath());
-            //body.add("image", new ClassPathResource("image.jpg"));
-            //HttpEntity<?> entity = new HttpEntity<Object>(body, headers);
-            //ResponseEntity<String> result = restTemplate.exchange("https://api.imagga.com/v1/content", HttpMethod.POST, entity, String.class);
-            //return result.getBody();
         }
         return "file does not exists";
     }
