@@ -96,7 +96,7 @@ public class EchoController {
 
     // Handle Image Input From User
     @EventMapping
-    public void handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
+    public TextMessage handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
 //        LOGGER.warning("masuk ke image handling");
 //        if(this.convertReq == false){
 //            return;
@@ -144,8 +144,9 @@ public class EchoController {
 //
 //                    replyText(replyToken, result);
 //                });
-        String replyToken = event.getReplyToken();
-        replyText(replyToken, "berhasil");
+        return new TextMessage("hehehehehehe");
+//        String replyToken = event.getReplyToken();
+//        replyText(replyToken, "berhasil");
 
     }
 
