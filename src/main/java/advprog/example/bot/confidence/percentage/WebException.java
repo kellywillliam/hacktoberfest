@@ -7,8 +7,7 @@ package advprog.example.bot.confidence.percentage;
  * @version v1.0.0  July 16, 2014
  */
 @SuppressWarnings("serial")
-public class WebException extends RuntimeException
-{
+public class WebException extends RuntimeException {
     private StatusCode code;
 
     /**
@@ -20,8 +19,7 @@ public class WebException extends RuntimeException
      * @param cause
      *          The Throwable that set off this exception.
      */
-    public WebException(StatusCode code, Throwable cause)
-    {
+    public WebException(StatusCode code, Throwable cause) {
         super(cause);
         this.code = code;
     }
@@ -32,8 +30,7 @@ public class WebException extends RuntimeException
      * @param code
      *          The StatusCode related to this exception.
      */
-    public WebException(StatusCode code)
-    {
+    public WebException(StatusCode code) {
         this(code, null);
     }
 
@@ -46,8 +43,7 @@ public class WebException extends RuntimeException
      * @param cause
      *          The Throwable that set off this exception.
      */
-    public WebException(int httpCode, Throwable cause)
-    {
+    public WebException(int httpCode, Throwable cause) {
         this(StatusCode.getStatus(httpCode), cause);
     }
 
@@ -58,8 +54,7 @@ public class WebException extends RuntimeException
      * @param httpCode
      *          The httpCode related to this exception.
      */
-    public WebException(int httpCode)
-    {
+    public WebException(int httpCode) {
         this(httpCode, null);
     }
 
@@ -69,8 +64,7 @@ public class WebException extends RuntimeException
      * @return
      *          The StatusCode that caused the exception.
      */
-    public StatusCode getStatusCode()
-    {
+    public StatusCode getStatusCode() {
         return code;
     }
 
@@ -81,8 +75,7 @@ public class WebException extends RuntimeException
      *          Description of exception based on Http StatusCode.
      */
     @Override
-    public String getMessage()
-    {
+    public String getMessage() {
         return code.getDescription();
     }
 }

@@ -7,8 +7,7 @@ package advprog.example.bot.confidence.percentage;
  * @author DV8FromTheWorld (Austin Keener)
  * @version v1.0.0  July 16, 2014
  */
-public enum StatusCode
-{
+public enum StatusCode {
     UNKNOWN_HOST("Couldn't find api.imgur.com, are you connected to the internet?", 1),
     SUCCESS("The action was successful!", 200),
     BAD_REQUEST("Upload interupted or corrupted.", 400),
@@ -32,8 +31,7 @@ public enum StatusCode
      * @param httpCode
      *          The Http response associated with this StatusCode.
      */
-    private StatusCode(String description, int httpCode)
-    {
+    private StatusCode(String description, int httpCode) {
         this.description = description;
         this.httpCode = httpCode;
     }
@@ -46,10 +44,8 @@ public enum StatusCode
      * @return
      *          The StatusCode associated with the provided code.
      */
-    public static StatusCode getStatus(int code)
-    {
-        switch (code)
-        {
+    public static StatusCode getStatus(int code) {
+        switch (code) {
             case 1:
                 return UNKNOWN_HOST;
             case 200:
@@ -81,8 +77,7 @@ public enum StatusCode
      * @return
      *          The description of this StatusCode.
      */
-    public String getDescription()
-    {
+    public String getDescription() {
         return description;
     }
 
@@ -92,8 +87,7 @@ public enum StatusCode
      * @return
      *          The Http associated with this StatusCode.
      */
-    public int getHttpCode()
-    {
+    public int getHttpCode() {
         return httpCode;
     }
 
@@ -102,8 +96,7 @@ public enum StatusCode
      * Format: StatusCode - Name: [name] - HttpCode: [httpCode] - Description: [description]
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return String.format("StatusCode - %s: %s - %s: %d - %s: %s",
                 "Name", super.toString(),
                 "HttpCode", getHttpCode(),

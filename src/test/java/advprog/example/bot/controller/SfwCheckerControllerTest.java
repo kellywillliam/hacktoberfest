@@ -11,6 +11,7 @@ import advprog.example.bot.EventTestUtil;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 
@@ -73,7 +74,7 @@ public class SfwCheckerControllerTest {
 
         assertEquals("Error terjadi", replySfwCaseThree.getText());
     }
-
+    
     @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);

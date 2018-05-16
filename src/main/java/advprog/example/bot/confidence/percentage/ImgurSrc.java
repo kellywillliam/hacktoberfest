@@ -22,20 +22,17 @@ import javax.xml.bind.DatatypeConverter;
 public class ImgurSrc {
     public static final String UPLOAD_API_URL = "https://api.imgur.com/3/image";
 
-    private final static String CLIENT_ID = "483bc9ad3f90e95";
+    private static final String CLIENT_ID = "483bc9ad3f90e95";
 
-    public static String upload(File file)
-    {
+    public static String upload(File file) {
         HttpURLConnection conn = getHttpConnection(UPLOAD_API_URL);
         writeToConnection(conn, "image=" + toBase64(file));
         return getResponse(conn);
     }
 
-    public static HttpURLConnection getHttpConnection(String url)
-    {
+    public static HttpURLConnection getHttpConnection(String url) {
         HttpURLConnection conn;
-        try
-        {
+        try {
             conn = (HttpURLConnection) new URL(url).openConnection();
             conn.setDoInput(true);
             conn.setDoOutput(true);
@@ -44,74 +41,55 @@ public class ImgurSrc {
             conn.setReadTimeout(100000);
             conn.connect();
             return conn;
-        }
-        catch (UnknownHostException e)
-        {
+        } catch (UnknownHostException e) {
             throw new WebException(StatusCode.UNKNOWN_HOST, e);
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new WebException(StatusCode.UNKNOWN_ERROR, e);
         }
     }
 
-    public static String toBase64(File file)
-    {
-        try
-        {
+    public static String toBase64(File file) {
+        try {
             byte[] b = new byte[(int) file.length()];
             FileInputStream fs = new FileInputStream(file);
             fs.read(b);
             fs.close();
             return URLEncoder.encode(DatatypeConverter.printBase64Binary(b), "UTF-8");
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new WebException(StatusCode.UNKNOWN_ERROR, e);
         }
     }
 
-    public static String getResponse(HttpURLConnection conn)
-    {
+    public static String getResponse(HttpURLConnection conn) {
         StringBuilder str = new StringBuilder();
         BufferedReader reader;
-        try
-        {
-            if (conn.getResponseCode() != StatusCode.SUCCESS.getHttpCode())
-            {
+        try {
+            if (conn.getResponseCode() != StatusCode.SUCCESS.getHttpCode()) {
                 throw new WebException(conn.getResponseCode());
             }
             reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String line;
-            while ((line = reader.readLine()) != null)
-            {
+            while ((line = reader.readLine()) != null) {
                 str.append(line);
             }
             reader.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new WebException(StatusCode.UNKNOWN_ERROR, e);
         }
-        if (str.toString().equals(""))
-        {
+        if (str.toString().equals("")) {
             throw new WebException(StatusCode.UNKNOWN_ERROR);
         }
         return str.toString();
     }
 
-    public static void writeToConnection(HttpURLConnection conn, String message)
-    {
+    public static void writeToConnection(HttpURLConnection conn, String message) {
         OutputStreamWriter writer;
-        try
-        {
+        try {
             writer = new OutputStreamWriter(conn.getOutputStream());
             writer.write(message);
             writer.flush();
             writer.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
             throw new WebException(StatusCode.UNKNOWN_ERROR, e);
         }
     }
