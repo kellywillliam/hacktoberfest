@@ -111,7 +111,7 @@ public class EchoController {
                 .builder(channelToken)
                 .build();
 
-        replyText(replyToken, obtainResult("abc"));
+        replyText(replyToken, imageID);
         handleHeavyContent(
                 replyToken,
                 imageID,
