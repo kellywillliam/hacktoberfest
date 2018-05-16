@@ -98,7 +98,7 @@ public class EchoController {
     @EventMapping
     public TextMessage handleImageMessageEvent(MessageEvent<ImageMessageContent> event) throws Exception {
         LOGGER.warning("masuk ke image handling");
-        String result = null;
+        final String[] result = new String[1];
         if(this.convertReq == false){
             return new TextMessage("aaa");
         }
@@ -138,14 +138,14 @@ public class EchoController {
                     String url = JsonToLink(temp);
 
                     try {
-                        result = obtainResult(url);
+                        result[0] = obtainResult(url);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
 
-                    replyText(replyToken, result);
+                    replyText(replyToken, result[0]);
                 });
-            return new TextMessage(result);
+            return new TextMessage(result[0]);
     }
 
     @EventMapping
