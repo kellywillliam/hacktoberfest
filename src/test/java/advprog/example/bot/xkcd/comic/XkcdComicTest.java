@@ -29,14 +29,14 @@ class XkcdComicTest {
 
     @Test
     void testInvalidComicIdReturnTextMessage() {
-        Message result = XkcdComic.getComic("20");
+        Message result = XkcdComic.getComic("2000000");
 
         assertTrue(result instanceof TextMessage);
     }
 
     @Test
     void testInvalidComicIdReturnRightImage() {
-        TextMessage result = (TextMessage) XkcdComic.getComic("20");
+        TextMessage result = (TextMessage) XkcdComic.getComic("2000000");
 
         assertNotNull(result);
         assertEquals("Comic ID is invalid :(",
