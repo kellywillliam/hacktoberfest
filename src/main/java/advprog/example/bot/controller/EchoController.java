@@ -104,6 +104,57 @@ public class EchoController {
         //String imageID = event.getMessage().getId();
 
         // You need to install ImageMagick
+        handleHeavyContent(
+                event.getReplyToken(),
+                event.getMessage().getId(),
+                responseBody -> {
+                    DownloadedContent jpg = saveContent("jpg", responseBody);
+                    LOGGER.warning("hehehehehehehehe");
+                    DownloadedContent previewImg = createTempFile("jpg");
+                    system(
+                            "convert",
+                            "-resize", "240x",
+                            jpg.path.toString(),
+                            previewImg.path.toString());
+                    File image = new File(jpg.path.toString());
+
+                    JSONObject temp = null;
+                    try {
+                        temp = new JSONObject(Uploader.upload(image));
+                        LOGGER.warning("masuk ke sinii");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    JSONObject data = (JSONObject) temp.get("data");
+                    String url = (String) data.get("link");
+                    String result = null;
+                    try {
+                        result = obtainResult(url);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    LOGGER.warning(result);
+                    final TextMessage textMessage = new TextMessage(result);
+                    final ReplyMessage replyMessage = new ReplyMessage(
+                            replyToken,
+                            textMessage);
+
+                    final BotApiResponse botApiResponse;
+                    try {
+                        botApiResponse = client.replyMessage(replyMessage).get();
+                    } catch (InterruptedException | ExecutionException e) {
+                        e.printStackTrace();
+                        return;
+                    }
+
+                    System.out.println(botApiResponse);
+
+//                    reply(((MessageEvent) event).getReplyToken(),
+//                            new ImageMessage(jpg.getUri(), jpg.getUri()));
+                });
+
 //        handleHeavyContent(
 //                event.getReplyToken(),
 //                event.getMessage().getId(),
@@ -115,60 +166,9 @@ public class EchoController {
 //                            "-resize", "240x",
 //                            jpg.path.toString(),
 //                            previewImg.path.toString());
-//                    File image = new File(jpg.path.toString());
-//
-//                    JSONObject temp = null;
-//                    try {
-//                        temp = new JSONObject(Uploader.upload(image));
-//                        LOGGER.warning("masuk ke sinii");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    JSONObject data = (JSONObject) temp.get("data");
-//                    String url = (String) data.get("link");
-//                    String result = null;
-//                    try {
-//                        result = obtainResult(url);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    LOGGER.warning(result);
-//
-//                    final TextMessage textMessage = new TextMessage(result);
-//                    final ReplyMessage replyMessage = new ReplyMessage(
-//                            replyToken,
-//                            textMessage);
-//
-//                    final BotApiResponse botApiResponse;
-//                    try {
-//                        botApiResponse = client.replyMessage(replyMessage).get();
-//                    } catch (InterruptedException | ExecutionException e) {
-//                        e.printStackTrace();
-//                        return;
-//                    }
-//
-//                    System.out.println(botApiResponse);
-//
-////                    reply(((MessageEvent) event).getReplyToken(),
-////                            new ImageMessage(jpg.getUri(), jpg.getUri()));
+//                    reply(((MessageEvent) event).getReplyToken(),
+//                            new ImageMessage(jpg.getUri(), jpg.getUri()));
 //                });
-
-        handleHeavyContent(
-                event.getReplyToken(),
-                event.getMessage().getId(),
-                responseBody -> {
-                    DownloadedContent jpg = saveContent("jpg", responseBody);
-                    DownloadedContent previewImg = createTempFile("jpg");
-                    system(
-                            "convert",
-                            "-resize", "240x",
-                            jpg.path.toString(),
-                            previewImg.path.toString());
-                    reply(((MessageEvent) event).getReplyToken(),
-                            new ImageMessage(jpg.getUri(), jpg.getUri()));
-                });
 
 
 
