@@ -2,6 +2,10 @@ package advprog.example.bot.controller;
 
 import java.util.logging.Logger;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -46,8 +50,7 @@ public class OriconController {
 	public static String getBook(String date) throws Exception {
 		Elements elements = screenScrapeGetBooks(makeGetCall(date));
 		String result = "";
-
-		if (elements.get(0).getElementsByClass("title").text()==null) {
+		if (elements==null) {
 			result += "weekly ranking on that date is not exist, please input a date that has monday as the day.";
 		} else {
 			for (Element e : elements) {
@@ -63,18 +66,27 @@ public class OriconController {
 						+ estimatedSales + "\n";
 			}
 		}
-
 		return result;
 	}
 
 	public static String makeGetCall(String date) throws Exception {
 		String url = "https://www.oricon.co.jp/rank/ob/w/";
 		url += date + "/";
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpGet get = new HttpGet(url);
+
+		HttpResponse response = client.execute(get);
+		if (response.getStatusLine().getStatusCode() != 200) {
+			return "Invalid Parameter";
+		}
 		Document d = Jsoup.connect(url).get();
 		return d.html();
 	}
 
 	public static Elements screenScrapeGetBooks(String html) {
+		if (html == "Invalid Parameter") {
+			return null;
+		}
 		Document doc = Jsoup.parse(html);
 		Elements content = doc.select(".box-rank-entry");
 		return content;
