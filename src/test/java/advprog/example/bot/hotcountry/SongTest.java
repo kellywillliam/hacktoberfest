@@ -1,4 +1,4 @@
-package advprog.example.bot.HotCountry;
+package advprog.example.bot.hotcountry;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,7 +1,9 @@
-package advprog.example.bot.HotCountry;
+package advprog.example.bot.hotcountry;
 
 import static org.junit.Assert.assertEquals;
 
+import advprog.example.bot.hotcountry.HotCountrySong;
+import advprog.example.bot.hotcountry.SongInfo;
 import java.util.ArrayList;
 
 import org.junit.Before;

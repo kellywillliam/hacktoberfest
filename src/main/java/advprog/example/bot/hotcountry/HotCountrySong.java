@@ -1,9 +1,7 @@
-package advprog.example.bot.HotCountry;
-
+package advprog.example.bot.hotcountry;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.net.SocketTimeoutException;
 
 import org.jsoup.Jsoup;
 
@@ -12,10 +10,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 public class HotCountrySong {
-    private ArrayList<SongInfo> HotCountry;
+    private ArrayList<SongInfo> hotCountry;
 
     public HotCountrySong() {
-        HotCountry = new ArrayList<>();
+        hotCountry = new ArrayList<>();
     }
 
     public ArrayList<SongInfo> getDataFromBillboard() {
@@ -28,12 +26,12 @@ public class HotCountrySong {
                 String songTitle = chartRow.getElementsByClass("chart-row__song").html();
                 String currentRank = chartRow.getElementsByClass("chart-row__current-week").html();
                 int rank = Integer.parseInt(currentRank);
-                HotCountry.add(new SongInfo(songArtist, songTitle, rank));
+                hotCountry.add(new SongInfo(songArtist, songTitle, rank));
             }
         } catch (IOException e) {
             e.getMessage();
         }
-        return HotCountry;
+        return hotCountry;
 
 
     }

@@ -1,5 +1,7 @@
 package advprog.example.bot.controller;
 
+import advprog.example.bot.hotcountry.HotCountrySong;
+import advprog.example.bot.hotcountry.SongInfo;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -7,12 +9,6 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-
-import advprog.example.bot.HotCountry.HotCountrySong;
-
-import advprog.example.bot.HotCountry.SongInfo;
-
-import java.util.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;
@@ -34,22 +30,21 @@ public class EchoController {
         if (replyText[0].equalsIgnoreCase("/echo")) {
             String replyEchoText = contentText.replace("/echo","");
             return new TextMessage(replyEchoText.substring(1));
-        }else if (replyText[0].equalsIgnoreCase("/billboard")
-                && replyText[1].equalsIgnoreCase("hotCountry")
+        } else if (replyText[0].equalsIgnoreCase("/billboard")
+                && replyText[1].equalsIgnoreCase("hotcountry")
                 && replyText.length == 2) {
             HotCountrySong topCountry = new HotCountrySong();
-            ArrayList<SongInfo> AllTopCountry = topCountry.getDataFromBillboard();
+            ArrayList<SongInfo> allTopCountry = topCountry.getDataFromBillboard();
             String replyTopTenBillboardText = "";
 
             for (int i = 0; i < 10; i++) {
                 replyTopTenBillboardText += ("(" + (i + 1) + ")"
-                        + " " + AllTopCountry.get(i).getSongArtist() + " - "
-                        + AllTopCountry.get(i).getSongTitle() + "\n");
+                        + " " + allTopCountry.get(i).getSongArtist() + " - "
+                        + allTopCountry.get(i).getSongTitle() + "\n");
             }
 
             return new TextMessage(replyTopTenBillboardText);
-        }
-        else {
+        } else {
             return new TextMessage("input tidak dapat dibaca");
         }
     }
