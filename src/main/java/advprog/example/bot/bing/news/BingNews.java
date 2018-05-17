@@ -16,7 +16,11 @@ public class BingNews {
     private static final String API_KEY = "34ac18f889344404a2d4f2560b11d51b";
 
     public static TextMessage getFiveNews(String input) {
-        return null;
+        try {
+            return new TextMessage(fetchNews(input));
+        } catch (Exception e) {
+            return new TextMessage("There is an error");
+        }
     }
 
     public static String fetchNews(String query) throws HttpClientErrorException {
