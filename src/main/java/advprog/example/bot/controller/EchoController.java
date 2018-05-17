@@ -14,15 +14,25 @@ public class EchoController {
 
     private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
 
+    MediaWikiController eventHandler = new MediaWikiController();
+
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
+        String replyText;
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        String[] tmp = contentText.split(" ");
+
+        if (tmp[0].equalsIgnoreCase("/echo")) {
+            replyText = contentText.replace("/echo ", "");
+        } else {
+            replyText = eventHandler.execute(contentText.toLowerCase());
+        }
+
+        return new TextMessage(replyText);
     }
 
     @EventMapping
