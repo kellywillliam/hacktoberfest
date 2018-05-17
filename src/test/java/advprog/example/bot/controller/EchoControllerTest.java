@@ -1,5 +1,7 @@
 package advprog.example.bot.controller;
 
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -56,5 +58,16 @@ public class EchoControllerTest {
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
+    }
+
+    @Test
+    void testBingNewsCommand() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertThat(reply.getText(), containsString("News"));
+
     }
 }
