@@ -36,7 +36,7 @@ public class MediaWikiController {
             }
 
         } else if (command[0].equals("/random_wiki_article")) {
-
+            replyText = "test";
         } else {
             replyText = randomInput;
         }
@@ -45,7 +45,7 @@ public class MediaWikiController {
     }
 
     public boolean isValidUrl(String urlGiven) {
-        if (urlGiven.length()%2 == 0) {
+        if (urlGiven.length() % 2 == 0) {
             return true;
         } else {
             return false;
