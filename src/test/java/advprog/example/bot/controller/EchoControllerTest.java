@@ -63,7 +63,7 @@ public class EchoControllerTest {
     @Test
     void testBingNewsCommand() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
+                EventTestUtil.createDummyTextMessage("/news north korea");
 
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
