@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class BingNews {
     private static final String BING_NEWS_URL =
-            "https://api.cognitive.microsoft.com/bing/v7.0/news/search?q=%s&count=5&mkt=en-US";
+            "https://api.cognitive.microsoft.com/bing/v7.0/news/search?q=%s&count=5";
     private static final String API_KEY = "34ac18f889344404a2d4f2560b11d51b";
 
     public static TextMessage getFiveNews(String input) {
