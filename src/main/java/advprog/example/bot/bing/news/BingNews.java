@@ -23,7 +23,7 @@ public class BingNews {
         }
     }
 
-    public static String fetchNews(String query) throws HttpClientErrorException {
+    private static String fetchNews(String query) throws HttpClientErrorException {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Ocp-Apim-Subscription-Key", API_KEY);
