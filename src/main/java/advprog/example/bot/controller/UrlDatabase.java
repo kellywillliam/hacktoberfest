@@ -10,16 +10,17 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.*;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.json.JSONObject;
 
 public class UrlDatabase {
     private Map<String, FakeNews> listUrl;
-    private final String DATA_PATH = "url.csv";
+    private final String path = "url.csv";
     private BufferedWriter writer;
     private BufferedReader reader;
     private FileWriter fileWriter;
@@ -31,7 +32,7 @@ public class UrlDatabase {
 
     private void loadingAllData() {
         try {
-            this.reader = new BufferedReader(new FileReader(DATA_PATH));
+            this.reader = new BufferedReader(new FileReader(path));
             String readLine = this.reader.readLine();
 
             while (readLine != null) {
@@ -57,29 +58,29 @@ public class UrlDatabase {
         }
         addToList(url, types);
     }
-	
-	public synchronized String checkUrl(String cmd, String url){
-		String hasil = "http://" + url + "not found in database\n";
-		if(this.listUrl.containsKey(url)){
-			FakeNews news = this.listUrl.get(url);
-			if(cmd.equals("conspiracy") && news.isConspiracy()){
-				hasil = "http://" + url + " is conspiracy news site\n";
-			} else if(cmd.equals("satire") && news.isSatire()){
-				hasil = "http://" + url + " is satire news site\n";
-			} else if(cmd.equals("fake") && news.isFake()){
-				hasil = "http://" + url + " is fake news site\n";
-			} else {
-				hasil = "http://" + url + " is not " + cmd + " news site\n";
-			}
-		}
-		return hasil;
-	}
-	
-	public synchronized String checkGroupUrl(String url){
-		String hasil = "";
-		//TODO check in Map given an url for group chat
-		return hasil;
-	}
+
+    public synchronized String checkUrl(String cmd, String url) {
+        String hasil = "http://" + url + "not found in database\n";
+        if (this.listUrl.containsKey(url)) {
+            FakeNews news = this.listUrl.get(url);
+            if (cmd.equals("conspiracy") && news.isConspiracy()) {
+                hasil = "http://" + url + " is conspiracy news site\n";
+            } else if (cmd.equals("satire") && news.isSatire()) {
+                hasil = "http://" + url + " is satire news site\n";
+            } else if (cmd.equals("fake") && news.isFake()) {
+                hasil = "http://" + url + " is fake news site\n";
+            } else {
+                hasil = "http://" + url + " is not " + cmd + " news site\n";
+            }
+        }
+        return hasil;
+    }
+
+    public synchronized String checkGroupUrl(String url) {
+        String hasil = "";
+        //TODO check in Map given an url for group chat
+        return hasil;
+    }
 
     public synchronized void addFakeNews(String url, String type) {
         Set<String> types = new HashSet<>();
@@ -100,6 +101,7 @@ public class UrlDatabase {
     public synchronized void saveToCsv(String url, String type) {
         try {
             //TODO write to csv
+            throw new IOException();
         } catch (IOException e) {
             e.printStackTrace();
         }

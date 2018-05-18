@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 public class FakeNewsController {
 
     private static final Logger LOGGER = Logger.getLogger(FakeNewsController.class.getName());
-	private static UrlDatabase newsDb = new UrlDatabase();
+    private static UrlDatabase newsDb = new UrlDatabase();
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -22,18 +22,18 @@ public class FakeNewsController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText().trim();
-		String replyText = "";
-		String[]inputs = contentText.split(" ");
-		replyText = validateInput(inputs);
-		if(replyText.equals("")){
-			String cmd = inputs[0];
-			String url = inputs[1];
-			if(cmd.equals("/add_filter")){
-				newsDb.addFakeNews(url, inputs[2]);
-			} else {
-				replyText = newsDb.checkUrl(cmd.replace("/is_", ""), url);
-			}
-		}
+        String replyText = "";
+        String[] inputs = contentText.split(" ");
+        replyText = validateInput(inputs);
+        if (replyText.equals("")) {
+            String cmd = inputs[0];
+            String url = inputs[1];
+            if (cmd.equals("/add_filter")) {
+                newsDb.addFakeNews(url, inputs[2]);
+            } else {
+                replyText = newsDb.checkUrl(cmd.replace("/is_", ""), url);
+            }
+        }
         return new TextMessage(replyText);
     }
 
@@ -55,12 +55,12 @@ public class FakeNewsController {
         if (inputs.length == 2) {
             boolean validCmd = Arrays.asList(cmds).contains(inputs[0]);
             if (validCmd && inputs[1].contains("http://")) {
-				inputs[1] = inputs[1].replace("http://", "");
+                inputs[1] = inputs[1].replace("http://", "");
                 return "";
             }
         } else if (inputs.length == 3) {
             if (inputs[0].equals("/add_filter") && inputs[1].contains("http://")) {
-				inputs[1] = inputs[1].replace("http://", "");
+                inputs[1] = inputs[1].replace("http://", "");
                 boolean validType = Arrays.asList(types).contains(inputs[2]);
                 if (validType) {
                     return "";

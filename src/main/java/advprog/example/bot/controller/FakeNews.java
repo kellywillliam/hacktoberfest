@@ -2,7 +2,7 @@ package advprog.example.bot.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
+import java.util.Set;
 
 public class FakeNews implements Comparable<FakeNews> {
     private String url;
@@ -32,10 +32,10 @@ public class FakeNews implements Comparable<FakeNews> {
     public boolean isConspiracy() {
         return this.types.contains("conspiracy");
     }
-	
-	public String getAllTypes(){
-		return this.types.toString().replace("[","").replace("]","");
-	}
+
+    public String getAllTypes() {
+        return this.types.toString().replace("[", "").replace("]", "");
+    }
 
     @Override
     public int compareTo(FakeNews other) {
