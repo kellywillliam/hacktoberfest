@@ -48,7 +48,7 @@ public class ItunesController {
 
         if (contentText.equalsIgnoreCase("check")) {
             String check = connectApi(event.getReplyToken());
-            replyText(event.getReplyToken(), "wadow fail");
+            replyText(event.getReplyToken(), check);
             return new TextMessage(check);
         }
 
