@@ -24,14 +24,25 @@ public class FakeNewsController {
         String contentText = content.getText().trim();
         String replyText = "";
         String[] inputs = contentText.split(" ");
-        replyText = validateInput(inputs);
-        if (replyText.equals("")) {
-            String cmd = inputs[0];
-            String url = inputs[1];
-            if (cmd.equals("/add_filter")) {
-                newsDb.addFakeNews(url, inputs[2]);
+        if (contentText.length() > 0) {
+            if (contentText.charAt(0) == '/') {
+                replyText = validateInput(inputs);
+                if (replyText.equals("")) {
+                    String cmd = inputs[0];
+                    String url = inputs[1];
+                    if (cmd.equals("/add_filter")) {
+                        newsDb.addFakeNews(url, inputs[2]);
+                    } else {
+                        replyText = newsDb.checkUrl(cmd.replace("/is_", ""), url);
+                    }
+                }
             } else {
-                replyText = newsDb.checkUrl(cmd.replace("/is_", ""), url);
+                for (int i = 0; i < inputs.length; i++) {
+                    if (inputs[i].contains("http://")) {
+                        replyText = newsDb.checkGroupUrl(inputs[i].replace("http://", ""));
+                    }
+                }
+
             }
         }
         return new TextMessage(replyText);

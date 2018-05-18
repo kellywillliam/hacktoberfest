@@ -64,22 +64,54 @@ public class FakeNewsControllerTest {
 
     @Test
     void testIsSatireNews() {
-        //TODO test for satire news site
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/is_satire http://washingtonsblog.com");
+
+        TextMessage reply = fakeNewsController.handleTextMessageEvent(event);
+        assertTrue(reply.getText().contains("http://washingtonsblog.com"));
+        assertTrue(reply.getText().contains("is satire news site"));
     }
 
     @Test
     void testGroupChat() {
-        //TODO test for group chat
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("I opened http://washingtonsblog.com yesterday");
+
+        TextMessage reply = fakeNewsController.handleTextMessageEvent(event);
+        assertTrue(reply.getText().contains("http://washingtonsblog.com"));
+        assertTrue(reply.getText().contains("satire news site"));
     }
 
     @Test
     void testAddFakeNews() {
-        //TODO test for adding new FakeNews
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/add_filter http://asalasal.com fake");
+
+        TextMessage reply = fakeNewsController.handleTextMessageEvent(event);
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader("url.csv"));
+            String eof = "";
+            String readLine = reader.readLine();
+
+            while (readLine != null) {
+                eof = readLine;
+                readLine = reader.readLine();
+            }
+            assertTrue(eof.contains("asalasal.com,fake"));
+            reader.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     void testBadInput() {
-        //TODO test for bad input in private chat
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/hmm hmmmhm hmmmm");
+
+        TextMessage reply = fakeNewsController.handleTextMessageEvent(event);
+        assertTrue(reply.getText().contains("Wrong input"));
+        assertTrue(reply.getText().contains("Note: URL = news url using HTTP"));
     }
 
     @Test

@@ -91,10 +91,10 @@ test {
     reports {
         html.enabled = true
     }
-    testLogging {
-        outputs.upToDateWhen {false}
-        showStandardStreams = true
-    }
+    //testLogging {
+    //    outputs.upToDateWhen {false}
+    //    showStandardStreams = true
+    //}
 }
 
 // Use Spring dependency management plugin

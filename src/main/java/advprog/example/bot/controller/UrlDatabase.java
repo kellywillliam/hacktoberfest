@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.json.JSONObject;
-
 public class UrlDatabase {
     private Map<String, FakeNews> listUrl;
     private final String path = "url.csv";
@@ -78,7 +76,11 @@ public class UrlDatabase {
 
     public synchronized String checkGroupUrl(String url) {
         String hasil = "";
-        //TODO check in Map given an url for group chat
+        if (this.listUrl.containsKey(url)) {
+            FakeNews news = this.listUrl.get(url);
+            hasil = "Warning!!\nhttp://";
+            hasil += url + " is " + news.getAllTypes() + " news site\n";
+        }
         return hasil;
     }
 
@@ -100,8 +102,11 @@ public class UrlDatabase {
 
     public synchronized void saveToCsv(String url, String type) {
         try {
-            //TODO write to csv
-            throw new IOException();
+            String content = "\n" + url + "," + type + ", , , ,";
+            this.fileWriter = new FileWriter(path, true);
+            this.writer = new BufferedWriter(this.fileWriter);
+            this.writer.write(content);
+            this.writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
