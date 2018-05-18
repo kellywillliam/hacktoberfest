@@ -62,22 +62,18 @@ public class TopChartControllerTest {
 
     @Test
     void topChartDailyTest() {
-        assertEquals(chart.topChartDaily("2018-05-12"),
-                "(1) 進化理論 - BOYS AND MEN - 2018-05-09 - 4,182\n"
-                        + "(2) 泣けないぜ…共感詐欺/Uraha=Lover/君だけじゃないさ...friends"
-                        + "(2018アコースティックVer.)"
-                        + " - アンジュルム - 2018-05-09 - 3,246\n"
-                        + "(3) この道を/会いに行く/坂道を上って/小さな風景 - 小田和正 - 2018-05-02 - 2,491\n"
-                        + "(4) シンクロニシティ - 乃木坂46 - 2018-04-25 - Unknown\n"
-                        + "(5) WE/GO - さとり少年団 - 2018-05-09 - Unknown\n"
-                        + "(6) 誓い - 雨宮天 - 2018-05-09 - Unknown\n"
-                        + "(7) Eclipse - 蒼井翔太 - 2018-05-09 - Unknown\n"
-                        + "(8) 無敵のビーナス - ばってん少女隊 - 2018-05-09 - Unknown\n"
-                        + "(9) Bumblebee - Lead - 2018-04-25 - Unknown\n"
-                        + "(10) THE IDOLM@STER SideM WORLD TRE@SURE 01"
-                        + "(永遠(とわ)なる四銃士)"
-                        + " - 天道輝(仲村宗悟),葛之葉雨彦(笠間淳),握野英雄(熊谷健太郎),"
-                        + "紅井朱雀(益山武明) - 2018-05-09 - Unknown");
+        assertEquals(chart.topChartDaily("2018-05-16"),
+                "(1) Wake Me Up - TWICE - 2018-05-16 - 56,097\n"
+                        + "(2) BE IN SIGHT - 刀剣男士 formation of つはもの - 2018-05-16 - 6,650\n"
+                        + "(3) 手遅れcaution - =LOVE - 2018-05-16 - 4,342\n"
+                        + "(4) げんきいっぱい(鬼POP激キャッチー最強ハイパーウルトラミュージック)" 
+                        + " - ヤバイTシャツ屋さん - 2018-05-16 - Unknown\n"
+                        + "(5) この道を/会いに行く/坂道を上って/小さな風景 - 小田和正 - 2018-05-02 - Unknown\n"
+                        + "(6) シンクロニシティ - 乃木坂46 - 2018-04-25 - Unknown\n"
+                        + "(7) divine criminal - fripSide - 2018-05-16 - Unknown\n"
+                        + "(8) 恋はシュミシュミ - 郷ひろみ - 2018-05-16 - Unknown\n"
+                        + "(9) A or A!? - petit milady - 2018-05-16 - Unknown\n"
+                        + "(10) Lemon - 米津玄師 - 2018-03-14 - Unknown");
     }
 
     @Test
