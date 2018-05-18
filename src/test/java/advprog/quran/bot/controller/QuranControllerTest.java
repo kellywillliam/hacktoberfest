@@ -45,8 +45,9 @@ public class QuranControllerTest {
 
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
-        assertEquals("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيم" +
-                "\nDengan menyebut nama Allah Yang Maha Pemurah lagi Maha Penyayangِ", reply.getText());
+        assertEquals("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيم"
+                + "\nDengan menyebut nama Allah Yang"
+                + " Maha Pemurah lagi Maha Penyayang", reply.getText());
     }
 
     @Test

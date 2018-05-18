@@ -21,8 +21,13 @@ public class QuranController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        if (contentText.equalsIgnoreCase("/qs 1:1")) {
+            return new TextMessage("بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيم"
+                    + "\nDengan menyebut nama Allah Yang Maha Pemurah lagi Maha Penyayang");
+        } else {
+            return new TextMessage("error");
+        }
+
     }
 
     @EventMapping
