@@ -49,7 +49,7 @@ public class MusicControllerTest {
                 EventTestUtil.createDummyTextMessage("/vgmdb OST this month");
 
         TextMessage reply = musicController.handleTextMessageEvent(event);
-        
+
         assertTrue(reply.getText().contains("Original Soundtrack"));
         assertTrue(reply.getText().contains("IDR"));
 
@@ -59,7 +59,7 @@ public class MusicControllerTest {
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
-        tweetController.handleDefaultMessage(event);
+        musicController.handleDefaultMessage(event);
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
