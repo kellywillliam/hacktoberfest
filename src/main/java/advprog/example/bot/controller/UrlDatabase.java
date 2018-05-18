@@ -31,7 +31,15 @@ public class UrlDatabase {
 
     private void loadingAllData() {
         try {
-            //TODO load from csv database
+            this.reader = new BufferedReader(new FileReader(DATA_PATH));
+            String readLine = this.reader.readLine();
+
+            while (readLine != null) {
+                collectFakeNews(readLine);
+                readLine = this.reader.readLine();
+            }
+            System.out.println(listUrl.size());
+            this.reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,13 +47,31 @@ public class UrlDatabase {
 
     private void collectFakeNews(String input) {
         String[] arr = input.split(",");
-        //TODO Collect FakeNews from csv database
+        String url = arr[0].trim();
+        Set<String> types = new HashSet<>();
+        for (int i = 1; i < 4; i++) {
+            String masukan = arr[i].trim();
+            if (!masukan.equals("")) {
+                types.add(masukan);
+            }
+        }
         addToList(url, types);
     }
 	
 	public synchronized String checkUrl(String cmd, String url){
 		String hasil = "http://" + url + "not found in database\n";
-		//TODO check url for private chat
+		if(this.listUrl.containsKey(url)){
+			FakeNews news = this.listUrl.get(url);
+			if(cmd.equals("conspiracy") && news.isConspiracy()){
+				hasil = "http://" + url + " is conspiracy news site\n";
+			} else if(cmd.equals("satire") && news.isSatire()){
+				hasil = "http://" + url + " is satire news site\n";
+			} else if(cmd.equals("fake") && news.isFake()){
+				hasil = "http://" + url + " is fake news site\n";
+			} else {
+				hasil = "http://" + url + " is not " + cmd + " news site\n";
+			}
+		}
 		return hasil;
 	}
 	
@@ -63,7 +89,12 @@ public class UrlDatabase {
     }
 
     private synchronized void addToList(String url, Set<String> types) {
-        //TODO add new item(url -> FakeNews) to Map
+        if (this.listUrl.containsKey(url)) {
+            this.listUrl.get(url).getTypes().addAll(types);
+        } else {
+            FakeNews fake = new FakeNews(url, types);
+            this.listUrl.put(url, fake);
+        }
     }
 
     public synchronized void saveToCsv(String url, String type) {
