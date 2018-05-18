@@ -14,7 +14,7 @@ public class MediaWikiController {
                 + "2. /random_wiki_article";
         this.notEnoughInput = "Pesan yang kamu kirimkan belum sesuai format. "
                 + "Pastikan format yang kamu kirimkan sudah lengkap.";
-        this.addWikiSuccess = "URL berhasil ditambahkan";
+        this.addWikiSuccess = "URL berhasil ditambahkan.";
         this.getAddWikiFail = "URL yang kamu masukkan tidak valid. Silakan coba lagi.";
     }
 
@@ -46,11 +46,7 @@ public class MediaWikiController {
     }
 
     public boolean isValidUrl(String urlGiven) {
-        if (urlGiven.length() % 2 == 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return true;
     }
 
     public void saveUrl(String url) {
