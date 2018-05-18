@@ -45,12 +45,22 @@ public class FakeNewsControllerTest {
 	
     @Test
     void testIsConspiracyNews() {
-        //TODO test for conspiracy news site
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/is_conspiracy http://365usanews.com");
+
+        TextMessage reply = fakeNewsController.handleTextMessageEvent(event);
+		assertTrue(reply.getText().contains("http://365usanews.com"));
+		assertTrue(reply.getText().contains("is conspiracy news site"));
     }
 	
     @Test
     void testIsFakeNews() {
-        //TODO test for fake news site
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/is_fake http://conservativespirit.com");
+
+        TextMessage reply = fakeNewsController.handleTextMessageEvent(event);
+		assertTrue(reply.getText().contains("http://conservativespirit.com"));
+		assertTrue(reply.getText().contains("is fake news site"));
     }
 	
     @Test
