@@ -26,8 +26,18 @@ public class ApiEnterKomputerTest {
     }
 
     @Test
-    void testGetDetailByCategoryAndName() {
-        assertEquals("detail item by category and name", apiEnterKomputer
-                .getDetailItemByCategoryAndName("category","name"));
+    void testSuccessGetDetailByCategoryAndName() {
+        assertEquals("(1) iGame nVidia Geforce GTX 1080 8GB DDR5X - X-TOP-8G -"
+                + " Triple Fan ( Garansi 3 Bln ) - 9900000", apiEnterKomputer
+                .getDetailItemByCategoryAndName("vga","iGame Nvidia Geforce GTX 1080"));
+        assertEquals("No items found!", apiEnterKomputer
+                .getDetailItemByCategoryAndName("vga","barang tidak ada"));
+    }
+
+    @Test
+    void testFailedGetDetailByCategoryAndName() {
+        //test wrong category
+        assertEquals("No such category!", apiEnterKomputer
+                .getDetailItemByCategoryAndName("zzz","iGame Nvidia Geforce GTX 1080"));
     }
 }
