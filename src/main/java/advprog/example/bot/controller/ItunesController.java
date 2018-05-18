@@ -20,7 +20,9 @@ public class ItunesController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-
+        if (contentText.equalsIgnoreCase("hehe")) {
+            return new TextMessage("bacot");
+        }
         String replyText = contentText.replace("/echo", "");
         return new TextMessage(replyText.substring(1));
     }
