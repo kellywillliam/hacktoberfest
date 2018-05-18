@@ -23,7 +23,17 @@ public class FakeNewsController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText().trim();
 		String replyText = "";
-		//TODO check input
+		String[]inputs = contentText.split(" ");
+		replyText = validateInput(inputs);
+		if(replyText.equals("")){
+			String cmd = inputs[0];
+			String url = inputs[1];
+			if(cmd.equals("/add_filter")){
+				newsDb.addFakeNews(url, inputs[2]);
+			} else {
+				replyText = newsDb.checkUrl(cmd.replace("/is_", ""), url);
+			}
+		}
         return new TextMessage(replyText);
     }
 
@@ -34,7 +44,33 @@ public class FakeNewsController {
     }
 
     public String validateInput(String[] inputs) {
-        //TODO validate input
+        String[] cmds = {"/is_fake", "/is_satire", "/is_conspiracy"};
+        String[] types = {"fake", "satire", "conspiracy", "political", "bias", "unreliable"};
+        String wrong = "Wrong input, valid inputs are :\n"
+                + "/is_fake URL\n" + "/is_satire URL\n"
+                + "/is_conspiracy URL\n" + "/add_filter URL TYPE\n"
+                + "Note: URL = news url using HTTP protocol\n"
+                + "      TYPE = fake news type\n";
+
+        if (inputs.length == 2) {
+            boolean validCmd = Arrays.asList(cmds).contains(inputs[0]);
+            if (validCmd && inputs[1].contains("http://")) {
+				inputs[1] = inputs[1].replace("http://", "");
+                return "";
+            }
+        } else if (inputs.length == 3) {
+            if (inputs[0].equals("/add_filter") && inputs[1].contains("http://")) {
+				inputs[1] = inputs[1].replace("http://", "");
+                boolean validType = Arrays.asList(types).contains(inputs[2]);
+                if (validType) {
+                    return "";
+                } else {
+                    return "TYPE values : "
+                            + Arrays.toString(types).replace("[", "").replace("]", "");
+                }
+            }
+        }
+        return wrong;
     }
 
 }
