@@ -46,6 +46,14 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5_version"
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$junit5_version"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.2.0"
+
+    implementation 'com.linecorp.bot:line-bot-spring-boot:1.15.0'
+    implementation 'com.linecorp.bot:line-bot-servlet:1.15.0'
+    implementation 'com.linecorp.bot:line-bot-model:1.15.0'
+    implementation 'com.linecorp.bot:line-bot-api-client:1.15.0'
+
+    implementation "org.json:json:20170516"
+
 }
 
 // Configure Checkstyle plugin
