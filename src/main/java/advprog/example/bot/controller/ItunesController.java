@@ -119,7 +119,7 @@ public class ItunesController {
         JSONObject json = new JSONObject(response.toString());
         String previewUrl = convertJson(json);
         System.out.println(previewUrl);
-        return response.toString();
+        return previewUrl;
     }
 
     public static String convertJson(JSONObject temp) {
