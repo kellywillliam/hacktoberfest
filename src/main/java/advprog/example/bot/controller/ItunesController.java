@@ -53,8 +53,13 @@ public class ItunesController {
 
         if (contentText.equalsIgnoreCase("check")) {
             String previewUrl = connectApi();
-//            replyText(event.getReplyToken(), check);
             replyAudio(event.getReplyToken(), previewUrl);
+        }
+
+        if (contentText.equalsIgnoreCase("checkwoi")) {
+            String previewUrl = connectApi();
+            replyAudio(event.getReplyToken(), previewUrl);
+            return new TextMessage("bacotcuk");
         }
 
         String replyText = contentText.replace("/echo", "");
