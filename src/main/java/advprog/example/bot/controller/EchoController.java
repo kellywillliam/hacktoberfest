@@ -1,5 +1,6 @@
 package advprog.example.bot.controller;
 
+import advprog.example.bot.composer.RandomTriviaComposer;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -21,8 +22,28 @@ public class EchoController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        RandomTriviaComposer triviaComposer = new RandomTriviaComposer();
+
+        if ((contentText.substring(0, 5)).equals("/echo")) {
+            String replyText = contentText.replace("/echo", "");
+            return new TextMessage(replyText.substring(1));
+        }
+
+//        else if (contentText.equals("/add_question")) {
+//
+//            return triviaComposer.addQuestion("hjgj", "gjhghj");
+//            ;
+//        }
+//
+//        else if (contentText.equals("/change_answer")) {
+//            String replyText = "";
+//            return new TextMessage(replyText);
+//        }
+
+        else {
+            String replyText = "";
+            return new TextMessage(replyText);
+        }
     }
 
     @EventMapping
