@@ -2,11 +2,11 @@ package advprog.example.bot.method;
 
 public class ScrapeMethod {
 
-    public static String scrapeGroup(){
+    public static String scrapeGroup() {
         return null;
     }
 
-    public static String scrapePrivate(){
+    public static String scrapePrivate() {
         return null;
     }
 

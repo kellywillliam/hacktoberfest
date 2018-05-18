@@ -16,13 +16,13 @@ public class ScrapeMethodTest {
 
 
     @Test
-    void ScrapeGroupTest(){
+    void scrapeGroupTest() {
         String scr = ScrapeMethod.scrapeGroup();
         assertEquals(null,scr);
     }
 
     @Test
-    void ScrapePrivateTest(){
+    void scrapePrivateTest() {
         String scr = ScrapeMethod.scrapePrivate();
         assertEquals(null,scr);
     }
