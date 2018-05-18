@@ -20,9 +20,24 @@ public class EchoController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        String[] parsedContentText = contentText.split(" ");
+        String replyText = "An error has occured";
+        switch (parsedContentText[0]) {
+            case "/echo":
+                replyText = contentText.replace("/echo", "")
+                        .substring(1);
+                break;
+            case "/enterkomputer":
+                ApiEnterKomputer apiEnterKomputer = new ApiEnterKomputer();
+                String name = contentText.substring(contentText
+                        .lastIndexOf(parsedContentText[2]));
+                replyText = apiEnterKomputer.getDetailItemByCategoryAndName(parsedContentText[1],
+                        name);
+                break;
+            default:
+                break;
+        }
+        return new TextMessage(replyText);
     }
 
     @EventMapping

@@ -48,6 +48,20 @@ public class EchoControllerTest {
         assertEquals("Lorem Ipsum", reply.getText());
     }
 
+
+    @Test
+    void testHandleTextMessageEventEnterKomputer() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil
+                        .createDummyTextMessage("/enterkomputer Vga iGame Nvidia Geforce GTX 1080");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertEquals("(1) iGame nVidia Geforce GTX 1080 8GB DDR5X - X-TOP-8G -"
+                + " Triple Fan ( Garansi 3 Bln ) - 9900000", reply
+                .getText());
+    }
+
     @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
