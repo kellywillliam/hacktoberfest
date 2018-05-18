@@ -54,6 +54,7 @@ public class ItunesController {
         if (contentText.equalsIgnoreCase("check")) {
             String previewUrl = connectApi();
             replyAudio(event.getReplyToken(), previewUrl);
+            return new TextMessage(previewUrl);
         }
 
         if (contentText.equalsIgnoreCase("checkwoi")) {
