@@ -2,19 +2,20 @@ package advprog.example.bot.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import advprog.example.bot.EventTestUtil;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 
-import advprog.example.bot.EventTestUtil;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class HangoutControllerTest {
     @Autowired
@@ -27,11 +28,12 @@ public class HangoutControllerTest {
 
     @Test
     void testHandleTextMessageEvent() {
-        MessageEvent<TextMessageContent> event = EventTestUtil.createDummyTextMessage("/hangout Lorem Ipsum");
+        MessageEvent<TextMessageContent> event = EventTestUtil
+                .createDummyTextMessage("/Hangout kuy");
 
         TextMessage reply = hangoutController.handleTextMessageEvent(event);
 
-        assertEquals("Lorem Ipsum", reply.getText());
+        assertEquals("kuy", reply.getText());
     }
 
     @Test
