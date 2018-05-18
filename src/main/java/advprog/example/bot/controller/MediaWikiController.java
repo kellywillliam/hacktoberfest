@@ -26,6 +26,7 @@ public class MediaWikiController {
             try {
                 String urlGiven = command[1];
                 if (isValidUrl(urlGiven)) {
+                    saveUrl(urlGiven);
                     replyText = addWikiSuccess;
                 } else {
                     replyText = getAddWikiFail;
@@ -50,5 +51,9 @@ public class MediaWikiController {
         } else {
             return false;
         }
+    }
+
+    public void saveUrl(String url) {
+
     }
 }
