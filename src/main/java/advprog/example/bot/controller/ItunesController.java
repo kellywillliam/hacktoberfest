@@ -51,6 +51,11 @@ public class ItunesController {
             return new TextMessage("bacot");
         }
 
+        if (contentText.equalsIgnoreCase("check")) {
+            String previewUrl = connectApi();
+//            replyText(event.getReplyToken(), check);
+            replyAudio(event.getReplyToken(), previewUrl);
+        }
 
         String replyText = contentText.replace("/echo", "");
         return new TextMessage(replyText.substring(1));
@@ -62,21 +67,21 @@ public class ItunesController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    @EventMapping
-    public AudioMessage handleTextMessagetoAudio(MessageEvent<TextMessageContent> event) throws IOException {
-        LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
-                event.getTimestamp(), event.getSource()));
-
-        TextMessageContent content = event.getMessage();
-        String contentText = content.getText();
-
-        if (contentText.equalsIgnoreCase("check")) {
-            String previewUrl = connectApi();
-//            replyText(event.getReplyToken(), check);
-            return new AudioMessage(previewUrl, 10000);
-        }
-        return null;
-    }
+//    @EventMapping
+//    public AudioMessage handleTextMessagetoAudio(MessageEvent<TextMessageContent> event) throws IOException {
+//        LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
+//                event.getTimestamp(), event.getSource()));
+//
+//        TextMessageContent content = event.getMessage();
+//        String contentText = content.getText();
+//
+//        if (contentText.equalsIgnoreCase("check")) {
+//            String previewUrl = connectApi();
+////            replyText(event.getReplyToken(), check);
+//            return new AudioMessage(previewUrl, 10000);
+//        }
+//        return null;
+//    }
 
 //    public static SearchResults search(SearchParameters params) {
 //        URL url;
@@ -123,15 +128,15 @@ public class ItunesController {
     }
 
 
-    public void replyText(String replyToken, String result) {
+    public void replyAudio(String replyToken, String result) {
         lineMessagingClient = LineMessagingClient
                 .builder(channelToken)
                 .build();
 
-        final TextMessage textMessage = new TextMessage(result);
+        final AudioMessage audioMessage = new AudioMessage(result, 10000);
         final ReplyMessage replyMessage = new ReplyMessage(
                 replyToken,
-                textMessage);
+                audioMessage);
 
         final BotApiResponse botApiResponse;
         try {
