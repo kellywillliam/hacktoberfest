@@ -5,11 +5,18 @@ import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.message.AudioMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import jdk.nashorn.internal.parser.JSONParser;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 import org.springframework.beans.factory.annotation.Autowired;
+import sun.misc.JavaUtilJarAccess;
+import sun.nio.ch.Util;
 
 import javax.xml.soap.Text;
 import java.io.BufferedReader;
@@ -18,11 +25,15 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 @LineMessageHandler
 public class ItunesController {
+    public static void main(String[] args) throws IOException{
+        System.out.println(connectApi());
+    }
 
     private static final Logger LOGGER = Logger.getLogger(ItunesController.class.getName());
     private static final String channelToken
@@ -46,11 +57,6 @@ public class ItunesController {
             return new TextMessage("bacot");
         }
 
-        if (contentText.equalsIgnoreCase("check")) {
-            String check = connectApi(event.getReplyToken());
-            replyText(event.getReplyToken(), check);
-            return new TextMessage(check);
-        }
 
         String replyText = contentText.replace("/echo", "");
         return new TextMessage(replyText.substring(1));
@@ -63,9 +69,19 @@ public class ItunesController {
     }
 
     @EventMapping
-    public void handleTextMessagetoAudio(Event event) {
+    public AudioMessage handleTextMessagetoAudio(MessageEvent<TextMessageContent> event) throws IOException {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
+
+        TextMessageContent content = event.getMessage();
+        String contentText = content.getText();
+
+        if (contentText.equalsIgnoreCase("check")) {
+            String previewUrl = connectApi();
+//            replyText(event.getReplyToken(), check);
+            return new AudioMessage(previewUrl, 10000);
+        }
+        return null;
     }
 
 //    public static SearchResults search(SearchParameters params) {
@@ -75,7 +91,7 @@ public class ItunesController {
 //        return parseResponseData(readResponse(connection));
 //    }
 
-    public static String connectApi(String replyToken) throws IOException {
+    public static String connectApi() throws IOException {
         URL url = new URL("https://itunes.apple.com/search?term=jack+johnson");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         // optional default is GET
@@ -94,9 +110,24 @@ public class ItunesController {
             response.append(inputLine);
         }
         in.close();
-        System.out.println(response.toString());
+
+        JSONObject json = new JSONObject(response.toString());
+        String previewUrl = convertJson(json);
+        System.out.println(previewUrl);
         return response.toString();
     }
+
+    public static String convertJson(JSONObject temp) {
+        JSONArray dataExtract = (JSONArray) temp.get("results");
+        Random rand = new Random();
+
+        int n = rand.nextInt(dataExtract.length());
+        System.out.println("length : " + n);
+        JSONObject randomAlbum = (JSONObject) dataExtract.get(n);
+        String preview = (String) randomAlbum.get("previewUrl");
+        return preview;
+    }
+
 
     public void replyText(String replyToken, String result) {
         lineMessagingClient = LineMessagingClient
