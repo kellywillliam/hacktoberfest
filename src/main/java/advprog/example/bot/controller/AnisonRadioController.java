@@ -7,29 +7,16 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.logging.Logger;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.message.BasicNameValuePair;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
 @LineMessageHandler
 public class AnisonRadioController {
     private static final Logger LOGGER = Logger.getLogger(AnisonRadioController.class.getName());
     private HashMap<Integer, ArrayList<String>> map = new HashMap<Integer, ArrayList<String>>();
-
+    private boolean askTitleInputState = false;
+    
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
@@ -48,26 +35,46 @@ public class AnisonRadioController {
                         + " personally to hear the music!");
             }
         }
-
         Integer userId = Integer.parseInt(event.getSource().getUserId());
-        
         if (contentText.equalsIgnoreCase("/add_song")) {
-            //enter state where bot waits for song title 
-            //and put userId to the HashMap for personal song list
-            if (!map.containsKey(userId)) {
-                map.put(userId, new ArrayList<String>());
+            if (askTitleInputState == false) {
+                //enter state where bot waits for song title 
+                //and put userId to the HashMap for personal song list
+                if (!map.containsKey(userId)) {
+                    map.put(userId, new ArrayList<String>());
+                    askTitleInputState = true;
+                    return new TextMessage("Please enter song title");
+                } else {
+                    askTitleInputState = true;
+                    return new TextMessage("Please enter song title");
+                }
+            } else {
+                return new TextMessage("Please enter song title first for us to find");
             }
         } else if (contentText.equalsIgnoreCase("/remove_song")) {
-            //replies as carousel from list of songs this userID has to delete
+            if (askTitleInputState == false) {
+                //replies as carousel from list of songs this userID has to delete
+            } else {
+                return new TextMessage("Please enter song title first for us to find");
+            }
         } else if (contentText.equalsIgnoreCase("/listen_song")) {
-            //replies as carousel from list of songs this userID has to listen
+            if (askTitleInputState == false) {
+                //replies as carousel from list of songs this userID has to listen
+            } else {
+                return new TextMessage("Please enter song title first for us to find");
+            } 
         } else { //else if not a command, it is a song title
-            if (map.containsValue(contentText)) { 
-                //SHOULD BE ARRAYLIST CONTAINING, WILL BE FIXED IN THE FUTURE
-                //checks song title is a Love Live song or not if yes add to his/her map
+            if (askTitleInputState) {
+                if (!map.get(userId).contains(contentText)) { 
+                    //checks song title is a Love Live song or not if yes add to his/her map
+                    map.get(userId).add(contentText);
+                    askTitleInputState = false;
+                    return new TextMessage("Your new song is added");
+                }
             }
         }
-        return new TextMessage("It is not a Love Live song, try to find another one");
+        return new TextMessage("Please enter a valid input, "
+                + "such as /add_song or /remove_song or /listen_song");
     }
 
     @EventMapping
@@ -84,5 +91,9 @@ public class AnisonRadioController {
     public String findMusicUrl(String title) {
         // uses api to find the song url sample from iTunes API
         return null;
+    }
+
+    public HashMap<Integer, ArrayList<String>> getMap() {
+        return map;
     }
 }
