@@ -33,7 +33,12 @@ public class ItunesController {
         }
 
         if (contentText.equalsIgnoreCase("check")) {
-            return new TextMessage(connectApi());
+            String check = connectApi();
+            if(check == null){
+                return new TextMessage("fail");
+            } else {
+                return new TextMessage(connectApi());
+            }
         }
 
         String replyText = contentText.replace("/echo", "");
