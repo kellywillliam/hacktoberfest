@@ -31,7 +31,7 @@ public class FakeNewsController {
                     String cmd = inputs[0];
                     String url = inputs[1];
                     if (cmd.equals("/add_filter")) {
-                        newsDb.addFakeNews(url, inputs[2]);
+                        replyText = newsDb.addFakeNews(url, inputs[2]);
                     } else {
                         replyText = newsDb.checkUrl(cmd.replace("/is_", ""), url);
                     }

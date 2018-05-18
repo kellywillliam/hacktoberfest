@@ -84,11 +84,14 @@ public class UrlDatabase {
         return hasil;
     }
 
-    public synchronized void addFakeNews(String url, String type) {
+    public synchronized String addFakeNews(String url, String type) {
         Set<String> types = new HashSet<>();
         types.add(type);
         this.addToList(url, types);
-        saveToCsv(url, type);
+        if (saveToCsv(url, type)) {
+            return "http://" + url + " added.\n";
+        }
+        return "Failed to add";
     }
 
     private synchronized void addToList(String url, Set<String> types) {
@@ -100,15 +103,16 @@ public class UrlDatabase {
         }
     }
 
-    public synchronized void saveToCsv(String url, String type) {
+    public synchronized boolean saveToCsv(String url, String type) {
         try {
             String content = "\n" + url + "," + type + ", , , ,";
             this.fileWriter = new FileWriter(path, true);
             this.writer = new BufferedWriter(this.fileWriter);
             this.writer.write(content);
             this.writer.close();
+            return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            return false;
         }
     }
 
