@@ -37,11 +37,11 @@ public class AnimeInfoController {
             }
             return new TextMessage(replyText);
         } else {
-            if(contentText.contains("hari ini nonton apa?")){
+            if(contentText.contains("hari ini nonton apa?") || contentText.contains("Hari ini nonton apa?")){
                 replyText= ScrapeMethod.showAnime();
                 return new TextMessage(replyText);
             } else
-            return new TextMessage("hehe");
+            return new TextMessage("kamu wibu");
         }
 
 
