@@ -16,7 +16,9 @@ public class AnimeInfoController {
 
     private static final Logger LOGGER = Logger.getLogger(AnimeInfoController.class.getName());
 
-
+    public static void main(String[] args){
+        System.out.println(ScrapeMethod.showAnime());
+    }
 
 
     @EventMapping
@@ -41,12 +43,9 @@ public class AnimeInfoController {
             return new TextMessage(replyText);
         } else {
             if(contentText.contains("hari ini nonton apa?")){
-                if(ScrapeMethod.showAnime().length() > 0){
-                    return new TextMessage("lala");
-                }else
-                return new TextMessage(ScrapeMethod.showAnime());
+                String show = ScrapeMethod.showAnime().substring(0,10);
+                return new TextMessage(show);
             } else
-
             return new TextMessage("gak ada anime");
         }
 
