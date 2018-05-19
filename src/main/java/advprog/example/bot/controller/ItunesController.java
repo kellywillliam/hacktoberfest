@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -30,7 +31,7 @@ import java.util.logging.Logger;
 @LineMessageHandler
 public class ItunesController {
     public static void main(String[] args) throws IOException{
-        System.out.println(connectApi());
+//        System.out.println(connectApi());
     }
 
     private static final Logger LOGGER = Logger.getLogger(ItunesController.class.getName());
@@ -50,13 +51,15 @@ public class ItunesController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
+        String[] contentTextArr = contentText.split(" ");
 
         if (contentText.equalsIgnoreCase("hehe")) {
             return new TextMessage("bacot");
         }
 
-        if (contentText.equalsIgnoreCase("check")) {
-            JSONObject jsonData = connectApi();
+        if (contentTextArr[0].equalsIgnoreCase("/itunes_preview")) {
+            String[] param = Arrays.copyOfRange(contentTextArr, 1, contentTextArr.length);
+            JSONObject jsonData = connectApi(param);
             SongInformation theSong = getSongInformation(jsonData);
             replyAudio(event.getReplyToken(), theSong);
             return new TextMessage(null);
@@ -72,8 +75,9 @@ public class ItunesController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    public static JSONObject connectApi() throws IOException {
-        URL url = new URL("https://itunes.apple.com/search?term=Ariana+Grande");
+    public static JSONObject connectApi(String[] artistName) throws IOException {
+        String theUrl = urlBuilder(artistName);
+        URL url = new URL(theUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         // optional default is GET
         con.setRequestMethod("GET");
@@ -123,16 +127,24 @@ public class ItunesController {
         return theSong;
     }
 
+    public static String urlBuilder(String[] param) {
+        String base = "https://itunes.apple.com/search?term=";
+        for (int i = 0; i < param.length; i++) {
+            base += param[i] + "+";
+        }
+        return base;
+    }
 
     public void replyAudio(String replyToken, SongInformation theSong) {
 
         lineMessagingClient = LineMessagingClient
                 .builder(channelToken)
                 .build();
-        String content = "This is the album you're looking for: \n"
-                + "Artist Name : " + theSong.artistName + "\n"
-                + "Collection : " + theSong.collectionName + "\n"
-                + "Track Name : " + theSong.trackName + "\n";
+        String content = "Hi! Thanks for using SONGongBOTjdiorg \n"
+                + "This is the album you're looking for: \n\n"
+                + "* Artist Name : " + theSong.artistName + "\n"
+                + "* Collection : " + theSong.collectionName + "\n"
+                + "* Track Name : " + theSong.trackName + "\n";
 
         final TextMessage textMessage = new TextMessage(content);
 
@@ -143,8 +155,8 @@ public class ItunesController {
                 ,"https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png");
 
         List<Message> message = new ArrayList<Message>();
-        message.add(textMessage);
         message.add(imageMessage);
+        message.add(textMessage);
         message.add(audioMessage);
 
         final ReplyMessage replyMessage = new ReplyMessage(
