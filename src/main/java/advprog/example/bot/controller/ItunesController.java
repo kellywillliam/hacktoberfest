@@ -30,9 +30,6 @@ import java.util.logging.Logger;
 
 @LineMessageHandler
 public class ItunesController {
-    public static void main(String[] args) throws IOException{
-//        System.out.println(connectApi());
-    }
 
     private static final Logger LOGGER = Logger.getLogger(ItunesController.class.getName());
     private static final String channelToken
@@ -53,20 +50,24 @@ public class ItunesController {
         String contentText = content.getText();
         String[] contentTextArr = contentText.split(" ");
 
-        if (contentText.equalsIgnoreCase("hehe")) {
-            return new TextMessage("bacot");
-        }
-
         if (contentTextArr[0].equalsIgnoreCase("/itunes_preview")) {
             String[] param = Arrays.copyOfRange(contentTextArr, 1, contentTextArr.length);
             JSONObject jsonData = connectApi(param);
             SongInformation theSong = getSongInformation(jsonData);
             replyAudio(event.getReplyToken(), theSong);
-            return new TextMessage(null);
         }
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        if (contentTextArr[0].equalsIgnoreCase("/help")) {
+            String result = "Haii !! Selamat datang di cmd bantuan SONGongBOTjdiorg\n"
+                    + "Di bot ini kalian bisa menggunakan fitur untuk pencarian preview lagu "
+                    + "berdasarkan nama artis yang kalian masukkan loh.\n"
+                    + "Kalau mau coba, berikut commandnya :\n\n"
+                    + "/itunes_preview 'nama artist'\n"
+                    + "ex : /itunes_preview ariana grande";
+            return new TextMessage(result);
+        }
+
+        return new TextMessage("Input yang anda masukkan salah, coba menu bantuan dengan cmd /help");
     }
 
     @EventMapping
@@ -83,8 +84,8 @@ public class ItunesController {
         con.setRequestMethod("GET");
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
+//        System.out.println("\nSending 'GET' request to URL : " + url);
+//        System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
@@ -100,7 +101,7 @@ public class ItunesController {
         JSONObject songData = getRandomAlbum(json);
 
 
-        System.out.println("From Connect API : previewUrl");
+//        System.out.println("From Connect API : previewUrl");
         return songData;
     }
 
@@ -109,7 +110,7 @@ public class ItunesController {
         Random rand = new Random();
 
         int n = rand.nextInt(dataExtract.length());
-        System.out.println("length : " + n);
+//        System.out.println("length : " + n);
         JSONObject randomAlbum = (JSONObject) dataExtract.get(n);
         return randomAlbum;
     }
@@ -132,7 +133,7 @@ public class ItunesController {
         for (int i = 0; i < param.length; i++) {
             base += param[i] + "+";
         }
-        return base;
+        return base.substring(0,base.length()-1);
     }
 
     public void replyAudio(String replyToken, SongInformation theSong) {
