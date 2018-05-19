@@ -58,13 +58,13 @@ public class ItunesController {
         }
 
         if (contentTextArr[0].equalsIgnoreCase("/help")) {
-            String result = "Haii !! Selamat datang di cmd bantuan SONGongBOTjdiorg\n"
+            String output = "Haii !! Selamat datang di cmd bantuan SONGongBOTjdiorg\n"
                     + "Di bot ini kalian bisa menggunakan fitur untuk pencarian preview lagu "
                     + "berdasarkan nama artis yang kalian masukkan loh.\n"
                     + "Kalau mau coba, berikut commandnya :\n\n"
                     + "/itunes_preview 'nama artist'\n"
                     + "ex : /itunes_preview ariana grande";
-            return new TextMessage(result);
+            return new TextMessage(output);
         }
 
         return new TextMessage("Input yang anda masukkan salah, coba menu bantuan dengan cmd /help");

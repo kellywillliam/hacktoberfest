@@ -71,10 +71,8 @@ public class ItunesControllerTest {
 
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/help");
-
-        TextMessage reply = itunesController.handleTextMessageEvent(event);
-
-        assertEquals(result, reply);
+        TextMessage output = itunesController.handleTextMessageEvent(event);
+        assertEquals(result, output);
     }
 
     @Test
