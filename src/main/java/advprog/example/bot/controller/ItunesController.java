@@ -148,7 +148,7 @@ public class ItunesController {
 
         final TextMessage textMessage = new TextMessage(content);
 
-        final AudioMessage audioMessage = new AudioMessage(theSong.previewUrl, 10000);
+        final AudioMessage audioMessage = new AudioMessage(theSong.previewUrl, 20000);
 
         final ImageMessage imageMessage = new ImageMessage(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png"
