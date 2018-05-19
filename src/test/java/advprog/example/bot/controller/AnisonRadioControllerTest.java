@@ -6,6 +6,10 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.io.IOException;
+
+import org.json.JSONException;
+
 import advprog.example.bot.EventTestUtil;
 
 import com.linecorp.bot.model.event.Event;
@@ -40,7 +44,7 @@ public class AnisonRadioControllerTest extends TestCase {
     }
 
     @Test
-    public void testHandleTextMessageEvent() {
+    public void testHandleTextMessageEvent() throws IOException, JSONException {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Test");
         TextMessage reply = anisonRadioController.handleTextMessageEvent(event);
@@ -89,7 +93,7 @@ public class AnisonRadioControllerTest extends TestCase {
     }
     
     @Test
-    public void testLoveLiveSongOrNot() {
+    public void testLoveLiveSongOrNot() throws IOException, JSONException {
         assertEquals(anisonRadioController.loveLiveSongOrNot("Anything"), null);
     }
     

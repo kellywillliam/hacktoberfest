@@ -7,18 +7,30 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
+import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+
 @LineMessageHandler
 public class AnisonRadioController {
     private static final Logger LOGGER = Logger.getLogger(AnisonRadioController.class.getName());
-    private HashMap<Integer, ArrayList<String>> map = new HashMap<Integer, ArrayList<String>>();
+    private HashMap<Integer, ArrayList<String>> userIDtoSongs = new HashMap<Integer, ArrayList<String>>();
+    private HashMap<String, String> songsToItunesID = new HashMap<String, String>();
     private boolean askTitleInputState = false;
     
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws IOException, JSONException {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -29,10 +41,9 @@ public class AnisonRadioController {
         }
 
         if (event.getSource().toString().contains("groupId")) {
-            if (map.containsValue(contentText)) {
-                //SHOULD BE ARRAYLIST CONTAINING, WILL BE FIXED IN THE FUTURE
-                return new TextMessage("We have that song, please chat me"
-                        + " personally to hear the music!");
+            if (songsToItunesID.containsKey(contentText)) {
+                return new TextMessage("We have that song, please chat me "
+                        + "and add to your songs to listen!");
             }
         }
         Integer userId = Integer.parseInt(event.getSource().getUserId());
@@ -40,8 +51,8 @@ public class AnisonRadioController {
             if (askTitleInputState == false) {
                 //enter state where bot waits for song title 
                 //and put userId to the HashMap for personal song list
-                if (!map.containsKey(userId)) {
-                    map.put(userId, new ArrayList<String>());
+                if (!userIDtoSongs.containsKey(userId)) {
+                	userIDtoSongs.put(userId, new ArrayList<String>());
                     askTitleInputState = true;
                     return new TextMessage("Please enter song title");
                 } else {
@@ -65,11 +76,19 @@ public class AnisonRadioController {
             } 
         } else { //else if not a command, it is a song title
             if (askTitleInputState) {
-                if (!map.get(userId).contains(contentText)) { 
+                if (!songsToItunesID.get(userId).contains(contentText)) { 
                     //checks song title is a Love Live song or not if yes add to his/her map
-                    map.get(userId).add(contentText);
+                	String itunesID = loveLiveSongOrNot(contentText);
+                	if (itunesID != null) {
+                		userIDtoSongs.get(userId).add(contentText);
+                		songsToItunesID.put(contentText, itunesID);
+                	} else {
+                   	    return new TextMessage("Your song is not "
+                	            + "available as a Love Live song, search for another one!");
+                	}
                     askTitleInputState = false;
-                    return new TextMessage("Your new song is added");
+                    return new TextMessage("Your new song is added, your user id: " + userId +
+                    		", your song: " + contentText + ", itunes id: " + songsToItunesID.get(contentText));
                 }
             }
         }
@@ -83,17 +102,51 @@ public class AnisonRadioController {
                 event.getTimestamp(), event.getSource()));
     }
     
-    public String loveLiveSongOrNot(String title) {
+    public String loveLiveSongOrNot(String title) throws IOException, JSONException {
         // uses api to find the song from Love Live School Idol API
-        return null;
+    	JSONObject jsonResponse = readJsonFromUrl("http://schoolido.lu/api/songs/?search=" + title);
+    	String itunesID = "";
+    	
+    	int count = jsonResponse.getInt("count");
+		JSONArray result;
+		if (count >= 1) {
+		    result = jsonResponse.getJSONArray("result");
+		    itunesID = result.getJSONObject(0).getString("itunes_id");
+		} else {
+			itunesID = null;
+		}
+        System.out.println(itunesID);
+
+    	return itunesID;
+    }
+    
+    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+        InputStream is = new URL(url).openStream();
+        try {
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            String jsonText = readAll(rd);
+            JSONObject json = new JSONObject(jsonText);
+            return json;
+        } finally {
+            is.close();
+        }
     }
 
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+          sb.append((char) cp);
+        }
+        return sb.toString();
+      }
+    
     public String findMusicUrl(String title) {
         // uses api to find the song url sample from iTunes API
         return null;
     }
 
     public HashMap<Integer, ArrayList<String>> getMap() {
-        return map;
+        return userIDtoSongs;
     }
 }
