@@ -2,10 +2,14 @@ package advprog.example.bot.controller;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.MessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.AudioMessage;
+import com.linecorp.bot.model.message.ImageMessage;
+import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
@@ -19,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
@@ -73,28 +79,24 @@ public class ItunesController {
                 event.getTimestamp(), event.getSource()));
     }
 
-//    @EventMapping
-//    public AudioMessage handleTextMessagetoAudio(MessageEvent<TextMessageContent> event) throws IOException {
-//        LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
-//                event.getTimestamp(), event.getSource()));
-//
-//        TextMessageContent content = event.getMessage();
-//        String contentText = content.getText();
-//
-//        if (contentText.equalsIgnoreCase("check")) {
-//            String previewUrl = connectApi();
-////            replyText(event.getReplyToken(), check);
-//            return new AudioMessage(previewUrl, 10000);
-//        }
-//        return null;
-//    }
+    public void imageMessageItunesLogo(String replyToken, String result) {
+        lineMessagingClient = LineMessagingClient
+                .builder(channelToken)
+                .build();
 
-//    public static SearchResults search(SearchParameters params) {
-//        URL url;
-//        url = createUrl(searchUrl, buildSearchStringParams(params));
-//        HttpURLConnection connection = openConnection(url);
-//        return parseResponseData(readResponse(connection));
-//    }
+        final AudioMessage audioMessage = new AudioMessage(result, 10000);
+        final ReplyMessage replyMessage = new ReplyMessage(
+                replyToken,
+                audioMessage);
+
+        final BotApiResponse botApiResponse;
+        try {
+            botApiResponse = lineMessagingClient.replyMessage(replyMessage).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            return;
+        }
+    }
 
     public static String connectApi() throws IOException {
         URL url = new URL("https://itunes.apple.com/search?term=jack+johnson");
@@ -135,14 +137,24 @@ public class ItunesController {
 
 
     public void replyAudio(String replyToken, String result) {
+
         lineMessagingClient = LineMessagingClient
                 .builder(channelToken)
                 .build();
 
         final AudioMessage audioMessage = new AudioMessage(result, 10000);
+
+        final ImageMessage imageMessage = new ImageMessage(
+                "https://upload.wikimedia.org/wikipedia/commons/archive/5/55/20180317110057%21Download_on_iTunes.svg"
+                ,"https://upload.wikimedia.org/wikipedia/commons/archive/5/55/20180317110057%21Download_on_iTunes.svg");
+
+        List<Message> message = new ArrayList<Message>();
+        message.add(audioMessage);
+        message.add(imageMessage);
+
         final ReplyMessage replyMessage = new ReplyMessage(
                 replyToken,
-                audioMessage);
+                message);
 
         final BotApiResponse botApiResponse;
         try {
