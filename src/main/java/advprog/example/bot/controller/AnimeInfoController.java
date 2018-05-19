@@ -16,11 +16,6 @@ public class AnimeInfoController {
 
     private static final Logger LOGGER = Logger.getLogger(AnimeInfoController.class.getName());
 
-    public static void main(String[] args){
-        System.out.println(ScrapeMethod.showAnime());
-    }
-
-
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
@@ -46,7 +41,7 @@ public class AnimeInfoController {
                 replyText= ScrapeMethod.showAnime();
                 return new TextMessage(replyText);
             } else
-            return new TextMessage("gak ada anime");
+            return new TextMessage(replyText);
         }
 
 

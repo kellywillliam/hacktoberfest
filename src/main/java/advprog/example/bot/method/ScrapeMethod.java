@@ -10,10 +10,10 @@ import java.util.ArrayList;
 
 public class ScrapeMethod {
 
-    public static Document getDoc() {
+    public static Document getDoc(String link) {
         Document document;
         try {
-            String url = "https://www.livechart.me/";
+            String url = link;
             document = Jsoup.connect(url).get();
             return document;
         } catch (Exception e) {
@@ -22,33 +22,26 @@ public class ScrapeMethod {
         }
     }
 
-    public static Elements scrapeForGroup(Document document) {
-        if (document != null) {
-            Elements content = document.select(".chart");
-            return content;
-        }
-        return null;
-    }
 
     public static String showAnime() {
-        Elements elements = scrapeForGroup(getDoc());
+        Element element = getDoc("https://www.livechart.me/schedule/all")
+                .getElementsByClass("chart compact").get(0);
         String anime = "";
-        ArrayList<String> strTitle = new ArrayList<>();
-        ArrayList<String> strEpisode = new ArrayList<>();
 
-        if (elements == null) {
-            anime = "no anime airing this season";
+        if (element == null) {
+            anime = "no anime airing today";
         } else {
-            for (Element element : elements) {
-                String title = element.getElementsByClass("main-title").html();
-                String episode = element.getElementsByClass("anime-episodes").text();
-                anime = title;
-                //strTitle.add(title);
-                //strEpisode.add(episode);
+            Elements a = element.getElementsByTag("a");
+            for (Element elem: a){
+                String title = elem.getElementsByClass("schedule-card-title").text();
+                anime += title + " \n";
+
+
             }
-            //for( int i = 0; i < strTitle.size(); i ++){
-            //    anime += strTitle.get(i) + " - " + strEpisode.get(i) + "\r\n";
-            //}
+//            String link = a.attr("href");
+//            String episode = getDoc("https://livechart.me/" + link)
+//                    .getElementsByClass("anime-episodes").get(0).text();
+
         }
         return anime;
 
