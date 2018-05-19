@@ -41,7 +41,7 @@ public class AnimeInfoController {
             if(contentText.contains("hari ini nonton apa?")){
                 return new TextMessage(ScrapeMethod.showAnime());
             } else
-            return new TextMessage(contentText);
+            return new TextMessage("gak ada anime");
         }
 
 

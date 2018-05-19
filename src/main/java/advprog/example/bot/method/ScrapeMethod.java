@@ -42,7 +42,7 @@ public class ScrapeMethod {
                 anime += title + " - " + episode + "\n";
             }
         }
-        return anime;
+        return "lalallla";
 
     }
 
