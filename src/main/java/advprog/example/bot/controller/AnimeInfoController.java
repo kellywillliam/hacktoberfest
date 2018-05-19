@@ -28,7 +28,6 @@ public class AnimeInfoController {
             String[] chatText = contentText.split(" ");
             switch (chatText[0].toLowerCase()) {
                 case "/is_airing":
-                    replyText = ScrapeMethod.showAnime();
                     break;
                 case "/echo":
                     replyText = contentText.replace("/echo", "")
@@ -39,6 +38,9 @@ public class AnimeInfoController {
             }
             return new TextMessage(replyText);
         } else {
+            if(contentText.contains("hari ini nonton apa?")){
+                return new TextMessage(ScrapeMethod.showAnime());
+            }
             return new TextMessage(replyText);
         }
 
