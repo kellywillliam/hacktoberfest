@@ -39,10 +39,10 @@ public class ScrapeMethod {
             for (Element element : elements) {
                 String title = element.getElementsByClass("main-title").text();
                 String episode = element.getElementsByClass("anime-episodes").text();
-                anime += title + " - " + episode + "\n";
+                anime += title + "\n";
             }
         }
-        return "lalallla";
+        return anime;
 
     }
 
