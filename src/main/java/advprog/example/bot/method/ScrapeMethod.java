@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.util.ArrayList;
 
 
 public class ScrapeMethod {
@@ -32,15 +33,22 @@ public class ScrapeMethod {
     public static String showAnime() {
         Elements elements = scrapeForGroup(getDoc());
         String anime = "";
+        ArrayList<String> strTitle = new ArrayList<>();
+        ArrayList<String> strEpisode = new ArrayList<>();
 
         if (elements == null) {
             anime = "no anime airing this season";
         } else {
             for (Element element : elements) {
-                String title = element.getElementsByClass("main-title").text();
+                String title = element.getElementsByClass("main-title").html();
                 String episode = element.getElementsByClass("anime-episodes").text();
-                anime += title + "\n";
+                anime = title;
+                //strTitle.add(title);
+                //strEpisode.add(episode);
             }
+            //for( int i = 0; i < strTitle.size(); i ++){
+            //    anime += strTitle.get(i) + " - " + strEpisode.get(i) + "\r\n";
+            //}
         }
         return anime;
 

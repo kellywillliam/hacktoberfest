@@ -43,8 +43,8 @@ public class AnimeInfoController {
             return new TextMessage(replyText);
         } else {
             if(contentText.contains("hari ini nonton apa?")){
-                String show = ScrapeMethod.showAnime().substring(0,10);
-                return new TextMessage(show);
+                replyText= ScrapeMethod.showAnime();
+                return new TextMessage(replyText);
             } else
             return new TextMessage("gak ada anime");
         }
