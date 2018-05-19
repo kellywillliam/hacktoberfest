@@ -79,25 +79,6 @@ public class ItunesController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    public void imageMessageItunesLogo(String replyToken, String result) {
-        lineMessagingClient = LineMessagingClient
-                .builder(channelToken)
-                .build();
-
-        final AudioMessage audioMessage = new AudioMessage(result, 10000);
-        final ReplyMessage replyMessage = new ReplyMessage(
-                replyToken,
-                audioMessage);
-
-        final BotApiResponse botApiResponse;
-        try {
-            botApiResponse = lineMessagingClient.replyMessage(replyMessage).get();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-            return;
-        }
-    }
-
     public static String connectApi() throws IOException {
         URL url = new URL("https://itunes.apple.com/search?term=jack+johnson");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
@@ -145,8 +126,8 @@ public class ItunesController {
         final AudioMessage audioMessage = new AudioMessage(result, 10000);
 
         final ImageMessage imageMessage = new ImageMessage(
-                "https://upload.wikimedia.org/wikipedia/commons/archive/5/55/20180317110057%21Download_on_iTunes.svg"
-                ,"https://upload.wikimedia.org/wikipedia/commons/archive/5/55/20180317110057%21Download_on_iTunes.svg");
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png"
+                ,"https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png");
 
         List<Message> message = new ArrayList<Message>();
         message.add(audioMessage);
