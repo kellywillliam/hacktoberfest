@@ -2,10 +2,8 @@ package advprog.example.bot.controller;
 
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
-import com.linecorp.bot.model.action.MessageAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
-import com.linecorp.bot.model.event.message.MessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.AudioMessage;
 import com.linecorp.bot.model.message.ImageMessage;
@@ -58,15 +56,10 @@ public class ItunesController {
         }
 
         if (contentText.equalsIgnoreCase("check")) {
-            String previewUrl = connectApi();
-            replyAudio(event.getReplyToken(), previewUrl);
-            return new TextMessage(previewUrl);
-        }
-
-        if (contentText.equalsIgnoreCase("checkwoi")) {
-            String previewUrl = connectApi();
-            replyAudio(event.getReplyToken(), previewUrl);
-            return new TextMessage("bacotcuk");
+            JSONObject jsonData = connectApi();
+            SongInformation theSong = getSongInformation(jsonData);
+            replyAudio(event.getReplyToken(), theSong);
+            return new TextMessage(null);
         }
 
         String replyText = contentText.replace("/echo", "");
@@ -79,8 +72,8 @@ public class ItunesController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    public static String connectApi() throws IOException {
-        URL url = new URL("https://itunes.apple.com/search?term=jack+johnson");
+    public static JSONObject connectApi() throws IOException {
+        URL url = new URL("https://itunes.apple.com/search?term=Ariana+Grande");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         // optional default is GET
         con.setRequestMethod("GET");
@@ -100,38 +93,59 @@ public class ItunesController {
         in.close();
 
         JSONObject json = new JSONObject(response.toString());
-        String previewUrl = convertJson(json);
-        System.out.println(previewUrl);
-        return previewUrl;
+        JSONObject songData = getRandomAlbum(json);
+
+
+        System.out.println("From Connect API : previewUrl");
+        return songData;
     }
 
-    public static String convertJson(JSONObject temp) {
+    public static JSONObject getRandomAlbum(JSONObject temp) {
         JSONArray dataExtract = (JSONArray) temp.get("results");
         Random rand = new Random();
 
         int n = rand.nextInt(dataExtract.length());
         System.out.println("length : " + n);
         JSONObject randomAlbum = (JSONObject) dataExtract.get(n);
-        String preview = (String) randomAlbum.get("previewUrl");
-        return preview;
+        return randomAlbum;
+    }
+
+    public SongInformation getSongInformation(JSONObject data){
+
+        String trackName = (String) data.get("trackName");
+        String artistname = (String) data.get("artistName");
+        String preview = (String) data.get("previewUrl");
+        String collection = (String) data.get("collectionName");
+        SongInformation theSong = new SongInformation(
+            artistname, trackName, collection, preview
+        );
+
+        return theSong;
     }
 
 
-    public void replyAudio(String replyToken, String result) {
+    public void replyAudio(String replyToken, SongInformation theSong) {
 
         lineMessagingClient = LineMessagingClient
                 .builder(channelToken)
                 .build();
+        String content = "This is the album you're looking for: \n"
+                + "Artist Name : " + theSong.artistName + "\n"
+                + "Collection : " + theSong.collectionName + "\n"
+                + "Track Name : " + theSong.trackName + "\n";
 
-        final AudioMessage audioMessage = new AudioMessage(result, 10000);
+        final TextMessage textMessage = new TextMessage(content);
+
+        final AudioMessage audioMessage = new AudioMessage(theSong.previewUrl, 10000);
 
         final ImageMessage imageMessage = new ImageMessage(
                 "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png"
                 ,"https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png");
 
         List<Message> message = new ArrayList<Message>();
-        message.add(audioMessage);
+        message.add(textMessage);
         message.add(imageMessage);
+        message.add(audioMessage);
 
         final ReplyMessage replyMessage = new ReplyMessage(
                 replyToken,
@@ -146,6 +160,19 @@ public class ItunesController {
         }
     }
 
+    public class SongInformation {
+        String previewUrl;
+        String trackName;
+        String artistName;
+        String collectionName;
+
+        public SongInformation(String artist, String track, String collection, String url) {
+            this.previewUrl = url;
+            this.artistName = artist;
+            this.trackName = track;
+            this.collectionName = collection;
+        }
+    }
 
 
 
