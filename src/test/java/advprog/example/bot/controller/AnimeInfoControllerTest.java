@@ -70,6 +70,12 @@ public class AnimeInfoControllerTest {
 
         assertEquals("Megalo Box is airing from 2018-04-06 until 0000-00-00", reply.getText());
 
+        event = EventTestUtil.createDummyTextMessage("/is_airing opm 2");
+
+        reply = animeInfoController.handleTextMessageEvent(event);
+
+        assertEquals("Megalo Box is airing from 2018-04-06 until 0000-00-00", reply.getText());
+
 
     }
 

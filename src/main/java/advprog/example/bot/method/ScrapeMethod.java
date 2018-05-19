@@ -100,7 +100,12 @@ public class ScrapeMethod {
                 if (status.equalsIgnoreCase("Currently Airing")) {
                     return title + " is airing from " + startDate + " until " + endDate;
                 } else if (status.equalsIgnoreCase("Not yet aired")) {
-                    return title + " will air starting at " + startDate;
+                    if (startDate.equalsIgnoreCase("0000-00-00")){
+                        return title + " will air soon";
+                    } else {
+                        return title + " will air starting at " + startDate;
+                    }
+
                 } else {
                     return title + " has finished airing at " + endDate;
                 }
