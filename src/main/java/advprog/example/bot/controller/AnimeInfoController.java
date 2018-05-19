@@ -40,8 +40,8 @@ public class AnimeInfoController {
         } else {
             if(contentText.contains("hari ini nonton apa?")){
                 return new TextMessage(ScrapeMethod.showAnime());
-            }
-            return new TextMessage(replyText);
+            } else
+            return new TextMessage("gak ada anime");
         }
 
 
