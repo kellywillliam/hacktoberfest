@@ -76,7 +76,7 @@ public class AnisonRadioController {
             } 
         } else { //else if not a command, it is a song title
             if (askTitleInputState) {
-                if (!songsToItunesID.get(userId).contains(contentText)) { 
+                if (!userIDtoSongs.get(userId).contains(contentText)) { 
                     //checks song title is a Love Live song or not if yes add to his/her map
                 	String itunesID = loveLiveSongOrNot(contentText);
                 	if (itunesID != null) {
@@ -89,6 +89,8 @@ public class AnisonRadioController {
                     askTitleInputState = false;
                     return new TextMessage("Your new song is added, your user id: " + userId +
                     		", your song: " + contentText + ", itunes id: " + songsToItunesID.get(contentText));
+                } else {
+                	return new TextMessage("You have that song already, listen with /listen_song");
                 }
             }
         }
