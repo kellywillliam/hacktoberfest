@@ -15,17 +15,17 @@ public class ScrapeMethodTest {
 
 
 
-    @Test
-    void scrapeGroupTest() {
-        String scr = ScrapeMethod.scrapeGroup();
-        assertEquals(null,scr);
-    }
-
-    @Test
-    void scrapePrivateTest() {
-        String scr = ScrapeMethod.scrapePrivate();
-        assertEquals(null,scr);
-    }
+//    @Test
+//    void scrapeGroupTest() {
+//        String scr = ScrapeMethod.scrapeGroup();
+//        assertEquals(null,scr);
+//    }
+//
+//    @Test
+//    void scrapePrivateTest() {
+//        String scr = ScrapeMethod.scrapePrivate();
+//        assertEquals(null,scr);
+//    }
 
 
 

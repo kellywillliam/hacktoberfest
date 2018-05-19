@@ -4,13 +4,10 @@ import advprog.example.bot.method.ScrapeMethod;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
-import com.linecorp.bot.model.event.source.GroupSource;
 import com.linecorp.bot.model.event.source.UserSource;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-import org.apache.catalina.User;
-
 
 import java.util.logging.Logger;
 
@@ -19,11 +16,7 @@ public class AnimeInfoController {
 
     private static final Logger LOGGER = Logger.getLogger(AnimeInfoController.class.getName());
 
-    public static void main(String[] args){
-        ScrapeMethod scr = new ScrapeMethod();
-        System.out.println(scr.showAnime());
 
-    }
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",

@@ -1,13 +1,10 @@
 package advprog.example.bot.method;
 
-
-
-import com.sun.deploy.net.HttpResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import sun.net.www.http.HttpClient;
+
 
 
 public class ScrapeMethod {
@@ -23,7 +20,8 @@ public class ScrapeMethod {
             return null;
         }
     }
-    public static Elements scrapeForGroup(Document document){
+
+    public static Elements scrapeForGroup(Document document) {
         if (document != null) {
             Elements content = document.select(".chart");
             return content;
@@ -38,7 +36,7 @@ public class ScrapeMethod {
         if (elements == null) {
             anime = "no anime airing this season";
         } else {
-            for (Element element : elements){
+            for (Element element : elements) {
                 String title = element.getElementsByClass("main-title").text();
                 String episode = element.getElementsByClass("anime-episodes").text();
                 anime += title + " - " + episode + "\n";

@@ -46,12 +46,12 @@ public class AnimeInfoControllerTest {
 
         assertEquals("Lorem Ipsum", reply.getText());
 
-        event =
-                EventTestUtil.createDummyTextMessage("/is_airing boruto");
+        //event =
+        //        EventTestUtil.createDummyTextMessage("/is_airing boruto");
 
-        reply = animeInfoController.handleTextMessageEvent(event);
+        //reply = animeInfoController.handleTextMessageEvent(event);
 
-        assertEquals("boruto is airing", reply.getText());
+        //assertEquals("boruto is airing", reply.getText());
 
 
     }
