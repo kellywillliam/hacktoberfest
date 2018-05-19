@@ -41,7 +41,7 @@ public class AnimeInfoController {
                 replyText= ScrapeMethod.showAnime();
                 return new TextMessage(replyText);
             } else
-            return new TextMessage(replyText);
+            return new TextMessage("hehe");
         }
 
 
