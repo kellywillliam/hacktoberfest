@@ -52,7 +52,7 @@ public class AnimeInfoController {
                     if(chatText.length == 2){
                         animeName = chatText[1];
                         replyText = ScrapeMethod.getAnime(animeName);
-                        return new TextMessage(replyText);
+
                     } else {
                         for (int i = 1 ; i < chatText.length; i++){
                             if ( chatText.length - 1 == i){
@@ -62,7 +62,7 @@ public class AnimeInfoController {
                             }
                         }
                         replyText = ScrapeMethod.getAnime(animeName);
-                        return new TextMessage(replyText);
+
                     }
                     break;
                 case "/echo":
