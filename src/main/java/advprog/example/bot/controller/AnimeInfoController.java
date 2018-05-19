@@ -37,11 +37,16 @@ public class AnimeInfoController {
             }
             return new TextMessage(replyText);
         } else {
-            if(contentText.contains("hari ini nonton apa?") || contentText.contains("Hari ini nonton apa?")){
+            if(contentText.contains("hari ini nonton apa") || contentText.contains("Hari ini nonton apa")){
                 replyText= ScrapeMethod.showAnime();
                 return new TextMessage(replyText);
             } else
-            return new TextMessage("kamu wibu");
+                if(contentText.contains("/cmd")){
+                replyText = "halo kawan kawan! jika kamu "
+                        + "ingin tau apa saja anime yg airing "
+                        + "hari ini di jepang, bilang saja 'hari ini nonton apa?";
+                }
+                return new TextMessage(replyText);
         }
 
 
