@@ -50,7 +50,8 @@ public class AnimeInfoControllerTest {
 
         reply = animeInfoController.handleTextMessageEvent(event);
 
-        assertEquals("Naruto has finished airing at 2007-02-08", reply.getText());
+        assertEquals("Naruto has "
+                + "finished airing at 2007-02-08", reply.getText());
 
         event = EventTestUtil.createDummyTextMessage("/is_airing zzzzzzz");
 
@@ -68,7 +69,8 @@ public class AnimeInfoControllerTest {
 
         reply = animeInfoController.handleTextMessageEvent(event);
 
-        assertEquals("Megalo Box is airing from 2018-04-06 until 0000-00-00", reply.getText());
+        assertEquals("Megalo Box is airing from "
+                + "2018-04-06 until 0000-00-00", reply.getText());
 
         event = EventTestUtil.createDummyTextMessage("/is_airing opm 2");
 
@@ -76,11 +78,13 @@ public class AnimeInfoControllerTest {
 
         assertEquals("One Punch Man 2 will air soon", reply.getText());
 
-        event = EventTestUtil.createDummyTextMessage("/is_airing shingeki no kyojin season 3");
+        event = EventTestUtil.createDummyTextMessage("/is_airing "
+                + "shingeki no kyojin season 3");
 
         reply = animeInfoController.handleTextMessageEvent(event);
 
-        assertEquals("Shingeki no Kyojin Season 3 will air starting at 2018-07-23", reply.getText());
+        assertEquals("Shingeki no Kyojin Season 3 "
+                + "will air starting at 2018-07-23", reply.getText());
 
 
     }

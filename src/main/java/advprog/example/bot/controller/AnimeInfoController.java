@@ -58,7 +58,7 @@ public class AnimeInfoController {
             return new TextMessage(replyText);
         } else {
             if (contentText.contains("hari ini nonton apa")
-                    || contentText.contains("Hari in   i nonton apa")) {
+                    || contentText.contains("Hari ini nonton apa")) {
                 replyText = ScrapeMethod.showAnime();
                 return new TextMessage(replyText);
             } else if (contentText.contains("/cmd")) {
