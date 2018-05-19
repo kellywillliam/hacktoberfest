@@ -5,7 +5,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import java.util.ArrayList;
 
 
 public class ScrapeMethod {
@@ -32,15 +31,12 @@ public class ScrapeMethod {
             anime = "no anime airing today";
         } else {
             Elements a = element.getElementsByTag("a");
-            for (Element elem: a){
+            for (Element elem: a) {
                 String title = elem.getElementsByClass("schedule-card-title").text();
                 anime += title + " \n";
 
 
             }
-//            String link = a.attr("href");
-//            String episode = getDoc("https://livechart.me/" + link)
-//                    .getElementsByClass("anime-episodes").get(0).text();
 
         }
         return anime;
