@@ -45,7 +45,30 @@ public class AnimeInfoControllerTest {
         TextMessage reply = animeInfoController.handleTextMessageEvent(event);
 
         assertEquals("Lorem Ipsum", reply.getText());
-        
+
+        event = EventTestUtil.createDummyTextMessage("/is_airing naruto");
+
+        reply = animeInfoController.handleTextMessageEvent(event);
+
+        assertEquals("Naruto has finished airing at 2007-02-08", reply.getText());
+
+        event = EventTestUtil.createDummyTextMessage("/is_airing zzzzzzz");
+
+        reply = animeInfoController.handleTextMessageEvent(event);
+
+        assertEquals("anime cannot be fouund weebo", reply.getText());
+
+        event = EventTestUtil.createDummyTextMessage("/is_airing");
+
+        reply = animeInfoController.handleTextMessageEvent(event);
+
+        assertEquals("anime cannot be fouund weebo", reply.getText());
+
+        event = EventTestUtil.createDummyTextMessage("/is_airing megalo box");
+
+        reply = animeInfoController.handleTextMessageEvent(event);
+
+        assertEquals("Megalo Box is airing from 2018-04-06 until 0000-00-00", reply.getText());
 
 
     }
