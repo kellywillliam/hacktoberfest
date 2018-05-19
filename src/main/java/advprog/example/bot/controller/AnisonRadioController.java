@@ -25,7 +25,7 @@ import org.json.JSONException;
 @LineMessageHandler
 public class AnisonRadioController {
     private static final Logger LOGGER = Logger.getLogger(AnisonRadioController.class.getName());
-    private HashMap<Integer, ArrayList<String>> userIDtoSongs = new HashMap<Integer, ArrayList<String>>();
+    private HashMap<String, ArrayList<String>> userIDtoSongs = new HashMap<String, ArrayList<String>>();
     private HashMap<String, String> songsToItunesID = new HashMap<String, String>();
     private boolean askTitleInputState = false;
     
@@ -46,7 +46,7 @@ public class AnisonRadioController {
                         + "and add to your songs to listen!");
             }
         }
-        Integer userId = Integer.parseInt(event.getSource().getUserId());
+        String userId = event.getSource().getUserId();
         if (contentText.equalsIgnoreCase("/add_song")) {
             if (askTitleInputState == false) {
                 //enter state where bot waits for song title 
@@ -146,7 +146,7 @@ public class AnisonRadioController {
         return null;
     }
 
-    public HashMap<Integer, ArrayList<String>> getMap() {
+    public HashMap<String, ArrayList<String>> getMap() {
         return userIDtoSongs;
     }
 }
