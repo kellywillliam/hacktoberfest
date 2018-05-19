@@ -74,8 +74,6 @@ public class ScrapeMethod {
             return "anime cannot be fouund weebo";
         } else {
             JSONObject xmlJsonObj = XML.toJSONObject(response.getBody());
-            //String jsonPrettyPrintString = xmlJSONObj.toString(4);
-            //return jsonPrettyPrintString;
             try {
                 JSONArray entryArr = xmlJsonObj.getJSONObject("anime")
                         .getJSONArray("entry");
@@ -100,7 +98,7 @@ public class ScrapeMethod {
                 if (status.equalsIgnoreCase("Currently Airing")) {
                     return title + " is airing from " + startDate + " until " + endDate;
                 } else if (status.equalsIgnoreCase("Not yet aired")) {
-                    if (startDate.equalsIgnoreCase("0000-00-00")){
+                    if (startDate.equalsIgnoreCase("0000-00-00")) {
                         return title + " will air soon";
                     } else {
                         return title + " will air starting at " + startDate;
