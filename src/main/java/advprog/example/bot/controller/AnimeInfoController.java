@@ -29,9 +29,9 @@ public class AnimeInfoController {
         switch (chatText[0].toLowerCase()) {
             case "/is_airing":
                 if (event.getSource() instanceof GroupSource) {
-                    replyText = contentText;
+                    replyText = contentText + " Group";
                 } else {
-                    replyText = contentText;
+                    replyText = contentText + " Private";
                 }
                 break;
             case "/echo":
