@@ -6,6 +6,7 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import org.json.JSONObject;
 
 import java.util.logging.Logger;
 
@@ -19,29 +20,22 @@ public class AnimeInfoController {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
-        boolean group = event.getSource().toString().contains("group");
+        String type = event.getSource().toString();
         String contentText = content.getText();
         String replyText = "";
         String[] chatText = contentText.split(" ");
-        try {
-            switch (chatText[0].toLowerCase()) {
-                case "/is_airing":
-                    replyText = chatText[1] + " is airing";
-                    break;
-                case "nonton":
-                    replyText = "Steins Gate 25";
-                    break;
-                case "/echo":
-                    replyText = contentText.replace("/echo", "")
-                            .substring(1);
-                    break;
-                default:
-                    break;
-            }
-            return new TextMessage(replyText);
-        } catch (Exception ex) {
-            return new TextMessage("api mati");
+        switch (chatText[0].toLowerCase()) {
+            case "/is_airing":
+                replyText = type;
+                break;
+            case "/echo":
+                replyText = contentText.replace("/echo", "")
+                        .substring(1);
+                break;
+            default:
+                break;
         }
+        return new TextMessage(replyText);
 
 
 

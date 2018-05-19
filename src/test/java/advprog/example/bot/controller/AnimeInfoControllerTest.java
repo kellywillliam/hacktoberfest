@@ -46,19 +46,14 @@ public class AnimeInfoControllerTest {
 
         assertEquals("Lorem Ipsum", reply.getText());
 
-        MessageEvent<TextMessageContent> eventTwo =
+        event =
                 EventTestUtil.createDummyTextMessage("/is_airing boruto");
 
-        TextMessage replyTwo = animeInfoController.handleTextMessageEvent(eventTwo);
+        reply = animeInfoController.handleTextMessageEvent(event);
 
-        assertEquals("boruto is airing", replyTwo.getText());
+        assertEquals("boruto is airing", reply.getText());
 
-        MessageEvent<TextMessageContent> eventThree =
-                EventTestUtil.createDummyTextMessage("nonton");
 
-        TextMessage replyThree = animeInfoController.handleTextMessageEvent(eventThree);
-
-        assertEquals("Steins Gate 25", replyThree.getText());
     }
 
     @Test
