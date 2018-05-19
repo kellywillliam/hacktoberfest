@@ -1,5 +1,6 @@
 package advprog.example.bot.controller;
 
+import advprog.example.bot.method.ScrapeMethod;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
@@ -8,6 +9,7 @@ import com.linecorp.bot.model.event.source.UserSource;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+import org.apache.catalina.User;
 
 
 import java.util.logging.Logger;
@@ -17,31 +19,36 @@ public class AnimeInfoController {
 
     private static final Logger LOGGER = Logger.getLogger(AnimeInfoController.class.getName());
 
+    public static void main(String[] args){
+        ScrapeMethod scr = new ScrapeMethod();
+        System.out.println(scr.showAnime());
+
+    }
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
-
         String contentText = content.getText();
         String replyText = "";
-        String[] chatText = contentText.split(" ");
-        switch (chatText[0].toLowerCase()) {
-            case "/is_airing":
-                if (event.getSource() instanceof GroupSource) {
-                    replyText = contentText + " Group";
-                } else {
-                    replyText = contentText + " Private";
-                }
-                break;
-            case "/echo":
-                replyText = contentText.replace("/echo", "")
-                        .substring(1);
-                break;
-            default:
-                break;
+        if (event.getSource() instanceof UserSource) {
+            String[] chatText = contentText.split(" ");
+            switch (chatText[0].toLowerCase()) {
+                case "/is_airing":
+                    replyText = ScrapeMethod.showAnime();
+                    break;
+                case "/echo":
+                    replyText = contentText.replace("/echo", "")
+                            .substring(1);
+                    break;
+                default:
+                    break;
+            }
+            return new TextMessage(replyText);
+        } else {
+            return new TextMessage(replyText);
         }
-        return new TextMessage(replyText);
+
 
 
 
