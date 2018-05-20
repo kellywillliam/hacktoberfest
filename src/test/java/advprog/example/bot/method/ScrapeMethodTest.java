@@ -2,6 +2,7 @@ package advprog.example.bot.method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import org.json.JSONException;
 import org.jsoup.HttpStatusException;
 import org.junit.Rule;
 import org.junit.jupiter.api.Test;
@@ -23,17 +24,20 @@ public class ScrapeMethodTest {
 
 
     @Test
-    void testGetDoc() {
+    void testGetDocException() {
         thrown.expect(HttpStatusException.class);
         ScrapeMethod.getDoc("https://www.livechart.me/lalalalal");
     }
 
     @Test
-    void testShowAnime() {
-        //thrown.expect(HttpStatusException.class);
-        //thrown.expect(NullPointerException.class);
+    void testShowAnimeException() {
+        thrown.expect(HttpStatusException.class);
+        thrown.expect(NullPointerException.class);
         assertEquals("404 not found",ScrapeMethod.showAnime("https://www.livechart.me/lalalalal"));
     }
+
+
+
 
 
 

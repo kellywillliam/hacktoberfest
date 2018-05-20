@@ -1,8 +1,8 @@
 package advprog.example.bot.controller;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -12,7 +12,9 @@ import advprog.example.bot.EventTestUtil;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.GroupSource;
 import com.linecorp.bot.model.message.TextMessage;
+import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,7 +40,7 @@ public class AnimeInfoControllerTest {
     }
 
     @Test
-    void testHandleTextMessageEvent() {
+    void testHandleTextMessageEventPrivate() {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
 
@@ -86,8 +88,29 @@ public class AnimeInfoControllerTest {
         assertEquals("Shingeki no Kyojin Season 3 "
                 + "will air starting at 2018-07-23", reply.getText());
 
+        event = EventTestUtil.createDummyTextMessage("lala");
+
+        reply = animeInfoController.handleTextMessageEvent(event);
+
+        assertEquals("", reply.getText());
+
 
     }
+
+    @Test
+    void testHandleMessageEventGroup() {
+        final MessageEvent event = new MessageEvent<>(
+                "replyToken",
+                new GroupSource("groupId", "userId"),
+                new TextMessageContent("id", "hari ini nonton apa"),
+                Instant.now()
+        );
+
+        TextMessage reply = animeInfoController.handleTextMessageEvent(event);
+        assertTrue(reply.getText().length() > 0);
+
+    }
+
 
     @Test
     void testHandleDefaultMessage() {

@@ -61,12 +61,10 @@ public class AnimeInfoController {
                     || contentText.contains("Hari ini nonton apa")) {
                 replyText = ScrapeMethod.showAnime("https://www.livechart.me/schedule/all");
                 return new TextMessage(replyText);
-            } else if (contentText.contains("/cmd")) {
-                replyText = "halo kawan kawan! jika kamu "
-                        + "ingin tau apa saja anime yg airing "
-                        + "hari ini di jepang, bilang saja 'hari ini nonton apa?";
+            } else {
+                return new TextMessage(replyText);
             }
-            return new TextMessage(replyText);
+
         }
 
 
