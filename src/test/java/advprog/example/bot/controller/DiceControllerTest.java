@@ -15,6 +15,13 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -22,7 +29,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.*;
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
@@ -51,7 +57,8 @@ public class DiceControllerTest {
                 + "-) /coin : untuk memutar coin \n"
                 + "-) /roll XdY : untuk memutar dadu, dengan X-kali lempar dan Y-sided dadu \n"
                 + "-) /multiroll N XdY : untuk memutar dadu, dengan iterasi sebanyak N-kali \n"
-                + "-) /is_lucky NUM XdY : untuk check apakah nilai NUM muncul pada dadu yang anda putar \n";
+                + "-) /is_lucky NUM XdY : untuk check apakah nilai NUM muncul"
+                + " pada dadu yang anda putar \n";
 
         assertEquals(result, reply.getText());
     }
@@ -78,7 +85,7 @@ public class DiceControllerTest {
         assertTrue(format.length == 7);;
 
         List<String> rolledNumber = new ArrayList<String>();
-        String[] rolledNumberStrRaw = Arrays.copyOfRange(format, 2, format.length-1);
+        String[] rolledNumberStrRaw = Arrays.copyOfRange(format, 2, format.length - 1);
         for (int i = 0; i < rolledNumberStrRaw.length; i++) {
             if (rolledNumberStrRaw[i].length() == 3) {
                 rolledNumber.add(rolledNumberStrRaw[i].substring(1,2));
@@ -137,9 +144,6 @@ public class DiceControllerTest {
 
     @Test
     void testMultiRollOutput() {
-        int attempt = 100;
-        int xTimes = 10;
-        int ySided = 6;
         List<Integer> testResult = diceController.multiRolling(100, 10, 6);
         List<Integer> sampleTrue = new ArrayList<Integer>();
         List<Integer> sampleFalse = new ArrayList<Integer>();
@@ -162,11 +166,12 @@ public class DiceControllerTest {
         String[] format = output.split(" ");
 
         //Test 99% True
-        String appear1 = format[format.length-1];
-        assertEquals(output.substring(0, output.length()-appear1.length()-1), testLuckyNumber + " appears");
+        String appear1 = format[format.length - 1];
+        assertEquals(output.substring(0, output.length() - appear1.length() - 1),
+                testLuckyNumber + " appears");
 
         //Test Possibilities of Lucky Number
-        int appear2 = Integer.parseInt(format[format.length-1]);
+        int appear2 = Integer.parseInt(format[format.length - 1]);
         assertTrue(appear2 > 0 && appear2 <= 1000);
 
         //Test 0% True
@@ -181,7 +186,7 @@ public class DiceControllerTest {
         List<Integer> sampleOutput = new ArrayList<Integer>();
         sampleOutput.addAll(new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,5,4,3,2,1)));
         String output = diceController.multiRollOutputBuilder(attempt, 5, 5, sampleOutput);
-        String lines[] = output.split("\\r?\\n");
+        String[] lines = output.split("\\r?\\n");
         assertEquals(lines[0], "5d5 (1, 2, 3, 4, 5)");
         assertEquals(lines[1], "5d5 (5, 4, 3, 2, 1)");
     }

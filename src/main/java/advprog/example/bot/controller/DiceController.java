@@ -8,16 +8,13 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
-import javax.xml.soap.Text;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 @LineMessageHandler
 public class DiceController {
-//    public static void main(String[] args) {
-//        SortedSet<String> sample = new TreeSet<String>(Arrays.asList("head", "tail"));
-//        System.out.println(sample.contains("head"));
-//    }
 
     private static final Logger LOGGER = Logger.getLogger(DiceController.class.getName());
 
@@ -27,7 +24,7 @@ public class DiceController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-        String contentTextArr[] = contentText.split(" ");
+        String[] contentTextArr = contentText.split(" ");
 
         if (contentText.equalsIgnoreCase("/coin")) {
             String result = coinRolling();
@@ -36,7 +33,8 @@ public class DiceController {
 
         if (contentTextArr[0].equalsIgnoreCase("/roll")) {
             String[] format = contentTextArr[1].split("d");
-            List<Integer> diceRoll = diceRolling(Integer.parseInt(format[0]), Integer.parseInt(format[1]));
+            List<Integer> diceRoll = diceRolling(
+                    Integer.parseInt(format[0]), Integer.parseInt(format[1]));
             String result = diceOutputBuilder(
                     diceRoll, Integer.parseInt(format[0]), Integer.parseInt(format[1]));
             return new TextMessage(result);
@@ -46,9 +44,11 @@ public class DiceController {
             String attempt = contentTextArr[1];
             String[] format = contentTextArr[2].split("d");
             List<Integer> result = multiRolling(
-                    Integer.parseInt(attempt), Integer.parseInt(format[0]), Integer.parseInt(format[1]));
+                    Integer.parseInt(attempt),
+                    Integer.parseInt(format[0]), Integer.parseInt(format[1]));
             String output = multiRollOutputBuilder(
-                    Integer.parseInt(attempt), Integer.parseInt(format[0]), Integer.parseInt(format[1]),
+                    Integer.parseInt(attempt),
+                    Integer.parseInt(format[0]), Integer.parseInt(format[1]),
                     result);
             return new TextMessage(output);
         }
@@ -57,7 +57,8 @@ public class DiceController {
             String luckyNum = contentTextArr[1];
             String[] format = contentTextArr[2].split("d");
             String result = isLuckyNumber(
-                    Integer.parseInt(luckyNum), Integer.parseInt(format[0]), Integer.parseInt(format[1]));
+                    Integer.parseInt(luckyNum),
+                    Integer.parseInt(format[0]), Integer.parseInt(format[1]));
             return new TextMessage(result);
         }
 
@@ -65,7 +66,8 @@ public class DiceController {
                 + "-) /coin : untuk memutar coin \n"
                 + "-) /roll XdY : untuk memutar dadu, dengan X-kali lempar dan Y-sided dadu \n"
                 + "-) /multiroll N XdY : untuk memutar dadu, dengan iterasi sebanyak N-kali \n"
-                + "-) /is_lucky NUM XdY : untuk check apakah nilai NUM muncul pada dadu yang anda putar \n");
+                + "-) /is_lucky NUM XdY : untuk check apakah nilai NUM muncul"
+                + " pada dadu yang anda putar \n");
     }
 
     @EventMapping
@@ -79,8 +81,8 @@ public class DiceController {
                 + "-) /coin : untuk memutar coin \n"
                 + "-) /roll XdY : untuk memutar dadu, dengan X-kali lempar dan Y-sided dadu \n"
                 + "-) /multiroll N XdY : untuk memutar dadu, dengan iterasi sebanyak N-kali \n"
-                + "-) /is_lucky NUM XdY : untuk check apakah nilai NUM muncul pada dadu yang anda putar \n"
-                + "Untuk bertanya lagi, silahkan menggunakan command /help");
+                + "-) /is_lucky NUM XdY : untuk check apakah nilai NUM muncul pada dadu yang \n"
+                + "anda putar Untuk bertanya lagi, silahkan menggunakan command /help");
     }
 
     @EventMapping
@@ -97,20 +99,10 @@ public class DiceController {
         return result;
     }
 
-    public static Integer oneRoll(int xSided, int ySided) {
+    public static Integer oneRoll(int xsided, int ysided) {
         Random rand = new Random();
-        return rand.nextInt(ySided) + 1;
+        return rand.nextInt(ysided) + 1;
     }
-
-
-//    public static String multiRolling(int attempt, int x, int y) {
-//        List<Integer> result = new ArrayList<Integer>();
-//        String output = "";
-//        for (int j = 0; j < attempt; j++) {
-//            output += multiRollOutputBuilder(x, y, diceRolling(x, y));
-//        }
-//        return output;
-//    }
 
     public static List<Integer> multiRolling(int attempt, int x, int y) {
         List<Integer> result = new ArrayList<Integer>();
@@ -121,10 +113,9 @@ public class DiceController {
         return result;
     }
 
-
     public static String multiRollOutputBuilder(int attempt, int x, int y, List<Integer> subList) {
         String start = "";
-        int counter = 1 ;
+        int counter = 1;
 
         for (int i = 0; i < attempt; i += 1) {
             start += x + "d" + y + " (";
@@ -133,7 +124,7 @@ public class DiceController {
                 start += subList.get(j) + ", ";
             }
             counter++;
-            start = start.substring(0, start.length()-2) + ")\n";
+            start = start.substring(0, start.length() - 2) + ")\n";
         }
         return start;
 
@@ -145,7 +136,7 @@ public class DiceController {
         for (int i = 0; i < x; i++) {
             base += list.get(i) + ", ";
         }
-        String output = base.substring(0, base.length()-2) + ")";
+        String output = base.substring(0, base.length() - 2) + ")";
         return output;
     }
 
