@@ -137,8 +137,8 @@ public class AnisonRadioController {
     	int count = jsonResponse.getInt("count");
 		JSONArray results;
 		if (count >= 1) {
-		    results = jsonResponse.getJSONArray("result");
-		    itunesID = results.getJSONObject(0).getString("itunes_id");
+		    results = jsonResponse.getJSONArray("results");
+		    itunesID = results.getJSONObject(0).get("itunes_id").toString();
 		} else {
 			itunesID = null;
 		}
