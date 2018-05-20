@@ -59,7 +59,7 @@ public class AnimeInfoController {
         } else {
             if (contentText.contains("hari ini nonton apa")
                     || contentText.contains("Hari ini nonton apa")) {
-                replyText = ScrapeMethod.showAnime();
+                replyText = ScrapeMethod.showAnime("https://www.livechart.me/schedule/all");
                 return new TextMessage(replyText);
             } else if (contentText.contains("/cmd")) {
                 replyText = "halo kawan kawan! jika kamu "

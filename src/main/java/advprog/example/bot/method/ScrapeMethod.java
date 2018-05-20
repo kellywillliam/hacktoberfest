@@ -2,6 +2,7 @@ package advprog.example.bot.method;
 
 import static javax.xml.bind.DatatypeConverter.printBase64Binary;
 
+import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class ScrapeMethod {
 
+
     public static Document getDoc(String link) {
         Document document;
         try {
@@ -34,24 +36,38 @@ public class ScrapeMethod {
     }
 
 
-    public static String showAnime() {
-        Element element = getDoc("https://www.livechart.me/schedule/all")
-                .getElementsByClass("chart compact").get(0);
-        String anime = "";
+    public static String showAnime(String link) {
+        try {
+            Element element = getDoc(link)
+                    .getElementsByClass("chart compact").get(0);
+            String anime = "";
+            ArrayList<String> episodes = new ArrayList<>();
+            ArrayList<String> titles = new ArrayList<>();
+            if (element == null) {
+                anime = "no anime airing today";
+            } else {
+                Elements a = element.getElementsByTag("a");
+                for (Element elem: a) {
+                    String getTitle = elem.getElementsByClass("schedule-card-title").text();
+                    titles.add(getTitle);
 
-        if (element == null) {
-            anime = "no anime airing today";
-        } else {
-            Elements a = element.getElementsByTag("a");
-            for (Element elem: a) {
-                String title = elem.getElementsByClass("schedule-card-title").text();
-                anime += title + " \n";
+                }
+                Elements eps = element.getElementsByClass("schedule-card-countdown");
+                for (Element elem: eps) {
+                    episodes.add(elem.text().substring(0,3).replace("EP",""));
+                }
+
+                for (int i = 0; i < episodes.size();i++) {
+                    anime += titles.get(i) + " " + episodes.get(i) + " \n";
+                }
 
 
             }
-
+            return anime;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "404 not found";
         }
-        return anime;
 
     }
 
