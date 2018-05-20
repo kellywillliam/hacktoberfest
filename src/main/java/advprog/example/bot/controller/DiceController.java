@@ -43,7 +43,7 @@ public class DiceController {
 
         if (contentTextArr[0].equalsIgnoreCase("/multiroll")) {
             String attempt = contentTextArr[1];
-            String[] format = contentTextArr[1].split("d");
+            String[] format = contentTextArr[2].split("d");
             String result = multiRolling(
                     Integer.parseInt(attempt), Integer.parseInt(format[0]), Integer.parseInt(format[1]));
             return new TextMessage(result);
