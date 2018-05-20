@@ -66,7 +66,7 @@ public class DiceController {
     @EventMapping
     public TextMessage handleFollowEvent(FollowEvent event) {
         String replyToken = event.getReplyToken();
-        return new TextMessage("hai makasih udah add gue HHEW")
+        return new TextMessage("hai makasih udah add gue HHEW");
     }
 
     @EventMapping
