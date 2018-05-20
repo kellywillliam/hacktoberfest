@@ -1,11 +1,22 @@
 package advprog.example.bot.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -33,6 +44,7 @@ public class UberController {
     private LineMessagingClient lineMessagingClient;
 
     private static final Logger LOGGER = Logger.getLogger(UberController.class.getName());
+    private static String destination;
     private static double start_latitude;
     private static double start_longitude;
     private static String end_latitude;
@@ -64,8 +76,6 @@ public class UberController {
     	//TODO implement text content handler
     	String cmd = content.getText();
     	if (cmd.equalsIgnoreCase("/uber")) {
-    		
-    	} else if (cmd.equalsIgnoreCase("/add_destination")) {
     		String imageUrl = createUri("static/buttons/1040.jpg");
     		ButtonsTemplate buttonsTemplate = new ButtonsTemplate(
     				imageUrl,
@@ -80,19 +90,13 @@ public class UberController {
     				"Share Location", buttonsTemplate
     				);
     		reply(replyToken, templateMessage);
+    	} else if (cmd.equalsIgnoreCase("/add_destination")) {
+    		
     	} else if (cmd.equalsIgnoreCase("/remove_destination")) {
     		
     	} else {
     		
     	}
-    }
-    
-    private void createMessage() {
-    	//TODO implement message constructor
-    }
-    
-    private void estimatRide() {
-    	//TODO implement function when user asks for estimation from /uber
     }
     
     private void addDestination() {
@@ -120,7 +124,84 @@ public class UberController {
     	this.reply(replyToken, templateMessage);
     }
     
+    private void estimatRide(String replyToken) throws Exception {
+    	//TODO implement function when user asks for estimation from /uber
+    	URL url = new URL("https://api.uber.com/v1.2/estimates/price?start_latitude="
+    			+ start_latitude + "&start_longitude=" + start_longitude + "&end_latitude="
+    			+ end_latitude + "&end_longitude=" + end_longitude);
+    	String serverToken = System.getenv("SERVER_TOKEN");
+    	
+    	HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    	connection.setDoInput(true);
+    	connection.setRequestMethod("GET");
+    	connection.setRequestProperty("Accept-Language", "en_US");
+    	connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+    	connection.setRequestProperty("Authorization", "Token " + serverToken);
+    	
+    	int httpResult = connection.getResponseCode();
+    	String output;
+    	
+    	if (httpResult == HttpURLConnection.HTTP_OK) {
+    		JSONArray jsonArray = readJsonFromConnection(connection);
+    		output = createMessage(JSONArray);
+    	}
+    	else {
+    		output = "There is a problem while processing your request, please try again.";
+    	}
+    	replyText(replyToken, output);
+    }
     
+    private static String readAll(Reader rd) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int cp;
+        while ((cp = rd.read()) != -1) {
+            sb.append((char) cp);
+        }
+        return sb.toString();
+    }
+    
+    public static JSONArray readJsonFromConnection(HttpURLConnection connection) throws IOException, JSONException {
+        BufferedReader rd = 
+                new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
+        String jsonText = readAll(rd);
+        JSONObject jsonObject = new JSONObject(jsonText);
+        JSONArray jsonArray = jsonObject.getJSONArray("prices");
+        return jsonArray;   
+    }
+    
+    private String createMessage(JSONArray jsonArray) throws Exception {
+    	//TODO implement message constructor
+    	if (jsonArray.length() == 0) {
+    		String output = "This service is unavailable for your location";
+    		return output;
+    	}
+    	else {
+    		double distance = jsonArray.getJSONObject(0).getDouble("distance");
+    		StringBuilder message = new StringBuilder(
+    				String.format("Destination: %s (%.2f kilometers from current position)\n\n"
+    				+ "Estimated travel time and fares for each Uber services:\n\n", 
+    				destination, (distance * 1.60934)));
+    		
+    		for (int x = 0; x < jsonArray.length(); x++) {
+    			JSONObject jsonObject = jsonArray.getJSONObject(x);
+    			String name = jsonObject.getString("display_name");
+    			int duration = jsonObject.getInt("duration")/60;
+    			int highEstimate = jsonObject.getInt("high_estimate") * 14084;
+    			int lowEstimate = jsonObject.getInt("low_estimate") * 14084;
+    			String price;
+    			if (highEstimate == lowEstimate) {
+    				price = "" + highEstimate;
+    			}
+    			else {
+    				price = "" + lowEstimate + "-" + highEstimate;
+    			}
+    			String info = String.format("- %s (%s minutes, %s rupiah)\n",
+    					name, duration, price).replaceAll("\"", " ");
+    			message.append(info);
+    		}
+    		return message.toString();
+    	}
+    }
     
     private static String createUri(String path) {
         return ServletUriComponentsBuilder.fromCurrentContextPath()
