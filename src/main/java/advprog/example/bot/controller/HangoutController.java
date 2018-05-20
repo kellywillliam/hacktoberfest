@@ -33,7 +33,7 @@ public class HangoutController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
-    @EventMapping
+/*    @EventMapping
     public void getLocation(){
         final LineMessagingClient client = LineMessagingClient
                 .builder("<channel access token>")
@@ -46,5 +46,5 @@ public class HangoutController {
             e.printStackTrace();
             return;
         }
-  }
+  }*/
 }
