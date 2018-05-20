@@ -58,7 +58,12 @@ public class ScrapeMethod {
                 }
 
                 for (int i = 0; i < episodes.size();i++) {
-                    anime += titles.get(i) + " " + episodes.get(i) + " \n";
+                    if (i == episodes.size() - 1) {
+                        anime += titles.get(i) + " " + episodes.get(i);
+                    } else {
+                        anime += titles.get(i) + " " + episodes.get(i) + " \n";
+                    }
+
                 }
 
 
