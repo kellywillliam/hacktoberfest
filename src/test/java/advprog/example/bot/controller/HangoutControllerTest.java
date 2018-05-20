@@ -32,7 +32,6 @@ public class HangoutControllerTest {
                 .createDummyTextMessage("/Hangout kuy");
 
         TextMessage reply = hangoutController.handleTextMessageEvent(event);
-
         assertEquals("kuy", reply.getText());
     }
 
