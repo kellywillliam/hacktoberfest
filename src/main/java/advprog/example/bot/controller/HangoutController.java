@@ -25,7 +25,7 @@ public class HangoutController {
         String contentText = content.getText();
         
         String replyText = contentText.replace("/Hangout", "");
-        return new TextMessage(replyText);
+        return new TextMessage("halo");
     }
 
     @EventMapping
