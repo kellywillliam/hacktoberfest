@@ -3,6 +3,7 @@ package advprog.example.bot.controller;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.message.AudioMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
 import org.json.JSONObject;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -28,7 +30,7 @@ import org.json.JSONException;
 public class AnisonRadioController {
     private static final Logger LOGGER = Logger.getLogger(AnisonRadioController.class.getName());
     private HashMap<String, ArrayList<String>> userIDtoSongs = new HashMap<String, ArrayList<String>>();
-    private HashMap<String, String> songsToItunesID = new HashMap<String, String>();
+    private HashMap<String, String> songsToPreviewUrl = new HashMap<String, String>();
     private boolean askTitleInputState = false;
     
     @EventMapping
@@ -43,7 +45,7 @@ public class AnisonRadioController {
         }
 
         if (event.getSource().toString().contains("groupId")) {
-            if (songsToItunesID.containsKey(contentText)) {
+            if (songsToPreviewUrl.containsKey(contentText)) {
                 return new TextMessage("We have that song, please chat me "
                         + "and add to your songs to listen!");
             }
@@ -73,6 +75,7 @@ public class AnisonRadioController {
         } else if (contentText.equalsIgnoreCase("/listen_song")) {
             if (askTitleInputState == false) {
                 //replies as carousel from list of songs this userID has to listen
+            	handleAudioMessage();
             } else {
                 return new TextMessage("Please enter song title first for us to find");
             } 
@@ -83,14 +86,15 @@ public class AnisonRadioController {
                 	String itunesID = loveLiveSongOrNot(contentText);
                 	if (itunesID != null) {
                 		userIDtoSongs.get(userId).add(contentText);
-                		songsToItunesID.put(contentText, itunesID);
+                		String previewUrl = findMusicUrl(itunesID); 
+                		songsToPreviewUrl.put(contentText, previewUrl);
                 	} else {
                    	    return new TextMessage("Your song is not "
                 	            + "available as a Love Live song, search for another one!");
                 	}
                     askTitleInputState = false;
                     return new TextMessage("Your new song is added, your user id: " + userId +
-                    		", your song: " + contentText + ", itunes id: " + songsToItunesID.get(contentText));
+                    		", your song: " + contentText + ", itunes id: " + songsToPreviewUrl.get(contentText));
                 } else {
                 	return new TextMessage("You have that song already, listen with /listen_song");
                 }
@@ -98,6 +102,11 @@ public class AnisonRadioController {
         }
         return new TextMessage("Please enter a valid input, "
                 + "such as /add_song or /remove_song or /listen_song");
+    }
+    
+    @EventMapping
+    public AudioMessage handleAudioMessage() {
+        return new AudioMessage(songsToPreviewUrl.get("Snow halation"), 100);
     }
 
     @EventMapping
@@ -111,7 +120,8 @@ public class AnisonRadioController {
     	InputStream is = null;
 		String result = "";
 		JSONObject jsonResponse = null;
-		String url = "http://schoolido.lu/api/songs/?search=Snow%20halation";
+		title = title.replace(" ", "%20");
+		String url = "http://schoolido.lu/api/songs/?search=" + title;
 
 		//http post
 		HttpClient httpclient = HttpClientBuilder.create().build();
@@ -147,9 +157,46 @@ public class AnisonRadioController {
     	return itunesID;
     }
 
-    public String findMusicUrl(String title) {
+    public String findMusicUrl(String title) throws ClientProtocolException, IOException, JSONException {
         // uses api to find the song url sample from iTunes API
-        return null;
+    	 // uses api to find the song from Love Live School Idol API
+    	InputStream is = null;
+		String result = "";
+		JSONObject jsonResponse = null;
+		String url = "https://itunes.apple.com/lookup?id=" + title;
+
+		//http post
+		HttpClient httpclient = HttpClientBuilder.create().build();
+		HttpGet httpget = new HttpGet(url);
+		HttpResponse response = httpclient.execute(httpget);
+		HttpEntity entity = response.getEntity();
+		is = entity.getContent();
+
+		//convert response to string
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF-8"),8);
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line + "\n");
+		}
+		is.close();
+		result=sb.toString();
+
+		//try parse the string to a JSON object
+	    jsonResponse = new JSONObject(result);
+    	String previewUrl = "";
+    	
+    	int count = jsonResponse.getInt("resultCount");
+		JSONArray results;
+		if (count >= 1) {
+		    results = jsonResponse.getJSONArray("results");
+		    previewUrl = results.getJSONObject(0).get("previewUrl").toString();
+		} else {
+			previewUrl = null;
+		}
+        System.out.println(previewUrl);
+
+    	return previewUrl;
     }
 
     public HashMap<String, ArrayList<String>> getMap() {
