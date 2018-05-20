@@ -30,8 +30,8 @@ public class ScrapeMethodTest {
 
     @Test
     void testShowAnime() {
-        thrown.expect(HttpStatusException.class);
-        thrown.expect(NullPointerException.class);
+        //thrown.expect(HttpStatusException.class);
+        //thrown.expect(NullPointerException.class);
         assertEquals("404 not found",ScrapeMethod.showAnime("https://www.livechart.me/lalalalal"));
     }
 
