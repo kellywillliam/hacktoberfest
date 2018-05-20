@@ -1,12 +1,14 @@
 package advprog.example.bot.controller;
 
 import com.linecorp.bot.model.event.Event;
+import com.linecorp.bot.model.event.FollowEvent;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
+import javax.xml.soap.Text;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -59,6 +61,12 @@ public class DiceController {
 
         String replyText = contentText.replace("/echo", "");
         return new TextMessage(replyText.substring(1));
+    }
+
+    @EventMapping
+    public TextMessage handleFollowEvent(FollowEvent event) {
+        String replyToken = event.getReplyToken();
+        return new TextMessage("hai makasih udah add gue HHEW")
     }
 
     @EventMapping
