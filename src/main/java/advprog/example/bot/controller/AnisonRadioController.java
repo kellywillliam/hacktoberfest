@@ -105,10 +105,17 @@ public class AnisonRadioController {
     }
     
     @EventMapping
-    public AudioMessage handleAudioMessage(Event event) {
+    public AudioMessage handleAudioMessage(MessageEvent<TextMessageContent> event) {
     	LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
-        return new AudioMessage(songsToPreviewUrl.get("Snow halation"), 100);
+    	TextMessageContent content = event.getMessage();
+        String contentText = content.getText();
+        
+        if (contentText.equalsIgnoreCase("/listen_song")){
+        	return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
+        }
+        
+        return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
     }
 
     @EventMapping
