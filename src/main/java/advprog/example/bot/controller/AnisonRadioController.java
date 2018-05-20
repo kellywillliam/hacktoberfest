@@ -75,7 +75,7 @@ public class AnisonRadioController {
         } else if (contentText.equalsIgnoreCase("/listen_song")) {
             if (askTitleInputState == false) {
                 //replies as carousel from list of songs this userID has to listen
-            	handleAudioMessage();
+            	handleAudioMessage(event);
             } else {
                 return new TextMessage("Please enter song title first for us to find");
             } 
@@ -104,7 +104,10 @@ public class AnisonRadioController {
                 + "such as /add_song or /remove_song or /listen_song");
     }
     
-    public AudioMessage handleAudioMessage() {
+    @EventMapping
+    public AudioMessage handleAudioMessage(Event event) {
+    	LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
+                event.getTimestamp(), event.getSource()));
         return new AudioMessage(songsToPreviewUrl.get("Snow halation"), 100);
     }
 
