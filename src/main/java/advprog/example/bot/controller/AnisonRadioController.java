@@ -11,14 +11,16 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.json.JSONObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -106,14 +108,37 @@ public class AnisonRadioController {
     
     public String loveLiveSongOrNot(String title) throws IOException, JSONException {
         // uses api to find the song from Love Live School Idol API
-    	JSONObject jsonResponse = readJsonFromUrl("http://schoolido.lu/api/songs/?search=" + title);
+    	InputStream is = null;
+		String result = "";
+		JSONObject jsonResponse = null;
+		String url = "http://schoolido.lu/api/songs/?search=Snow%20halation";
+
+		//http post
+		HttpClient httpclient = HttpClientBuilder.create().build();
+		HttpGet httpget = new HttpGet(url);
+		HttpResponse response = httpclient.execute(httpget);
+		HttpEntity entity = response.getEntity();
+		is = entity.getContent();
+
+		//convert response to string
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF-8"),8);
+		StringBuilder sb = new StringBuilder();
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			sb.append(line + "\n");
+		}
+		is.close();
+		result=sb.toString();
+
+		//try parse the string to a JSON object
+	    jsonResponse = new JSONObject(result);
     	String itunesID = "";
     	
     	int count = jsonResponse.getInt("count");
-		JSONArray result;
+		JSONArray results;
 		if (count >= 1) {
-		    result = jsonResponse.getJSONArray("result");
-		    itunesID = result.getJSONObject(0).getString("itunes_id");
+		    results = jsonResponse.getJSONArray("result");
+		    itunesID = results.getJSONObject(0).getString("itunes_id");
 		} else {
 			itunesID = null;
 		}
@@ -121,28 +146,7 @@ public class AnisonRadioController {
 
     	return itunesID;
     }
-    
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
-        try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
-            return json;
-        } finally {
-            is.close();
-        }
-    }
 
-    private static String readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-          sb.append((char) cp);
-        }
-        return sb.toString();
-      }
-    
     public String findMusicUrl(String title) {
         // uses api to find the song url sample from iTunes API
         return null;
