@@ -75,7 +75,12 @@ public class AnisonRadioController {
         } else if (contentText.equalsIgnoreCase("/listen_song")) {
             if (askTitleInputState == false) {
                 //replies as carousel from list of songs this userID has to listen
-            	handleAudioMessage(event);
+//            	handleAudioMessage(event);
+            	JSONObject json = new JSONObject();
+            	json.put("type", "audio");
+            	json.put("originalContentUrl", "https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a");
+            	json.put("duration", "30000");
+            	return new TextMessage(json.toString());
             } else {
                 return new TextMessage("Please enter song title first for us to find");
             } 
@@ -104,19 +109,19 @@ public class AnisonRadioController {
                 + "such as /add_song or /remove_song or /listen_song");
     }
     
-    @EventMapping
-    public AudioMessage handleAudioMessage(MessageEvent<TextMessageContent> event) {
-    	LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
-                event.getTimestamp(), event.getSource()));
-    	TextMessageContent content = event.getMessage();
-        String contentText = content.getText();
-        
-        if (contentText.equalsIgnoreCase("/listen_song")){
-        	return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
-        }
-        
-        return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
-    }
+//    @EventMapping
+//    public AudioMessage handleAudioMessage(MessageEvent<TextMessageContent> event) {
+//    	LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
+//                event.getTimestamp(), event.getSource()));
+//    	TextMessageContent content = event.getMessage();
+//        String contentText = content.getText();
+//        
+//        if (contentText.equalsIgnoreCase("/listen_song")){
+//        	return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
+//        }
+//        
+//        return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
+//    }
 
     @EventMapping
     public void handleDefaultMessage(Event event) {
