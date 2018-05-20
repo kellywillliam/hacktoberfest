@@ -104,7 +104,6 @@ public class AnisonRadioController {
                 + "such as /add_song or /remove_song or /listen_song");
     }
     
-    @EventMapping
     public AudioMessage handleAudioMessage() {
         return new AudioMessage(songsToPreviewUrl.get("Snow halation"), 100);
     }
