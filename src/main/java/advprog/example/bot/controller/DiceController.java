@@ -61,8 +61,11 @@ public class DiceController {
             return new TextMessage(result);
         }
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        return new TextMessage("Maaf input yang kamu masukin salah, command tersedia :\n "
+                + "-) /coin : untuk memutar coin \n"
+                + "-) /roll XdY : untuk memutar dadu, dengan X-kali lempar dan Y-sided dadu \n"
+                + "-) /multiroll N XdY : untuk memutar dadu, dengan iterasi sebanyak N-kali \n"
+                + "-) /is_lucky NUM XdY : untuk check apakah nilai NUM muncul pada dadu yang anda putar \n");
     }
 
     @EventMapping

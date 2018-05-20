@@ -47,8 +47,13 @@ public class DiceControllerTest {
                 EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
 
         TextMessage reply = diceController.handleTextMessageEvent(event);
+        String result = "Maaf input yang kamu masukin salah, command tersedia :\n "
+                + "-) /coin : untuk memutar coin \n"
+                + "-) /roll XdY : untuk memutar dadu, dengan X-kali lempar dan Y-sided dadu \n"
+                + "-) /multiroll N XdY : untuk memutar dadu, dengan iterasi sebanyak N-kali \n"
+                + "-) /is_lucky NUM XdY : untuk check apakah nilai NUM muncul pada dadu yang anda putar \n";
 
-        assertEquals("Lorem Ipsum", reply.getText());
+        assertEquals(result, reply.getText());
     }
 
     @Test
