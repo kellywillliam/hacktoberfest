@@ -6,40 +6,36 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-import com.sun.org.apache.xerces.internal.xs.StringList;
-import javafx.beans.binding.ObjectExpression;
+
+import java.io.IOException;
+
+import java.util.ArrayList;
+
+import java.util.Calendar;
+import java.util.Date;
+
+import java.util.List;
+import java.util.logging.Logger;
+
 import org.jsoup.Jsoup;
-import org.jsoup.helper.Validate;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.logging.Logger;
 
 @LineMessageHandler
 public class MusicController {
 
     private static final Logger LOGGER = Logger.getLogger(MusicController.class.getName());
 
-
-    public static void main(String[] args) throws IOException {
-
-    }
-
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event)
+            throws IOException {
         Date date = new Date(); // your date
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH) + 1;
-        System.out.println("running...");
         Document document;
         String reply = "";
         try {
@@ -83,7 +79,7 @@ public class MusicController {
                                 number = number * 472;
                             }
                         } catch (Exception e) {
-
+                            continue;
                         }
 
                         hasil += (number + " ");
@@ -101,12 +97,13 @@ public class MusicController {
             }
 
             for (String album : albums) {
-                reply += album + "\n";
+                reply += "running... please wait\n" + album + "\n";
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         System.out.println("done");
         return new TextMessage(reply);
     }
