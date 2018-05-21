@@ -54,19 +54,28 @@ public class ImageCropControllerTest {
         MessageEvent<ImageMessageContent> event =
                 EventTestUtil.createDummyImageMessage("7954184469074");
         assertTrue(imageCropController.isCrop);
-
         TextMessage reply = imageCropController.handleImageMessageEvent(event);
         System.out.println(reply);
     }
 
     @Test
     void testHandleTextMessageEventNotCrop() throws IOException, JSONException {
-        return;
+        ImageCropController imageTagController = new ImageCropController();
+        MessageEvent<TextMessageContent> eventText = EventTestUtil.createDummyTextMessage("/ping");
+        TextMessage replyText = imageTagController.handleTextMessageEvent(eventText);
+        assertEquals(replyText.getText(), "not available");
+        MessageEvent<ImageMessageContent> event =
+                EventTestUtil.createDummyImageMessage("7954184469074");
+        TextMessage reply = imageTagController.handleImageMessageEvent(event);
+        assertEquals(reply.getText(), "succesfully uploaded your image");
     }
 
     @Test
     void testHandleImageDoesNotExist() throws IOException {
-        return;
+        ImageCropController imageCropController = new ImageCropController();
+        String result = imageCropController.uploadContentToImgur();
+        System.out.println(result);
+        assertEquals(result, "file does not exists");
     }
 
 

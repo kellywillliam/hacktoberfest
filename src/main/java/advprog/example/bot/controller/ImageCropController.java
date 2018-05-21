@@ -85,7 +85,7 @@ public class ImageCropController {
                     + "End Coordinate: x2= " + coordinateX2 + " y2= " + coordinateY2 + "\n";
             isCrop = false;
             // delete file
-            File fileToBeDeleted = new File("src/main/resources/imagetags.jpg");
+            File fileToBeDeleted = new File("src/main/resources/imagecrop.jpg");
             fileToBeDeleted.delete();
             return new TextMessage(result);
         }
