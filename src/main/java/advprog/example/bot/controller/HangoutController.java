@@ -30,8 +30,8 @@ public class HangoutController {
 
     private static final Logger LOGGER = Logger.getLogger(HangoutController.class.getName());
     private LineMessagingClient lineMessagingClient;
-    
     private static int flag = 0;
+    
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')", 
@@ -59,7 +59,7 @@ public class HangoutController {
                 event.getTimestamp(), event.getSource()));
     }
     @EventMapping
-    public void handleLocationMessage(MessageEvent<LocationMessageContent> event){
+/*    public void handleLocationMessage(MessageEvent<LocationMessageContent> event){
         LocationMessageContent message = event.getMessage();
         double latitude = message.getLatitude();
         double longitude = message.getLongitude();
@@ -141,7 +141,7 @@ public class HangoutController {
         double distance = earthRadius * c * 1000; // convert to meters
         return distance;
     }
-    
+    */
     private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
         try {
             BotApiResponse apiResponse = lineMessagingClient
@@ -152,6 +152,4 @@ public class HangoutController {
             throw new RuntimeException(e);
         }
     }
-
-
 }
