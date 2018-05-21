@@ -22,14 +22,17 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.springframework.lang.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.*;
 
 @LineMessageHandler
 public class HangoutController {
-
-    private static final Logger LOGGER = Logger.getLogger(HangoutController.class.getName());
+    
+    @Autowired
     private LineMessagingClient lineMessagingClient;
+    private static final Logger LOGGER = Logger.getLogger(HangoutController.class.getName());
     private static int flag = 0;
     
     @EventMapping
@@ -51,7 +54,7 @@ public class HangoutController {
         
         List<Message> messages = new ArrayList<Message>();
         messages.add(new TextMessage(replyText));
-        reply(event.getReplyToken(),Arrays.asList(new TextMessage(replyText)) );
+        this.reply(event.getReplyToken(),Arrays.asList(new TextMessage(replyText)) );
         //return new TextMessage(replyText);
     }
     @EventMapping
