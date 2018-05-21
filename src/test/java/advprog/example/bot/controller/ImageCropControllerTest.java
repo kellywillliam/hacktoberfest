@@ -46,7 +46,17 @@ public class ImageCropControllerTest {
 
     @Test
     void testHandleTextMessageEvent() throws IOException, JSONException {
-        return;
+        ImageCropController imageCropController = new ImageCropController();
+
+        MessageEvent<TextMessageContent> eventText = EventTestUtil.createDummyTextMessage("/crop");
+        TextMessage replyText = imageCropController.handleTextMessageEvent(eventText);
+        assertEquals(replyText.getText(), "Now upload your image");
+        MessageEvent<ImageMessageContent> event =
+                EventTestUtil.createDummyImageMessage("7954184469074");
+        assertTrue(imageCropController.isCrop);
+
+        TextMessage reply = imageCropController.handleImageMessageEvent(event);
+        System.out.println(reply);
     }
 
     @Test
