@@ -45,6 +45,7 @@ public class MusicControllerTest {
 
     @Test
     void testRetrieveSoundtrack() {
+        
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/vgmdb OST this month");
 
