@@ -93,10 +93,10 @@ public class HangoutController {
 
     
     public List<Message> nearestHangout(double latitude,double longitude){
-        String replyText = "Nearest Hangout Place \n";
+        String replyText = "Nearest Hangout Place ";
         String[] reply = getNearestPlace(latitude,longitude);
         for(int i = 1 ; i < 4 ;i++){
-            replyText += reply[i]+"\n";
+            replyText += reply[i]+" ";
         }
         List<Message> messages = new ArrayList<Message>();
         messages.add(new TextMessage(replyText));
