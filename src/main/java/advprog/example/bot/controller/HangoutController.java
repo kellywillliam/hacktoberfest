@@ -1,7 +1,6 @@
 package advprog.example.bot.controller;
 
 import com.linecorp.bot.client.LineMessagingClient;
-import com.linecorp.bot.client.MessageContentResponse;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.ReplyMessage;
@@ -23,7 +22,7 @@ import java.util.logging.Logger;
 
 import org.springframework.lang.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
 
 import java.util.*;
 
@@ -62,8 +61,8 @@ public class HangoutController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
-/*    @EventMapping*/
-/*    public void handleLocationMessage(MessageEvent<LocationMessageContent> event){
+    @EventMapping
+    public void handleLocationMessage(MessageEvent<LocationMessageContent> event){
         LocationMessageContent message = event.getMessage();
         double latitude = message.getLatitude();
         double longitude = message.getLongitude();
@@ -145,7 +144,7 @@ public class HangoutController {
         double distance = earthRadius * c * 1000; // convert to meters
         return distance;
     }
-    */
+    
     private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
         try {
             BotApiResponse apiResponse = lineMessagingClient
