@@ -87,7 +87,7 @@ public class ImageCropController {
             // delete file
 //            File fileToBeDeleted = new File("src/main/resources/imagecrop.jpg");
 //            fileToBeDeleted.delete();
-//            return new TextMessage(result);
+            return new TextMessage(result);
         }
         return new TextMessage("succesfully uploaded your image");
     }
