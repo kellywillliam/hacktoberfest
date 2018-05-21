@@ -85,9 +85,9 @@ public class ImageCropController {
                     + "End Coordinate: x2= " + coordinateX2 + " y2= " + coordinateY2 + "\n";
             isCrop = false;
             // delete file
-            File fileToBeDeleted = new File("src/main/resources/imagecrop.jpg");
-            fileToBeDeleted.delete();
-            return new TextMessage(result);
+//            File fileToBeDeleted = new File("src/main/resources/imagecrop.jpg");
+//            fileToBeDeleted.delete();
+//            return new TextMessage(result);
         }
         return new TextMessage("succesfully uploaded your image");
     }
@@ -117,56 +117,53 @@ public class ImageCropController {
 
     public String uploadContentToImgur() throws IOException {
         File imageFile = new File("src/main/resources/imagecrop.jpg");
-        if (imageFile.exists()) {
-            String basicAuth = "a1966a7fc22c5bc";
-            URL urlObject = new URL("https://api.imgur.com/3/image");
-            HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
-            connection.setRequestProperty("Authorization", "Client-ID " + basicAuth);
+        String basicAuth = "a1966a7fc22c5bc";
+        URL urlObject = new URL("https://api.imgur.com/3/image");
+        HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
+        connection.setRequestProperty("Authorization", "Client-ID " + basicAuth);
 
-            String boundaryString = "--WebKitFormBoundary7MA4YWxkTrZu0gW";
-            connection.setDoOutput(true);
-            connection.setRequestMethod("POST");
-            connection.addRequestProperty(
-                    "Content-Type", "multipart/form-data; boundary=" + boundaryString);
-            OutputStream outputStreamToRequestBody = connection.getOutputStream();
-            BufferedWriter httpRequestBodyWriter =
-                    new BufferedWriter(new OutputStreamWriter(outputStreamToRequestBody));
+        String boundaryString = "--WebKitFormBoundary7MA4YWxkTrZu0gW";
+        connection.setDoOutput(true);
+        connection.setRequestMethod("POST");
+        connection.addRequestProperty(
+                "Content-Type", "multipart/form-data; boundary=" + boundaryString);
+        OutputStream outputStreamToRequestBody = connection.getOutputStream();
+        BufferedWriter httpRequestBodyWriter =
+                new BufferedWriter(new OutputStreamWriter(outputStreamToRequestBody));
 
-            httpRequestBodyWriter.write("\n--" + boundaryString + "\n");
-            String filepath = "src/main/resources/imagecrop.jpg";
-            File fileToUpload = new File(filepath);
-            httpRequestBodyWriter.write("Content-Disposition: form-data;"
-                    + "name=\"image\";"
-                    + "filename=\"" + fileToUpload.getName() + "\""
-                    + "\nContent-Type: image/jpeg\n\n");
-            httpRequestBodyWriter.flush();
+        httpRequestBodyWriter.write("\n--" + boundaryString + "\n");
+        String filepath = "src/main/resources/imagecrop.jpg";
+        File fileToUpload = new File(filepath);
+        httpRequestBodyWriter.write("Content-Disposition: form-data;"
+                + "name=\"image\";"
+                + "filename=\"" + fileToUpload.getName() + "\""
+                + "\nContent-Type: image/jpeg\n\n");
+        httpRequestBodyWriter.flush();
 
-            FileInputStream inputStreamToLogFile = new FileInputStream(fileToUpload);
+        FileInputStream inputStreamToLogFile = new FileInputStream(fileToUpload);
 
-            int bytesRead;
-            byte[] dataBuffer = new byte[1024];
-            while ((bytesRead = inputStreamToLogFile.read(dataBuffer)) != -1) {
-                outputStreamToRequestBody.write(dataBuffer, 0, bytesRead);
-            }
-
-            outputStreamToRequestBody.flush();
-
-            httpRequestBodyWriter.write("\n--" + boundaryString + "--\n");
-            httpRequestBodyWriter.flush();
-
-            outputStreamToRequestBody.close();
-            httpRequestBodyWriter.close();
-
-            BufferedReader connectionInput = new BufferedReader(
-                    new InputStreamReader(connection.getInputStream()));
-
-            String jsonResponse = connectionInput.readLine();
-
-            connectionInput.close();
-
-            return jsonResponse;
+        int bytesRead;
+        byte[] dataBuffer = new byte[1024];
+        while ((bytesRead = inputStreamToLogFile.read(dataBuffer)) != -1) {
+            outputStreamToRequestBody.write(dataBuffer, 0, bytesRead);
         }
-        return "file does not exists";
+
+        outputStreamToRequestBody.flush();
+
+        httpRequestBodyWriter.write("\n--" + boundaryString + "--\n");
+        httpRequestBodyWriter.flush();
+
+        outputStreamToRequestBody.close();
+        httpRequestBodyWriter.close();
+
+        BufferedReader connectionInput = new BufferedReader(
+                new InputStreamReader(connection.getInputStream()));
+
+        String jsonResponse = connectionInput.readLine();
+
+        connectionInput.close();
+
+        return jsonResponse;
     }
 
     public String getImageCrop(String imageUrl) {
