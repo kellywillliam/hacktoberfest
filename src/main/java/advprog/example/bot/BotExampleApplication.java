@@ -12,8 +12,6 @@ public class BotExampleApplication {
 
     private static final Logger LOGGER = Logger.getLogger(BotExampleApplication.class.getName());
     public static void main(String[] args) {
-        HangoutController h = new HangoutController();
-        System.out.println( h.getListCarousel()[0] ) ;
         LOGGER.info("Application starting ...");
         SpringApplication.run(BotExampleApplication.class, args);
     }

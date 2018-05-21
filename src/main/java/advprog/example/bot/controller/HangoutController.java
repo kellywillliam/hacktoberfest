@@ -165,10 +165,10 @@ public class HangoutController {
         c2[2] = c2[2].replace("+", ",");
         CarouselTemplate carouselTemplate = new CarouselTemplate(
                 Arrays.asList(
-                        new CarouselColumn(imageUrl, c1[1], c1[2], Arrays.asList(
+                        new CarouselColumn(imageUrl, c1[1], "place", Arrays.asList(
                                 new PostbackAction("INFO", "hoho")
                         )),
-                        new CarouselColumn(imageUrl, c2[1], c2[2], Arrays.asList(
+                        new CarouselColumn(imageUrl, c1[1], "place", Arrays.asList(
                                 new PostbackAction("INFO",
                                                    "haha")
                         ))
