@@ -155,12 +155,32 @@ public class HangoutController {
         double distance = earthRadius * c * 1000; // convert to meters
         return distance;
     }
-    
     private TemplateMessage carousel(String nama){
+        String[] carouselList = getListCarousel();
+        String imageUrl = createUri("/static/buttons/1040.jpg");
+        String[] c1 = carouselList[0].split(",");
+        String[] c2 = carouselList[1].split(",");
+        String[] c3 = carouselList[2].split(",");
+        c1[2] = c1[2].replace("+", ",");
+        c2[2] = c2[2].replace("+", ",");
+        CarouselTemplate carouselTemplate = new CarouselTemplate(
+                Arrays.asList(
+                        new CarouselColumn(imageUrl, c1[1], c1[2], Arrays.asList(
+                                new PostbackAction("INFO", "hoho")
+                        )),
+                        new CarouselColumn(imageUrl, c2[1], c2[2], Arrays.asList(
+                                new PostbackAction("INFO",
+                                                   "haha")
+                        ))
+                ));
+        
+        TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+        return templateMessage;
+    }
+    
+    public String[] getListCarousel(){
         String csvFile = "hangouts.csv";
         String line;
-        String imageUrl = createUri("/static/buttons/1040.jpg");
-        
         List<Integer> list = getRandom();
         String[] carouselList = new String[3];
         int counter = 1;
@@ -173,35 +193,18 @@ public class HangoutController {
                 if(index == 3) break;
                 if(counter == list.get(0) || counter == list.get(1) || counter == list.get(2)){
                     carouselList[index] = line ;
-                    index++;
+                    index++;System.out.println("a");
                 }
+                counter++;
             }
             br.close();
         }
         catch (IOException e){
             e.printStackTrace();
         }
-        String[] c1 = carouselList[0].split(",");
-        String[] c2 = carouselList[1].split(",");
-        String[] c3 = carouselList[2].split(",");
-        c1[2] = c1[2].replace("+", ",");
-        c2[2] = c2[2].replace("+", ",");
-        CarouselTemplate carouselTemplate = new CarouselTemplate(
-                Arrays.asList(
-                        new CarouselColumn(imageUrl, c1[1], c1[2], Arrays.asList(
-                                new PostbackAction("INFO", "hoho")
-                        )),
-                        new CarouselColumn(imageUrl, c1[1], c1[2], Arrays.asList(
-                                new PostbackAction("INFO",
-                                                   "haha")
-                        ))
-                ));
-        
-        TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
-        return templateMessage;
+        return carouselList;
     }
-    
-    private List<Integer> getRandom(){
+    public List<Integer> getRandom(){
         List<Integer> list = new ArrayList<Integer>();
         int  n = 0;
         while(list.size() < 3){
