@@ -33,7 +33,7 @@ public class HangoutController {
     private static int flag = 0;
     
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')", 
                 event.getTimestamp(),event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -51,8 +51,8 @@ public class HangoutController {
         
         List<Message> messages = new ArrayList<Message>();
         messages.add(new TextMessage(replyText));
-        //reply(event.getReplyToken(),messages);
-        return new TextMessage(replyText);
+        reply(event.getReplyToken(),Arrays.asList(new TextMessage(replyText)) );
+        //return new TextMessage(replyText);
     }
     @EventMapping
     public void handleDefaultMessage(Event event) {
