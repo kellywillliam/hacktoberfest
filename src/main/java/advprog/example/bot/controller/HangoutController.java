@@ -3,11 +3,16 @@ package advprog.example.bot.controller;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.model.message.template.CarouselColumn;
+import com.linecorp.bot.model.message.template.CarouselTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -21,6 +26,7 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.springframework.lang.NonNull;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -73,22 +79,28 @@ public class HangoutController {
             flag = 0;
         }
         else if (flag == 2){
-            messages = new ArrayList<Message>();
-            messages.add(new TextMessage("b"));
+            TemplateMessage template = carousel("a");
+            messages.add(template);
             flag=0;
         }
         reply(event.getReplyToken(),messages);
      }
+    @EventMapping
+    public void handlePostbackEvent(PostbackEvent event) {
+        String replyToken = event.getReplyToken();
+     //   this.replyText(replyToken, "Got postback data " + event.getPostbackContent().getData() + ", param " + event.getPostbackContent().getParams().toString());
+    }
+
     
     public List<Message> nearestHangout(double latitude,double longitude){
-        String replyText = "Nearest Hangout Place /n";
+        String replyText = "Nearest Hangout Place \n";
         String[] reply = getNearestPlace(latitude,longitude);
         for(int i = 1 ; i < 4 ;i++){
-            replyText += reply[i]+"/n";
+            replyText += reply[i]+"\n";
         }
         List<Message> messages = new ArrayList<Message>();
         messages.add(new TextMessage(replyText));
-        replyText = "approximated distance from your location " + reply[reply.length-1];
+        replyText = "Approximated distance from your location " + reply[reply.length-1].split(".")[0] + " metres";
         messages.add(new TextMessage(replyText));
         return messages;
     }
@@ -133,6 +145,7 @@ public class HangoutController {
             return null;
         }
     }
+    
     private double getDistance(double lat1, double lat2, double lon1, double lon2){
         final int earthRadius = 6371; // Radius of the earth
         double latDistance = Math.toRadians(lat2 - lat1);
@@ -143,6 +156,68 @@ public class HangoutController {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = earthRadius * c * 1000; // convert to meters
         return distance;
+    }
+    
+    private TemplateMessage carousel(String nama){
+        String csvFile = "hangouts.csv";
+        String line;
+        String imageUrl = createUri("/static/buttons/1040.jpg");
+        
+        List<Integer> list = getRandom();
+        String[] carouselList = new String[3];
+        int counter = 1;
+        int index = 0;
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(csvFile));
+            line = br.readLine(); //Skip the first line  
+            
+            while ((line = br.readLine()) != null) {
+                if(index == 3) break;
+                if(counter == list.get(0) || counter == list.get(1) || counter == list.get(2)){
+                    carouselList[index] = line ;
+                    index++;
+                }
+            }
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        
+        CarouselTemplate carouselTemplate = new CarouselTemplate(
+                Arrays.asList(
+                        new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+                                new PostbackAction("haha", "hoho")
+                        )),
+                        new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
+                                new PostbackAction("言 hello2",
+                                                   "hello こんにちは",
+                                                   "hello こんにちは")
+                        ))
+                ));
+        
+        TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+        return templateMessage;
+    }
+    
+    private List<Integer> getRandom(){
+        List<Integer> list = new ArrayList<Integer>();
+        int  n = 0;
+        while(list.size() < 3){
+            Random rand = new Random();
+            n = rand.nextInt(15) + 1;
+            while(list.contains(n)){
+                rand = new Random();
+                n = rand.nextInt(15) + 1;
+            }
+           list.add(n);
+        }
+        return list;
+    }
+    
+    private static String createUri(String path) {
+        return ServletUriComponentsBuilder.fromCurrentContextPath()
+                                          .path(path).build()
+                                          .toUriString();
     }
     
     private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
