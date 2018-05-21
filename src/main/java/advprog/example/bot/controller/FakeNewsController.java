@@ -3,6 +3,7 @@ package advprog.example.bot.controller;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.UserSource;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -25,7 +26,7 @@ public class FakeNewsController {
         String replyText = "";
         String[] inputs = contentText.split(" ");
         if (contentText.length() > 0) {
-            if (contentText.charAt(0) == '/') {
+            if (event.getSource() instanceof UserSource) {
                 replyText = validateInput(inputs);
                 if (replyText.equals("")) {
                     String cmd = inputs[0];

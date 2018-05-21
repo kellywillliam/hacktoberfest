@@ -13,10 +13,12 @@ import advprog.example.bot.EventTestUtil;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.GroupSource;
 import com.linecorp.bot.model.message.TextMessage;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.time.Instant;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -74,9 +76,13 @@ public class FakeNewsControllerTest {
 
     @Test
     void testGroupChat() {
-        MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("I opened http://washingtonsblog.com yesterday");
-
+        MessageEvent event = new MessageEvent<>(
+                "replyToken",
+                new GroupSource("groupId", "userId"),
+                new TextMessageContent("id", "I opened http://washingtonsblog.com yesterday"),
+                Instant.now()
+        );
+        
         TextMessage reply = fakeNewsController.handleTextMessageEvent(event);
         assertTrue(reply.getText().contains("http://washingtonsblog.com"));
         assertTrue(reply.getText().contains("satire news site"));
@@ -85,7 +91,7 @@ public class FakeNewsControllerTest {
     @Test
     void testAddFakeNews() {
         MessageEvent<TextMessageContent> event =
-                EventTestUtil.createDummyTextMessage("/add_filter http://asalasal.com fake");
+                EventTestUtil.createDummyTextMessage("/add_filter http://lowell.com fake");
 
         TextMessage reply = fakeNewsController.handleTextMessageEvent(event);
         try {
@@ -97,7 +103,7 @@ public class FakeNewsControllerTest {
                 eof = readLine;
                 readLine = reader.readLine();
             }
-            assertTrue(eof.contains("asalasal.com,fake"));
+            assertTrue(eof.contains("lowell.com,fake"));
             reader.close();
         } catch (Exception e) {
             e.printStackTrace();
