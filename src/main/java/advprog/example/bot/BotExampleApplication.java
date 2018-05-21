@@ -11,9 +11,12 @@ import advprog.example.bot.controller.HangoutController;
 public class BotExampleApplication {
 
     private static final Logger LOGGER = Logger.getLogger(BotExampleApplication.class.getName());
-    private HangoutController hangout;
     public static void main(String[] args) {
-        LOGGER.info("Application starting ...");
-        SpringApplication.run(BotExampleApplication.class, args);
+//        System.setProperty("line.bot.channelSecret", System.getenv("LINE_BOT_CHANNELSECRET"));
+//        System.setProperty("line.bot.channelToken", System.getenv("LINE_BOT_CHANNELTOKEN"));
+//        LOGGER.info("Application starting ...");
+//        SpringApplication.run(BotExampleApplication.class, args);
+         HangoutController hangout = new HangoutController();
+        System.out.println(hangout.nearestHangout(6.111, 160.33333));
     }
 }

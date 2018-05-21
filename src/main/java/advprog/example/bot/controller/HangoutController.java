@@ -31,7 +31,7 @@ public class HangoutController {
     private static final Logger LOGGER = Logger.getLogger(HangoutController.class.getName());
     private LineMessagingClient lineMessagingClient;
     
-    private int flag = 0;
+    private static int flag = 0;
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')", 
@@ -77,7 +77,7 @@ public class HangoutController {
         reply(event.getReplyToken(),messages);
      }
     
-    private List<Message> nearestHangout(double latitude,double longitude){
+    public List<Message> nearestHangout(double latitude,double longitude){
         String replyText = "Nearest Hangout Place /n";
         String[] reply = getNearestPlace(latitude,longitude);
         for(int i = 1 ; i < 4 ;i++){
@@ -90,8 +90,8 @@ public class HangoutController {
         return messages;
     }
 
-    private String[] getNearestPlace(double lat1,double lon1){
-        String csvFile = "hangout.csv";
+    public String[] getNearestPlace(double lat1,double lon1){
+        String csvFile = "hangouts.csv";
         String line;
         String[] csvString = new String[16]; 
         
@@ -120,8 +120,9 @@ public class HangoutController {
             br.close();
             
             String[] partial = csvString[minIndex].split(",");
-            partial[2] = partial[2].replaceAll("+", ",");
-            partial[3] = partial[3].replaceAll("+", ",");
+            System.out.println(partial[2]);
+            partial[2] = partial[2].replace("+", ",");
+            partial[3] = partial[3].replace("+", ",");
             return (Arrays.toString(partial)+ ","+ minimum).split(",");
         }
         catch (IOException e){
@@ -151,5 +152,6 @@ public class HangoutController {
             throw new RuntimeException(e);
         }
     }
+
 
 }
