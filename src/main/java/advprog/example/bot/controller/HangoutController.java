@@ -95,7 +95,9 @@ public class HangoutController {
     public List<Message> nearestHangout(double latitude,double longitude){
         String replyText = "Nearest Hangout Place \n";
         String[] reply = getNearestPlace(latitude,longitude);
-        for(int i = 1 ; i <= 4 ;i++){
+        reply[2] = reply[2].replace("+", ",");
+        reply[3] = reply[3].replace("+", ",");
+        for(int i = 1 ; i <= reply.length-2 ;i++){
             replyText += reply[i]+"\n";
         }
         List<Message> messages = new ArrayList<Message>();
@@ -133,11 +135,7 @@ public class HangoutController {
                 index ++;
             }
             br.close();
-            
             String[] partial = csvString[minIndex].split(",");
-            System.out.println(partial[2]);
-            partial[2] = partial[2].replace("+", ",");
-            partial[3] = partial[3].replace("+", ",");
             return (Arrays.toString(partial)+ ","+ minimum).split(",");
         }
         catch (IOException e){
@@ -182,16 +180,19 @@ public class HangoutController {
         catch (IOException e){
             e.printStackTrace();
         }
-        
+        String[] c1 = carouselList[0].split(",");
+        String[] c2 = carouselList[1].split(",");
+        String[] c3 = carouselList[2].split(",");
+        c2[2] = c2[2].replaceAll("+", "+");
+        c3[2] = "ehe";
         CarouselTemplate carouselTemplate = new CarouselTemplate(
                 Arrays.asList(
-                        new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                new PostbackAction("haha", "hoho")
+                        new CarouselColumn(imageUrl, c1[1], c1[2], Arrays.asList(
+                                new PostbackAction("INFO", "hoho")
                         )),
-                        new CarouselColumn(imageUrl, "hoge", "fuga", Arrays.asList(
-                                new PostbackAction("言 hello2",
-                                                   "hello こんにちは",
-                                                   "hello こんにちは")
+                        new CarouselColumn(imageUrl, c1[1], c1[2], Arrays.asList(
+                                new PostbackAction("INFO",
+                                                   "haha")
                         ))
                 ));
         
