@@ -97,7 +97,7 @@ public class HangoutController {
         String[] reply = getNearestPlace(latitude,longitude);
         reply[2] = reply[2].replace("+", ",");
         reply[3] = reply[3].replace("+", ",");
-        for(int i = 1 ; i <= reply.length-2 ;i++){
+        for(int i = 1 ; i < 4 ;i++){
             replyText += reply[i]+"\n";
         }
         List<Message> messages = new ArrayList<Message>();
@@ -176,6 +176,7 @@ public class HangoutController {
                     index++;
                 }
             }
+            br.close();
         }
         catch (IOException e){
             e.printStackTrace();
@@ -183,8 +184,8 @@ public class HangoutController {
         String[] c1 = carouselList[0].split(",");
         String[] c2 = carouselList[1].split(",");
         String[] c3 = carouselList[2].split(",");
-        c2[2] = c2[2].replaceAll("+", "+");
-        c3[2] = "ehe";
+        c1[2] = c1[2].replace("+", ",");
+        c2[2] = c2[2].replace("+", ",");
         CarouselTemplate carouselTemplate = new CarouselTemplate(
                 Arrays.asList(
                         new CarouselColumn(imageUrl, c1[1], c1[2], Arrays.asList(
