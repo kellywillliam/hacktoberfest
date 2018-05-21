@@ -9,26 +9,31 @@ import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
-
+import java.util.concurrent.ExecutionException;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
 import java.util.logging.Logger;
+
+import org.springframework.lang.NonNull;
+
 import java.util.*;
 
 @LineMessageHandler
 public class HangoutController {
 
     private static final Logger LOGGER = Logger.getLogger(HangoutController.class.getName());
-
+    private LineMessagingClient lineMessagingClient;
+    
     private int flag = 0;
     @EventMapping
-    public ReplyMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')", 
                 event.getTimestamp(),event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -46,7 +51,7 @@ public class HangoutController {
         
         List<Message> messages = new ArrayList<Message>();
         messages.add(new TextMessage(replyText));
-        return new ReplyMessage(event.getReplyToken(),messages);
+        reply(event.getReplyToken(),messages);
     }
     @EventMapping
     public void handleDefaultMessage(Event event) {
@@ -54,7 +59,7 @@ public class HangoutController {
                 event.getTimestamp(), event.getSource()));
     }
     @EventMapping
-    public ReplyMessage handleLocationMessage(MessageEvent<LocationMessageContent> event){
+    public void handleLocationMessage(MessageEvent<LocationMessageContent> event){
         LocationMessageContent message = event.getMessage();
         double latitude = message.getLatitude();
         double longitude = message.getLongitude();
@@ -69,7 +74,7 @@ public class HangoutController {
             messages.add(new TextMessage("b"));
             flag=0;
         }
-        return new ReplyMessage(event.getReplyToken(),messages);
+        reply(event.getReplyToken(),messages);
      }
     
     private List<Message> nearestHangout(double latitude,double longitude){
@@ -135,4 +140,16 @@ public class HangoutController {
         double distance = earthRadius * c * 1000; // convert to meters
         return distance;
     }
+    
+    private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
+        try {
+            BotApiResponse apiResponse = lineMessagingClient
+                    .replyMessage(new ReplyMessage(replyToken, messages))
+                    .get();
+            System.out.printf("Sent messages: " + apiResponse);
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
