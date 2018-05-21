@@ -33,12 +33,12 @@ public class HangoutController {
     private static int flag = 0;
     
     @EventMapping
-    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')", 
                 event.getTimestamp(),event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-        String replyText = "";
+        String replyText = "aa";
         flag = 0; 
         if(contentText.equals("/hangout_kuy")){
             replyText = "Please send your location to me";
@@ -51,7 +51,8 @@ public class HangoutController {
         
         List<Message> messages = new ArrayList<Message>();
         messages.add(new TextMessage(replyText));
-        reply(event.getReplyToken(),messages);
+        //reply(event.getReplyToken(),messages);
+        return new TextMessage(replyText);
     }
     @EventMapping
     public void handleDefaultMessage(Event event) {
