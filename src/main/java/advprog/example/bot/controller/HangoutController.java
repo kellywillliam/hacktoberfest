@@ -38,7 +38,7 @@ public class HangoutController {
                 event.getTimestamp(),event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
-        String replyText = contentText.replace("/Hangout", "");
+        String replyText = "";
         flag = 0; 
         if(contentText.equals("/hangout_kuy")){
             replyText = "Please send your location to me";
@@ -58,7 +58,7 @@ public class HangoutController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
-    @EventMapping
+/*    @EventMapping*/
 /*    public void handleLocationMessage(MessageEvent<LocationMessageContent> event){
         LocationMessageContent message = event.getMessage();
         double latitude = message.getLatitude();
