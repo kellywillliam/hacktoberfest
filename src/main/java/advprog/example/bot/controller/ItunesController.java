@@ -12,9 +12,6 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +24,11 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+
 
 @LineMessageHandler
 public class ItunesController {
@@ -43,7 +45,8 @@ public class ItunesController {
     public LineMessagingClient lineMessagingClient;
 
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws IOException {
+    public TextMessage handleTextMessageEvent(
+            MessageEvent<TextMessageContent> event) throws IOException {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -67,7 +70,8 @@ public class ItunesController {
             return new TextMessage(output);
         }
 
-        return new TextMessage("Input yang anda masukkan salah, coba menu bantuan dengan cmd /help");
+        return new TextMessage(
+                "Input yang anda masukkan salah, coba menu bantuan dengan cmd /help");
     }
 
     @EventMapping
@@ -84,9 +88,6 @@ public class ItunesController {
         con.setRequestMethod("GET");
 
         int responseCode = con.getResponseCode();
-//        System.out.println("\nSending 'GET' request to URL : " + url);
-//        System.out.println("Response Code : " + responseCode);
-
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(con.getInputStream()));
         String inputLine;
@@ -98,10 +99,9 @@ public class ItunesController {
         in.close();
 
         JSONObject json = new JSONObject(response.toString());
+        System.out.println(json);
         JSONObject songData = getRandomAlbum(json);
 
-
-//        System.out.println("From Connect API : previewUrl");
         return songData;
     }
 
@@ -110,12 +110,11 @@ public class ItunesController {
         Random rand = new Random();
 
         int n = rand.nextInt(dataExtract.length());
-//        System.out.println("length : " + n);
         JSONObject randomAlbum = (JSONObject) dataExtract.get(n);
         return randomAlbum;
     }
 
-    public SongInformation getSongInformation(JSONObject data){
+    public SongInformation getSongInformation(JSONObject data) {
 
         String trackName = (String) data.get("trackName");
         String artistname = (String) data.get("artistName");
@@ -133,7 +132,7 @@ public class ItunesController {
         for (int i = 0; i < param.length; i++) {
             base += param[i] + "+";
         }
-        return base.substring(0,base.length()-1);
+        return base.substring(0,base.length() - 1);
     }
 
     public void replyAudio(String replyToken, SongInformation theSong) {
@@ -152,8 +151,8 @@ public class ItunesController {
         final AudioMessage audioMessage = new AudioMessage(theSong.previewUrl, 20000);
 
         final ImageMessage imageMessage = new ImageMessage(
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png"
-                ,"https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png");
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png",
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Download_on_iTunes.svg/800px-Download_on_iTunes.svg.png");
 
         List<Message> message = new ArrayList<Message>();
         message.add(imageMessage);

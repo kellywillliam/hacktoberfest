@@ -15,6 +15,8 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
 
+import java.io.IOException;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.IOException;
 
 @SpringBootTest(properties = "line.bot.handler.enabled=false")
 @ExtendWith(SpringExtension.class)
@@ -49,7 +50,8 @@ public class ItunesControllerTest {
 
         TextMessage reply = itunesController.handleTextMessageEvent(event);
 
-        assertEquals("Input yang anda masukkan salah, coba menu bantuan dengan cmd /help", reply.getText());
+        assertEquals("Input yang anda masukkan salah,"
+                + " coba menu bantuan dengan cmd /help", reply.getText());
     }
 
     @Test
@@ -72,7 +74,7 @@ public class ItunesControllerTest {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/help");
         TextMessage output = itunesController.handleTextMessageEvent(event);
-        assertEquals(result, output);
+        assertEquals(result, output.getText());
     }
 
     @Test
