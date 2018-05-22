@@ -100,7 +100,7 @@ public class BikunController {
 			messages.add(new TextMessage(reply[2]));
 
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + (getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
+					"bus stop " + abs(getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 			reply(event.getReplyToken(), messages);
@@ -116,12 +116,17 @@ public class BikunController {
 			messages.add(new TextMessage(reply[2]));
 
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + (getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
+					"bus stop " + abs(getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 
 			reply(event.getReplyToken(), messages);
 		}
+	}
+
+	private String abs(int i) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private void replyText(@NonNull String replyToken, @NonNull String message) {
