@@ -82,7 +82,7 @@ public class AnisonRadioController {
 //            	json.put("originalContentUrl", "https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a");
 //            	json.put("duration", "30000");
 //            	return new TextMessage(json.toString());
-            	return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
+            	return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 30000);
             } else {
                 return new TextMessage("Please enter song title first for us to find");
             } 
