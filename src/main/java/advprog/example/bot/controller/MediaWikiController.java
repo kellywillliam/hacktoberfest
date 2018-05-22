@@ -10,12 +10,12 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class MediaWikiController {
-    String randomInput;
-    String notEnoughInput;
-    String addWikiSuccess;
-    String addWikiFail;
-    String addWikiOldUrl;
-    String urlList;
+    private String randomInput;
+    private String notEnoughInput;
+    private String addWikiSuccess;
+    private String addWikiInvalidUrl;
+    private String addWikiOldUrl;
+    private String urlList;
 
     public MediaWikiController() {
         this.randomInput = "Halo, terima kasih atas pesan yang dikirimkan. "
@@ -26,7 +26,7 @@ public class MediaWikiController {
         this.notEnoughInput = "Pesan yang kamu kirimkan belum sesuai format. "
                 + "Pastikan format yang kamu kirimkan sudah lengkap.";
         this.addWikiSuccess = "URL berhasil ditambahkan.";
-        this.addWikiFail = "URL yang kamu masukkan tidak valid. Silakan coba lagi.";
+        this.addWikiInvalidUrl = "URL yang kamu masukkan tidak valid. Silakan coba lagi.";
         this.addWikiOldUrl = "URL yang kamu masukkan sudah terdaftar.";
         this.urlList = "./wikiUrl.csv";
     }
@@ -38,24 +38,14 @@ public class MediaWikiController {
         if (command[0].equals("/add_wiki")) {
             try {
                 String urlGiven = command[1];
-                if (isValidUrl(urlGiven)) {
-                    if (isNewUrl(urlGiven)) {
-                        saveUrl(urlGiven);
-                        replyText = addWikiSuccess;
-                    } else {
-                        replyText = addWikiOldUrl;
-                    }
-
-                } else {
-                    replyText = addWikiFail;
-                }
-
+                replyText = addWiki(urlGiven);
             } catch (ArrayIndexOutOfBoundsException e) {
                 replyText = notEnoughInput;
             }
 
         } else if (command[0].equals("/random_wiki_article")) {
             replyText = "test";
+
         } else {
             replyText = randomInput;
         }
@@ -63,7 +53,22 @@ public class MediaWikiController {
         return replyText;
     }
 
-    public boolean isValidUrl(String urlGiven) {
+    private String addWiki(String urlGiven) {
+        String replyText = "";
+        if (isValidUrl(urlGiven)) {
+            if (isNewUrl(urlGiven)) {
+                saveUrl(urlGiven);
+                replyText = addWikiSuccess;
+            } else {
+                replyText = addWikiOldUrl;
+            }
+        } else {
+            replyText = addWikiInvalidUrl;
+        }
+        return replyText;
+    }
+
+    private boolean isValidUrl(String urlGiven) {
         try {
             Wiki wiki = new Wiki(urlGiven);
             wiki.getCategoriesOnPage("Main Page");
@@ -73,7 +78,7 @@ public class MediaWikiController {
         }
     }
 
-    public boolean isNewUrl(String urlGiven) {
+    private boolean isNewUrl(String urlGiven) {
         File file = new File(urlList);
         boolean res = false;
         try {
@@ -95,7 +100,7 @@ public class MediaWikiController {
         return res;
     }
 
-    public void saveUrl(String url) {
+    private void saveUrl(String url) {
         try {
             FileWriter fw = new FileWriter(urlList, true);
             BufferedWriter bw = new BufferedWriter(fw);

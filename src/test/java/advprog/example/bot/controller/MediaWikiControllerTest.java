@@ -44,8 +44,4 @@ class MediaWikiControllerTest {
         }
     }
 
-    @Test
-    void isValidUrl() {
-        assertEquals(true, mwc.isValidUrl("marvel.wikia.com/api.php"));
-    }
 }
