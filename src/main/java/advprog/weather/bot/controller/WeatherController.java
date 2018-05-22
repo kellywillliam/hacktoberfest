@@ -1,12 +1,12 @@
 package advprog.weather.bot.controller;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.client.RestTemplate;
+import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.HashMap;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.client.RestTemplate;
 
 public class WeatherController {
 
@@ -22,7 +22,7 @@ public class WeatherController {
         String kodeNegara = (String) sys.get("country");
 
         String urlNegara = COUNTRYURL + kodeNegara;
-        String jsonNegara = getJSONfromAPI(urlNegara);
+        String jsonNegara = getJsonFromApi(urlNegara);
 
         JSONObject jsonCountry = new JSONObject(jsonNegara);
         String country = (String) jsonCountry.get("name");
@@ -56,7 +56,7 @@ public class WeatherController {
     }
 
 
-    public String getJSONfromAPI(String url) {
+    public String getJsonFromApi(String url) {
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders header = new HttpHeaders();
         return restTemplate.getForObject(url, String.class, header);
@@ -71,19 +71,20 @@ public class WeatherController {
         String jsonData;
         String userUnit;
 
-        if(!userConfig.containsKey(userId)) {
+        if (!userConfig.containsKey(userId)) {
             userConfig.put(userId,"STANDARD");
             userUnit = userConfig.get(userId);
         } else {
             userUnit = userConfig.get(userId);
         }
 
-        if(info.length == 2) {
-            String urlApi =  URL + "lat=" + info[0] + "&lon=" + info[1] + "&units=" + userUnit + APIWEATHERKEY;
-            jsonData = getJSONfromAPI(urlApi);
+        if (info.length == 2) {
+            String urlApi =  URL + "lat=" + info[0] + "&lon="
+                    + info[1] + "&units=" + userUnit + APIWEATHERKEY;
+            jsonData = getJsonFromApi(urlApi);
         } else if (info.length == 1) {
-            String urlAPI = URL + "q=" + info[0] + "&units=" + userUnit + APIWEATHERKEY;
-            jsonData = getJSONfromAPI(urlAPI);
+            String urlApi = URL + "q=" + info[0] + "&units=" + userUnit + APIWEATHERKEY;
+            jsonData = getJsonFromApi(urlApi);
         } else {
             return "Data yang kamu masukkan tidak dapat Sana temukan :( ";
         }
@@ -98,13 +99,13 @@ public class WeatherController {
         String windUnit = null;
         String tempUnit = null;
 
-        if(userConfig.get(userId).equalsIgnoreCase("STANDARD")) {
+        if (userConfig.get(userId).equalsIgnoreCase("STANDARD")) {
             windUnit = "meter/sec";
             tempUnit = "Kelvin";
-        } else if(userConfig.get(userId).equalsIgnoreCase("METRIC")) {
+        } else if (userConfig.get(userId).equalsIgnoreCase("METRIC")) {
             windUnit = "meter/sec";
             tempUnit = "Celcius";
-        } else if(userConfig.get(userId).equalsIgnoreCase("IMPERIAL")) {
+        } else if (userConfig.get(userId).equalsIgnoreCase("IMPERIAL")) {
             windUnit = "miles/hour";
             tempUnit = "Fahrenheit";
         }

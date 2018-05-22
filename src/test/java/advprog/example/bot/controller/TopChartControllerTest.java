@@ -63,11 +63,11 @@ public class TopChartControllerTest {
     @Test
     void topChartDailyTest() {
         assertEquals(chart.topChartDaily("2018-05-16"),
-                "(1) Wake Me Up - TWICE - 2018-05-16 - 56,097\n"
-                        + "(2) BE IN SIGHT - 刀剣男士 formation of つはもの - 2018-05-16 - 6,650\n"
-                        + "(3) 手遅れcaution - =LOVE - 2018-05-16 - 4,342\n"
-                        + "(4) げんきいっぱい(鬼POP激キャッチー最強ハイパーウルトラミュージック)"
-                        + " - ヤバイTシャツ屋さん - 2018-05-16 - Unknown\n"
+                "(1) Wake Me Up - TWICE - 2018-05-16 - Unknown\n"
+                        + "(2) BE IN SIGHT - 刀剣男士 formation of つはもの - 2018-05-16 - Unknown\n"
+                        + "(3) 手遅れcaution - =LOVE - 2018-05-16 - Unknown\n"
+                        + "(4) げんきいっぱい(鬼POP激キャッチー最強ハイパーウル" 
+                        + "トラミュージック) - ヤバイTシャツ屋さん - 2018-05-16 - Unknown\n"
                         + "(5) この道を/会いに行く/坂道を上って/小さな風景 - 小田和正 - 2018-05-02 - Unknown\n"
                         + "(6) シンクロニシティ - 乃木坂46 - 2018-04-25 - Unknown\n"
                         + "(7) divine criminal - fripSide - 2018-05-16 - Unknown\n"
