@@ -1,5 +1,9 @@
 package advprog.example.bot.controller;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -17,6 +21,7 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.message.LocationMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
@@ -46,7 +51,8 @@ public class BikunController {
 		}
 
 		else if (contentText.equalsIgnoreCase("/bikun")) {
-			String replyText = contentText.replace("/bikun", "");
+//			String replyText = contentText.replace("/bikun", "");
+			String replyText = "Please send your location";
 			return new TextMessage(replyText.substring(1));
 		}
 
@@ -69,13 +75,37 @@ public class BikunController {
 
 	}
 
+	private static double userLatitude;
+	private static double userLongitude;
+	
 	@EventMapping
 	public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
 		LocationMessageContent locationMessage = event.getMessage();
-		replyText(event.getReplyToken(),
-				"latitude: " + locationMessage.getLatitude() + ", longitude: " + locationMessage.getLongitude());
+		userLatitude = locationMessage.getLatitude();
+		userLongitude = locationMessage.getLongitude();
+		String replyText = "";
+		String[] reply = getNearestBusStop(userLatitude, userLongitude);
+		
+		reply[2] = reply[2].replace("+", ",");
+		
+		List<Message> messages = new ArrayList<Message>();
+		
+		messages.add(new LocationMessage(reply[1], "Click to view location",
+                Double.parseDouble(reply[3]), Double.parseDouble(reply[4])));
+
+
+		messages.add(new TextMessage(reply[2]));
+		
+		replyText = "Approximated distance from your location "
+                + (int) Double.parseDouble(reply[reply.length - 1]) + " metres";
+        messages.add(new TextMessage(replyText));
+		
+//		replyText(event.getReplyToken(),
+//				"latitude: " + locationMessage.getLatitude() + ", longitude: " + locationMessage.getLongitude());
 		// System.out.println(locationMessage.getLatitude());
 		// System.out.println(locationMessage.getLongitude());
+		
+		reply(event.getReplyToken(), messages);
 	}
 
 	private void replyText(@NonNull String replyToken, @NonNull String message) {
@@ -93,8 +123,8 @@ public class BikunController {
 		LOGGER.fine(String.format("Event(timestamp='%s',source='%s')", event.getTimestamp(), event.getSource()));
 	}
 
-	private void reply(@NonNull String replyToken, @NonNull Message message) {
-		reply(replyToken, Collections.singletonList(message));
+	private void reply(@NonNull String replyToken, @NonNull Message locationMessage) {
+		reply(replyToken, Collections.singletonList(locationMessage));
 	}
 
 	private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
@@ -117,6 +147,54 @@ public class BikunController {
 
 		}
 		this.reply(replyToken, new TextMessage(jawaban));
+	}
+	
+	public String[] getNearestBusStop(double userLatitude, double userLongitude) {
+        String csvFile = "Bikun.csv";
+        String line;
+        String[] csvString = new String[3];
+
+        int index = 0;
+        int minIndex = 0;
+
+        double distance;
+        double busstopLatitude;
+        double busstopLongitude;
+        double minimum = Double.MAX_VALUE;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(csvFile));
+            line = br.readLine(); // Skip the first line
+            while ((line = br.readLine()) != null) {
+                csvString[index] = line;
+                String[] place = line.split(",");
+                busstopLatitude = Double.parseDouble(place[3]);
+                busstopLongitude = Double.parseDouble(place[4]);
+                distance = getDistance(userLatitude, busstopLatitude, userLongitude, busstopLongitude);
+                if (distance < minimum) {
+                    minimum = distance;
+                    minIndex = index;
+                }
+                index++;
+            }
+            br.close();
+            String[] partial = csvString[minIndex].split(",");
+            return (Arrays.toString(partial).replace("]", "") + "," + minimum).split(",");
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+	public double getDistance(double userLatitude, double busstopLatitude, double userLongitude, double busstopLongitude) {
+		final int earthRadius = 6371; // Radius of the earth
+		double latDistance = Math.toRadians(userLatitude - busstopLatitude);
+		double lonDistance = Math.toRadians(userLongitude - busstopLongitude);
+		double x = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) + Math.cos(Math.toRadians(userLatitude))
+				* Math.cos(Math.toRadians(busstopLatitude)) * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+		double y = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+		double distance = earthRadius * y * 1000; // convert to meters
+		return distance;
 	}
 
 }
