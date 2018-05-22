@@ -38,9 +38,7 @@ public class QuranControllerTest {
     private QuranController quranController;
 
     @Test
-    void testContextLoads() {
-        assertNotNull(quranController);
-    }
+
 
     @Test
     void testContextLoads() {
@@ -126,7 +124,7 @@ public class QuranControllerTest {
 
         event = EventTestUtil.createDummyTextMessage("Dummy test fail");
         reply = (TextMessage) quranClass.reply(event);
-        assertEquals("Jawaban Salah!", reply.getText());
+        assertEquals("Jawaban salah!", reply.getText());
     }
 
     @Test

@@ -26,7 +26,7 @@ public class QuranMain {
     }
 
     public Message displayCarousel() {
-        String imageUrl = "https://i1.wp.com/khazanahalquran.com/wp-content/uploads/2015/12/baca-alquran.jpg?w=715&ssl=1";
+        String imageUrl = "https://i1.wp.com/khazanahalquran.com/wp-content/uploads/2015/12/baca-alquran.jpg";
         CarouselTemplate carouselTemplate = new CarouselTemplate(
                 Arrays.asList(
                         new CarouselColumn(imageUrl, "Daftar surat tersedia",
@@ -57,7 +57,6 @@ public class QuranMain {
         return templateMessage;
     }
 
-    @Override
     public Message reply(MessageEvent<TextMessageContent> event) {
 
         currentEvent = event;
@@ -123,7 +122,7 @@ public class QuranMain {
         Message reply = null;
 
         if (argument == null) {
-            reply = quranCarousel.displayCarousel();
+            reply = displayCarousel();
             isForGroupChat = false;
             QuranController.isWaitingForReply = true;
             QuranController.currentFitur = this;
