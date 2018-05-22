@@ -112,13 +112,14 @@ public class AnisonRadioController {
             if (askTitleInputState) {
                 if (!userIDtoSongs.get(userId).contains(contentText)) { 
                     //checks song title is a Love Live song or not if yes add to his/her map
-                	String itunesID = loveLiveSongOrNot(contentText);
-                	if (itunesID != null) {
+                	String answer = loveLiveSongOrNot(contentText);
+                	if (answer != null) {
+                		String[] index = answer.split("#");
+                		String itunesID = index[0];
+                		String albumCover = index[1];
+                		String artist = index[2];
                 		userIDtoSongs.get(userId).add(contentText);
-                		String[] answer = findMusicUrl(itunesID).split("#"); 
-                		String previewUrl = answer[0];
-                		String albumCover = answer[1];
-                		String artist = answer[2];
+                		String previewUrl = findMusicUrl(itunesID);
                 		songsToPreviewUrl.put(contentText, previewUrl);
                 		songsToAlbumCover.put(contentText, albumCover);
                 		songsToArtist.put(contentText, artist);
