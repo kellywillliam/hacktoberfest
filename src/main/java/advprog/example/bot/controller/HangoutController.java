@@ -40,6 +40,7 @@ public class HangoutController {
     private LineMessagingClient lineMessagingClient;
     private static final Logger LOGGER = Logger.getLogger(HangoutController.class.getName());
     private static int flag = 0;
+    private double radius = 0;
     
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -57,11 +58,16 @@ public class HangoutController {
             replyText = "Please send your location to me";
             flag = 2;
         }
+        else if (contentText.startsWith("/random_hangout_kuy")){
+            replyText = "Please send your location to me";
+            flag = 3; 
+            radius = Double.parseDouble(contentText.split(" ")[1]);
+        }
         
         List<Message> messages = new ArrayList<Message>();
         messages.add(new TextMessage(replyText));
         this.reply(event.getReplyToken(),Arrays.asList(new TextMessage(replyText)) );
-        //return new TextMessage(replyText);
+        
     }
     @EventMapping
     public void handleDefaultMessage(Event event) {
@@ -69,22 +75,37 @@ public class HangoutController {
                 event.getTimestamp(), event.getSource()));
     }
     
-    private static double latitude;
-    private static double longitude;
+    private static double userLatitude;
+    private static double userlongitude;
     @EventMapping
     public void handleLocationMessage(MessageEvent<LocationMessageContent> event){
         LocationMessageContent message = event.getMessage();
-        latitude = message.getLatitude();
-        longitude = message.getLongitude();
+        userLatitude = message.getLatitude();
+        userlongitude = message.getLongitude();
         List<Message> messages = new ArrayList<Message>();
         if(flag == 1){
-            messages = nearestHangout(latitude,longitude);
+            messages = nearestHangout(userLatitude,userlongitude);
             flag = 0;
         }
         else if (flag == 2){
             TemplateMessage template = carousel("a");
             messages = Collections.singletonList(template);
             flag=0;
+        }
+        else if (flag == 3){
+            String[] place = getNearestPlace(userLatitude,userlongitude);
+            double distance = Double.parseDouble(place[place.length-1]);
+            
+            if( distance > radius){
+             messages.add(new TextMessage("There is no Hangoutplace near your location")) ;     
+            }
+            else{
+                messages.add(new LocationMessage(place[1],place[2],
+                            Double.parseDouble(place[4]) , Double.parseDouble(place[5])) );
+                messages.add(new TextMessage(place[3]));
+                messages.add(new TextMessage("Approximated distance from your location " 
+                        + (int)distance+ " metres"));
+            }
         }
         reply(event.getReplyToken(),messages);
      }
@@ -93,8 +114,6 @@ public class HangoutController {
         String replyToken = event.getReplyToken();
         String chosen = "" ;
         String[] partial;
-        
-        
         
         if( event.getPostbackContent().getData().equals("1")){
              chosen = carouselList[0] ;  
@@ -119,22 +138,29 @@ public class HangoutController {
                         lat ,longit ),
                 new TextMessage(partial[3]),
                 new TextMessage("Approximated distance from your location "
-                        + (int)getDistance(latitude,lat,longitude,longit) )));
+                        + (int)getDistance(userLatitude,lat,userlongitude,longit) +" metres" )));
     }
 
     
     public List<Message> nearestHangout(double latitude,double longitude){
-        String replyText = "Nearest Hangout Place \n";
+        
+        String replyText = "";
         String[] reply = getNearestPlace(latitude,longitude);
+        
         reply[2] = reply[2].replace("+", ",");
         reply[3] = reply[3].replace("+", ",");
-        for(int i = 1 ; i < 4 ;i++){
-            replyText += reply[i]+"\n";
-        }
+        
         List<Message> messages = new ArrayList<Message>();
+        
+        messages.add(new LocationMessage(reply[1],reply[2]
+                ,Double.parseDouble(reply[4]),Double.parseDouble(reply[5])));
+        
+        messages.add(new TextMessage(reply[3]));
+        
+        replyText = "Approximated distance from your location " 
+                + (int)Double.parseDouble(reply[reply.length-1]) + " metres";
         messages.add(new TextMessage(replyText));
-        replyText = "Approximated distance from your location " + reply[reply.length-1] + " metres";
-        messages.add(new TextMessage(replyText));
+        
         return messages;
     }
 
