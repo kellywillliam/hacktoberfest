@@ -26,24 +26,4 @@ public class WeatherControllerTest {
         assertNotNull(WeatherController.class);
     }
 
-    @Test
-    void tempConverterTest() {
-        assertEquals(control.tempConverter("Kelvin", 20), 0);
-    }
-
-    @Test
-    void windConverter() {
-        assertEquals(control.windConverter("mph", 20), 0);
-    }
-
-    @Test
-    void weatherConditionTest() {
-        assertEquals(control.weatherCondition(), null);
-    }
-
-    @Test
-    void findLocationTest() {
-        assertEquals(control.findLocation(), null);
-    }
-
 }
