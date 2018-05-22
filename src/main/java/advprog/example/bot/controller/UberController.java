@@ -64,6 +64,18 @@ public class UberController {
     private static int pointer = -1;
     private static int pbPointer = -1;
     
+    static {
+    	initiateData();
+    }
+    
+    private static void initiateData() {
+    	try {
+    		users = objectMapper.readValue(FILE, LinkedHashMap.class);
+    	} catch(Exception e) {
+    		System.out.println("error");
+    	}
+    }
+    
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
@@ -236,7 +248,7 @@ public class UberController {
     private void estimateRide(String replyToken) throws Exception {
     	//TODO implement function when user asks for estimation from /uber
     	pbPointer = -1;
-    	pointer = -1;
+    	pointer = -1;	
     	URL url = new URL("https://api.uber.com/v1.2/estimates/price?start_latitude="
     			+ start_latitude + "&start_longitude=" + start_longitude + "&end_latitude="
     			+ end_latitude + "&end_longitude=" + end_longitude);
