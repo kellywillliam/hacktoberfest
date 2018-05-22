@@ -2,17 +2,17 @@ package advprog.example.bot.controller;
 
 import fastily.jwiki.core.*;
 import fastily.jwiki.dwrap.*;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.Scanner;
 
 public class MediaWikiController {
     String randomInput;
     String notEnoughInput;
     String addWikiSuccess;
-    String getAddWikiFail;
+    String addWikiFail;
+    String addWikiOldUrl;
 
     public MediaWikiController() {
         this.randomInput = "Halo, terima kasih atas pesan yang dikirimkan. "
@@ -23,21 +23,27 @@ public class MediaWikiController {
         this.notEnoughInput = "Pesan yang kamu kirimkan belum sesuai format. "
                 + "Pastikan format yang kamu kirimkan sudah lengkap.";
         this.addWikiSuccess = "URL berhasil ditambahkan.";
-        this.getAddWikiFail = "URL yang kamu masukkan tidak valid. Silakan coba lagi.";
+        this.addWikiFail = "URL yang kamu masukkan tidak valid. Silakan coba lagi.";
+        this.addWikiOldUrl = "URL yang kamu masukkan sudah terdaftar.";
     }
 
     public String execute(String contentText) {
-        String[] command = contentText.split(" ");
+        String[] command = contentText.toLowerCase().split(" ");
         String replyText = "";
 
         if (command[0].equals("/add_wiki")) {
             try {
                 String urlGiven = command[1];
                 if (isValidUrl(urlGiven)) {
-                    saveUrl(urlGiven);
-                    replyText = addWikiSuccess;
+                    if (isNewUrl(urlGiven)) {
+                        saveUrl(urlGiven);
+                        replyText = addWikiSuccess;
+                    } else {
+                        replyText = addWikiOldUrl;
+                    }
+
                 } else {
-                    replyText = getAddWikiFail;
+                    replyText = addWikiFail;
                 }
 
             } catch (ArrayIndexOutOfBoundsException e) {
@@ -61,6 +67,29 @@ public class MediaWikiController {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean isNewUrl(String urlGiven) {
+        File file = new File("./wikiUrl.csv");
+        boolean res = false;
+        try {
+            Scanner scanner = new Scanner(file);
+            int lineNum = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                lineNum++;
+                if (line.equalsIgnoreCase(urlGiven)) {
+                    res = false;
+                    break;
+                }
+                else {
+                    res = true;
+                }
+            }
+        } catch(FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return res;
     }
 
     public void saveUrl(String url) {

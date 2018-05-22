@@ -29,7 +29,7 @@ public class EchoController {
         if (tmp[0].equalsIgnoreCase("/echo")) {
             replyText = contentText.replace("/echo ", "");
         } else {
-            replyText = eventHandler.execute(contentText.toLowerCase());
+            replyText = eventHandler.execute(contentText);
         }
 
         return new TextMessage(replyText);

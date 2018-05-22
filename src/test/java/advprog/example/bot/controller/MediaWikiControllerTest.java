@@ -24,14 +24,17 @@ class MediaWikiControllerTest {
         assertEquals("Pesan yang kamu kirimkan belum sesuai format. "
                 + "Pastikan format yang kamu kirimkan sudah lengkap.",
                 mwc.execute("/add_wiki"));
+        assertEquals("URL yang kamu masukkan tidak valid. Silakan coba lagi.",
+                mwc.execute("/add_wiki bla.com/api.php"));
         assertEquals("URL berhasil ditambahkan.",
-                mwc.execute("/add_wiki http://example.com/wiki/api.php"));
-        assertEquals("URL berhasil ditambahkan.",
-                mwc.execute("/add_wiki http://examplee.com/wiki/api.php"));
+                mwc.execute("/add_wiki marvel.wikia.com/api.php"));
+        assertEquals("URL yang kamu masukkan sudah terdaftar.",
+                mwc.execute("/add_wiki marvel.wikia.com/api.php"));
+
     }
 
     @Test
     void isValidUrl() {
-        assertEquals(true, mwc.isValidUrl("http://marvel.wikia.com/api.php"));
+        assertEquals(true, mwc.isValidUrl("marvel.wikia.com/api.php"));
     }
 }

@@ -42,10 +42,14 @@ public class EchoControllerTest {
     void testHandleTextMessageEvent() {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Lorem Ipsum");
-
         TextMessage reply = echoController.handleTextMessageEvent(event);
-
         assertEquals("Lorem Ipsum", reply.getText());
+
+        MessageEvent<TextMessageContent> anotherEvent =
+                EventTestUtil.createDummyTextMessage("/add_wiki");
+        TextMessage anotherReply = echoController.handleTextMessageEvent(anotherEvent);
+        assertEquals("Pesan yang kamu kirimkan belum sesuai format. "
+                + "Pastikan format yang kamu kirimkan sudah lengkap.", anotherReply.getText());
     }
 
     @Test
