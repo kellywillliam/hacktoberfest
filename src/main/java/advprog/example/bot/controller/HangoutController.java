@@ -94,31 +94,29 @@ public class HangoutController {
         String chosen = "" ;
         String[] partial;
         
-        System.out.println("WOIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-        reply(replyToken,Collections.singletonList(new TextMessage("HEHE")));
-//        if( event.getPostbackContent().getData().equals("1")){
-//             chosen = carouselList[0] ;  
-//             
-//        }
-//        else if( event.getPostbackContent().getData().equals("2")){
-//            chosen = carouselList[1] ;
-//        }
-//        else if( event.getPostbackContent().getData().equals("3")){
-//            chosen = carouselList[2] ;
-//        }
-//        
-//        partial = chosen.split(",");
-//        partial[2] = partial[2].replace("+", ",");
-//        partial[3] = partial[3].replace("+", ",");
-//        
-//        double lat = Double.parseDouble(partial[4]) ;
-//        double longit= Double.parseDouble(partial[5]) ; 
-//        
-//        this.reply(replyToken, Arrays.asList(
-//                new LocationMessage(partial[1],partial[2]+"\n"+partial[3] ,
-//                        lat ,longit ),
-//                new TextMessage("Approximated distance from your location "
-//                        + (int)getDistance(latitude,lat,longitude,longit) )));
+        if( event.getPostbackContent().getData().equals("1")){
+             chosen = carouselList[0] ;  
+             
+        }
+        else if( event.getPostbackContent().getData().equals("2")){
+            chosen = carouselList[1] ;
+        }
+        else if( event.getPostbackContent().getData().equals("3")){
+            chosen = carouselList[2] ;
+        }
+        
+        partial = chosen.split(",");
+        partial[2] = partial[2].replace("+", ",");
+        partial[3] = partial[3].replace("+", ",");
+        
+        double lat = Double.parseDouble(partial[4]) ;
+        double longit= Double.parseDouble(partial[5]) ; 
+        
+        this.reply(replyToken, Arrays.asList(
+                new LocationMessage(partial[1],partial[2]+"\n"+partial[3] ,
+                        lat ,longit ),
+                new TextMessage("Approximated distance from your location "
+                        + (int)getDistance(latitude,lat,longitude,longit) )));
     }
 
     
