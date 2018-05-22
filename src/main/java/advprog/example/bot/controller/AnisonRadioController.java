@@ -69,113 +69,100 @@ public class AnisonRadioController {
 
         if (event.getSource() instanceof GroupSource) {
             if (songsToPreviewUrl.containsKey(contentText)) {
-                String userId = event.getSource().getUserId();
-                String replyToken = event.getReplyToken();
-                if (userId != null) {
-                    lineMessagingClient
-                            .getProfile(userId)
-                            .whenComplete((profile, throwable) -> {
-                                if (throwable != null) {
-                                    this.replyText(replyToken, throwable.getMessage());
-                                    return;
-                                }
-                                this.replyText(
-                                        replyToken,
-                                        "@" + profile.getDisplayName() 
-                                        + " We have that song, chat me " 
-                                                + "and add to your songs to listen!");
-                            });
-                } else {
-                    this.replyText(replyToken, "Bot can't use profile API without user ID");
-                }
                 return new TextMessage("We have that song, chat me "
                         + "and add to your songs to listen!");
             }
-        }
-        String userId = event.getSource().getUserId();
-        if (contentText.equalsIgnoreCase("/add_song")) {
-            if (askTitleInputState == false) {
-                //enter state where bot waits for song title
-                //and put userId to the HashMap for personal song list
-                if (!userIDtoSongs.containsKey(userId)) {
-                    userIDtoSongs.put(userId, new ArrayList<String>());
-                    askTitleInputState = true;
-                    return new TextMessage("Please enter song title");
-                } else {
-                    askTitleInputState = true;
-                    return new TextMessage("Please enter song title");
-                }
-            } else {
-                return new TextMessage("Please enter song title first for us to find");
-            }
-        } else if (contentText.equalsIgnoreCase("/remove_song")) {
-            if (askTitleInputState == false) {
-                //replies as carousel from list of songs this userID has to delete
-                ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
-                if (!userIDtoSongs.containsKey(userId) || userIDtoSongs.get(userId).size() == 0) {
-                    return new TextMessage("You have no songs! /add_song to add new songs");
-                }
-                for (int i = 0; i < userIDtoSongs.get(userId).size(); i++) {
-                    String song = userIDtoSongs.get(userId).get(i);
-                    carouselList.add(new CarouselColumn(songsToAlbumCover.get(song),
-                            song, "Artist: " + songsToArtist.get(song), Arrays.asList(
-                            new PostbackAction("Remove", "#remove#" + userId + "#" + (song)))));
-                }
-                CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
-                TemplateMessage templateMessage = 
-                        new TemplateMessage("Carousel alt text", carouselTemplate);
-                this.reply(event.getReplyToken(), templateMessage);
-            } else {
-                return new TextMessage("Please enter song title first for us to find");
-            }
-        } else if (contentText.equalsIgnoreCase("/listen_song")) {
-            if (askTitleInputState == false) {
-                ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
-                if (!userIDtoSongs.containsKey(userId) || userIDtoSongs.get(userId).size() == 0) {
-                    return new TextMessage("You have no songs! /add_song to add new songs");
-                }
-                for (int i = 0; i < userIDtoSongs.get(userId).size(); i++) {
-                    String song = userIDtoSongs.get(userId).get(i);
-                    carouselList.add(new CarouselColumn(songsToAlbumCover.get(song),
-                            song, "Artist: " + songsToArtist.get(song), Arrays.asList(
-                            new PostbackAction("Play",(song)))));
-                }
-                CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
-                TemplateMessage templateMessage = 
-                        new TemplateMessage("Carousel alt text", carouselTemplate);
-                this.reply(event.getReplyToken(), templateMessage);
-            } else {
-                return new TextMessage("Please enter song title first for us to find");
-            } 
-        } else { //else if not a command, it is a song title
-            if (askTitleInputState) {
-                if (!userIDtoSongs.get(userId).contains(contentText)) { 
-                    //checks song title is a Love Live song or not if yes add to his/her map
-                    String answer = loveLiveSongOrNot(contentText);
-                    if (answer != null) {
-                        String[] index = answer.split("#");
-                        String itunesId = index[0];
-                        String albumCover = index[1];
-                        final String artist = index[2];
-                        userIDtoSongs.get(userId).add(contentText);
-                        String previewUrl = findMusicUrl(itunesId);
-                        songsToPreviewUrl.put(contentText, previewUrl);
-                        songsToAlbumCover.put(contentText, albumCover);
-                        songsToArtist.put(contentText, artist);
+        } else {
+            String userId = event.getSource().getUserId();
+            if (contentText.equalsIgnoreCase("/add_song")) {
+                if (askTitleInputState == false) {
+                    //enter state where bot waits for song title
+                    //and put userId to the HashMap for personal song list
+                    if (!userIDtoSongs.containsKey(userId)) {
+                        userIDtoSongs.put(userId, new ArrayList<String>());
+                        askTitleInputState = true;
+                        return new TextMessage("Please enter song title");
                     } else {
-                        return new TextMessage("Your song is not "
-                                + "available as a Love Live song, search for another one!");
+                        askTitleInputState = true;
+                        return new TextMessage("Please enter song title");
                     }
-                    askTitleInputState = false;
-                    return new TextMessage("Your new song is added,"
-                            + " you can listen your new song from /listen_song");
                 } else {
-                    return new TextMessage("You have that song already, listen with /listen_song");
+                    return new TextMessage("Please enter song title first for us to find");
+                }
+            } else if (contentText.equalsIgnoreCase("/remove_song")) {
+                if (askTitleInputState == false) {
+                    //replies as carousel from list of songs this userID has to delete
+                    ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
+                    if (!userIDtoSongs.containsKey(userId) 
+                            || userIDtoSongs.get(userId).size() == 0) {
+                        return new TextMessage("You have no songs! /add_song to add new songs");
+                    }
+                    for (int i = 0; i < userIDtoSongs.get(userId).size(); i++) {
+                        String song = userIDtoSongs.get(userId).get(i);
+                        carouselList.add(new CarouselColumn(songsToAlbumCover.get(song),
+                                song, "Artist: " + songsToArtist.get(song), Arrays.asList(
+                                new PostbackAction("Remove", "#remove#" + userId + "#" + (song)))));
+                    }
+                    CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
+                    TemplateMessage templateMessage = 
+                            new TemplateMessage("Carousel alt text", carouselTemplate);
+                    this.reply(event.getReplyToken(), templateMessage);
+                } else {
+                    return new TextMessage("Please enter song title first for us to find");
+                }
+            } else if (contentText.equalsIgnoreCase("/listen_song")) {
+                if (askTitleInputState == false) {
+                    ArrayList<CarouselColumn> carouselList 
+                            = new ArrayList<CarouselColumn>();
+                    if (!userIDtoSongs.containsKey(userId) 
+                            || userIDtoSongs.get(userId).size() == 0) {
+                        return new TextMessage("You have no songs! /add_song to add new songs");
+                    }
+                    for (int i = 0; i < userIDtoSongs.get(userId).size(); i++) {
+                        String song = userIDtoSongs.get(userId).get(i);
+                        carouselList.add(new CarouselColumn(songsToAlbumCover.get(song),
+                                song, "Artist: " + songsToArtist.get(song), Arrays.asList(
+                                new PostbackAction("Play",(song)))));
+                    }
+                    CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
+                    TemplateMessage templateMessage = 
+                            new TemplateMessage("Carousel alt text", carouselTemplate);
+                    this.reply(event.getReplyToken(), templateMessage);
+                } else {
+                    return new TextMessage("Please enter song title first for us to find");
+                } 
+            } else { //else if not a command, it is a song title
+                if (askTitleInputState) {
+                    if (!userIDtoSongs.get(userId).contains(contentText)) { 
+                        //checks song title is a Love Live song or not if yes add to his/her map
+                        String answer = loveLiveSongOrNot(contentText);
+                        if (answer != null) {
+                            String[] index = answer.split("#");
+                            String itunesId = index[0];
+                            String albumCover = index[1];
+                            final String artist = index[2];
+                            userIDtoSongs.get(userId).add(contentText);
+                            String previewUrl = findMusicUrl(itunesId);
+                            songsToPreviewUrl.put(contentText, previewUrl);
+                            songsToAlbumCover.put(contentText, albumCover);
+                            songsToArtist.put(contentText, artist);
+                        } else {
+                            return new TextMessage("Your song is not "
+                                    + "available as a Love Live song, search for another one!");
+                        }
+                        askTitleInputState = false;
+                        return new TextMessage("Your new song is added,"
+                                + " you can listen your new song from /listen_song");
+                    } else {
+                        return new TextMessage("You have that "
+                                + "song already, listen with /listen_song");
+                    }
                 }
             }
+            return new TextMessage("Please enter a valid input, "
+                    + "such as /add_song or /remove_song or /listen_song");
         }
-        return new TextMessage("Please enter a valid input, "
-                + "such as /add_song or /remove_song or /listen_song");
+        return null;
     }
 
     @EventMapping
