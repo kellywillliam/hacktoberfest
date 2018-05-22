@@ -1,9 +1,9 @@
-package advprog.weather.bot.controller;
+package advprog.example.bot.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import org.junit.Assert;
+import advprog.example.bot.controller.WeatherController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 

@@ -1,4 +1,4 @@
-package advprog.weather.bot.controller;
+package advprog.example.bot.controller;
 
 import java.util.HashMap;
 

@@ -1,6 +1,5 @@
 package advprog.example.bot.controller;
 
-import advprog.weather.bot.controller.WeatherController;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
