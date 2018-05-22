@@ -66,8 +66,7 @@ public class WeatherController {
         userConfig.put(userId,tipe);
     }
 
-    public String getData(String dataInformation, String userId) {
-        String[] info = dataInformation.split("#");
+    public String getData(String lon,String lat, String userId) {
         String jsonData;
         String userUnit;
 
@@ -78,16 +77,9 @@ public class WeatherController {
             userUnit = userConfig.get(userId);
         }
 
-        if (info.length == 2) {
-            String urlApi =  URL + "lat=" + info[0] + "&lon="
-                    + info[1] + "&units=" + userUnit + APIWEATHERKEY;
-            jsonData = getJsonFromApi(urlApi);
-        } else if (info.length == 1) {
-            String urlApi = URL + "q=" + info[0] + "&units=" + userUnit + APIWEATHERKEY;
-            jsonData = getJsonFromApi(urlApi);
-        } else {
-            return "Data yang kamu masukkan tidak dapat Sana temukan :( ";
-        }
+        String urlApi =  URL + "lat=" + lat + "&lon="
+                    + lon + "&units=" + userUnit + APIWEATHERKEY;
+        jsonData = getJsonFromApi(urlApi);
 
         JSONObject json = new JSONObject(jsonData);
         String location = getLocation(json);

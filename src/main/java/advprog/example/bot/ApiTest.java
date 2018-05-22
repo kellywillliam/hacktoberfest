@@ -35,7 +35,10 @@
 //        double windSpeed = Double.parseDouble(angin.get("speed").toString());
 //        System.out.println(windSpeed + " meter/sec");
 //
-//        //ambil kode Negara
+//        String hehe = "06.828786#-6.364561";
+//        String[] hihi = hehe.split("#");
+//        System.out.println(hihi[0] + " " + hihi[1]);
+//       //ambil kode Negara
 //        JSONObject sys = (JSONObject) json.get("sys");
 //        String kodeNegara = (String) sys.get("country");
 //

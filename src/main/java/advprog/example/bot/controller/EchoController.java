@@ -136,7 +136,7 @@ public class EchoController {
 
             String dataInformation = longitude + "#" + latitude;
 
-            replyText = eventController.getData(dataInformation, userId);
+            replyText = eventController.getData(longitude,latitude, userId);
 
             flag = false;
 
