@@ -8,11 +8,13 @@ import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 
 @LineMessageHandler
 public class EchoController {
+    private static HashMap<String,String> userConfig = new HashMap<>();
 
     private static final Logger LOGGER = Logger.getLogger(EchoController.class.getName());
 
@@ -88,11 +90,11 @@ public class EchoController {
             String userId = content.getId();
             String tipe = temp[1];
             if (tipe.equalsIgnoreCase("STANDARD")) {
-                replyText = eventController.updateUserConfig(userId,"STANDARD");
+                replyText = updateUserConfig(userId,"STANDARD");
             } else if (tipe.equalsIgnoreCase("METRIC")) {
-                replyText = eventController.updateUserConfig(userId,"METRIC");
+                replyText = updateUserConfig(userId,"METRIC");
             } else if (tipe.equalsIgnoreCase("IMPERIAL")) {
-                replyText = eventController.updateUserConfig(userId,"IMPERIAL");
+                replyText = updateUserConfig(userId,"IMPERIAL");
             } else {
                 replyText = "Opsi yang kamu pilih tidak tersedia :( ";
             }
@@ -130,15 +132,28 @@ public class EchoController {
             String longitude = Double.toString(content.getLongitude());
             String latitude = Double.toString(content.getLatitude());
             String userId = content.getId();
+            String tipe = userConfig.get(userId);
 
-            replyText = eventController.getData(longitude,latitude, userId);
+            replyText = eventController.getData(longitude,latitude, userId,tipe);
 
             flag = false;
 
-            return new TextMessage(replyText + " Hashmap: " + eventController.getUserConfig().get(userId));
+            return new TextMessage(replyText + " Hashmap: " + getUserConfig().get(userId));
         }
 
         return new TextMessage("Info yang kamu masukkan salah");
 
+    }
+
+    public HashMap<String, String> getUserConfig() {
+        return userConfig;
+    }
+
+    public String updateUserConfig(String userId, String tipe) {
+        System.out.println(userConfig.get(userId));
+        userConfig.put(userId,tipe);
+        System.out.println("WOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+        System.out.println(userConfig.get(userId));
+        return "Konfigurasi data kamu sudah di-update YEAY !";
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 
 public class WeatherController {
 
-    private static HashMap<String,String> userConfig = new HashMap<>();
     private static final String URL = "http://api.openweathermap.org/data/2.5/weather?";
     private static final String COUNTRYURL = "https://restcountries.eu/rest/v2/alpha/";
     private static final String APIWEATHERKEY = "&appid=e2379a68cf1e649b79bd43beff3a0407";
@@ -28,10 +27,6 @@ public class WeatherController {
         String country = (String) jsonCountry.get("name");
         return city + ", " + country;
 
-    }
-
-    public HashMap<String, String> getUserConfig() {
-        return userConfig;
     }
 
     public String getWeather(JSONObject json) {
@@ -66,27 +61,21 @@ public class WeatherController {
         return restTemplate.getForObject(url, String.class, header);
     }
 
-    public String updateUserConfig(String userId, String tipe) {
-        System.out.println(userConfig.get(userId));
-        userConfig.put(userId,tipe);
-        System.out.println("WOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-        System.out.println(userConfig.get(userId));
-        return "Konfigurasi data kamu sudah di-update YEAY !";
-    }
 
-    public String getData(String lon,String lat, String userId) {
+
+    public String getData(String lon,String lat, String userId,String tipe) {
         String jsonData;
         String userUnit;
-
-        if (!userConfig.containsKey(userId)) {
-            userConfig.put(userId,"STANDARD");
-            userUnit = userConfig.get(userId);
-        } else {
-            userUnit = userConfig.get(userId);
-        }
+//
+//        if (!userConfig.containsKey(userId)) {
+//            userConfig.put(userId,"STANDARD");
+//            userUnit = userConfig.get(userId);
+//        } else {
+//            userUnit = userConfig.get(userId);
+//        }
 
         String urlApi =  URL + "lat=" + lat + "&lon="
-                    + lon + "&units=" + userUnit + APIWEATHERKEY;
+                    + lon + "&units=" + tipe + APIWEATHERKEY;
         jsonData = getJsonFromApi(urlApi);
 
         JSONObject json = new JSONObject(jsonData);
@@ -99,13 +88,13 @@ public class WeatherController {
         String windUnit = null;
         String tempUnit = null;
 
-        if (userConfig.get(userId).equalsIgnoreCase("STANDARD")) {
+        if (tipe.equalsIgnoreCase("STANDARD")) {
             windUnit = "meter/sec";
             tempUnit = "Kelvin";
-        } else if (userConfig.get(userId).equalsIgnoreCase("METRIC")) {
+        } else if (tipe.equalsIgnoreCase("METRIC")) {
             windUnit = "meter/sec";
             tempUnit = "Celcius";
-        } else if (userConfig.get(userId).equalsIgnoreCase("IMPERIAL")) {
+        } else if (tipe.equalsIgnoreCase("IMPERIAL")) {
             windUnit = "miles/hour";
             tempUnit = "Fahrenheit";
         }
