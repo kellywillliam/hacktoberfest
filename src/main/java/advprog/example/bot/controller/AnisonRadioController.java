@@ -7,6 +7,7 @@ import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.GroupSource;
 import com.linecorp.bot.model.message.AudioMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
@@ -66,9 +67,28 @@ public class AnisonRadioController {
             return new TextMessage("echo dari anison radio");
         }
 
-        if (event.getSource().toString().contains("groupId")) {
+        if (event.getSource() instanceof GroupSource) {
             if (songsToPreviewUrl.containsKey(contentText)) {
-                return new TextMessage("We have that song, please chat me "
+                String userId = event.getSource().getUserId();
+                String replyToken = event.getReplyToken();
+                if (userId != null) {
+                    lineMessagingClient
+                            .getProfile(userId)
+                            .whenComplete((profile, throwable) -> {
+                                if (throwable != null) {
+                                    this.replyText(replyToken, throwable.getMessage());
+                                    return;
+                                }
+                                this.replyText(
+                                        replyToken,
+                                        "@" + profile.getDisplayName() 
+                                        + " We have that song, chat me " 
+                                                + "and add to your songs to listen!");
+                            });
+                } else {
+                    this.replyText(replyToken, "Bot can't use profile API without user ID");
+                }
+                return new TextMessage("We have that song, chat me "
                         + "and add to your songs to listen!");
             }
         }
@@ -191,6 +211,16 @@ public class AnisonRadioController {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    private void replyText(String replyToken, String message) {
+        if (replyToken.isEmpty()) {
+            throw new IllegalArgumentException("replyToken must not be empty");
+        }
+        if (message.length() > 1000) {
+            message = message.substring(0, 1000 - 2) + "……";
+        }
+        this.reply(replyToken, new TextMessage(message));
     }
 
     public String loveLiveSongOrNot(String title) throws IOException, JSONException {
