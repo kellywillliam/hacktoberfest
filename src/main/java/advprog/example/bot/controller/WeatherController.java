@@ -67,8 +67,10 @@ public class WeatherController {
     }
 
     public String updateUserConfig(String userId, String tipe) {
+        System.out.println(userConfig.get(userId));
         userConfig.put(userId,tipe);
         System.out.println("WOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
+        System.out.println(userConfig.get(userId));
         return "Konfigurasi data kamu sudah di-update YEAY !";
     }
 
