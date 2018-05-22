@@ -96,7 +96,7 @@ public class HangoutController {
         String[] partial;
         
         System.out.println("WOIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-        reply(replyToken,Collections.singletonList(new TextMessage(event.getPostbackContent().getData())));
+        reply(replyToken,Collections.singletonList(new TextMessage("HEHE")));
 //        if( event.getPostbackContent().getData().equals("1")){
 //             chosen = carouselList[0] ;  
 //             
