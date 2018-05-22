@@ -47,37 +47,37 @@ public class AnisonRadioControllerTest extends TestCase {
     public void testHandleTextMessageEvent() throws IOException, JSONException {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Test");
-        TextMessage reply = anisonRadioController.handleTextMessageEvent(event);
+        TextMessage reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event); //kalau ada error ini casted
         assertEquals("echo dari anison radio", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("/add_song");
         assertEquals(anisonRadioController.getMap().size(), 0);
-        reply = anisonRadioController.handleTextMessageEvent(event);
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Please enter song title", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("/add_song");
-        reply = anisonRadioController.handleTextMessageEvent(event);
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Please enter song title first for us to find", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("/remove_song");
-        reply = anisonRadioController.handleTextMessageEvent(event);
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Please enter song title first for us to find", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("/listen_song");
-        reply = anisonRadioController.handleTextMessageEvent(event);
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Please enter song title first for us to find", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("Anything");
-        reply = anisonRadioController.handleTextMessageEvent(event);
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Your new song is added", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("/add_song");
         assertEquals(anisonRadioController.getMap().size(), 1);
-        reply = anisonRadioController.handleTextMessageEvent(event);
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Please enter song title", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("Anything");
-        reply = anisonRadioController.handleTextMessageEvent(event);
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Please enter a valid input, "
                 + "such as /add_song or /remove_song or /listen_song", reply.getText());
     }

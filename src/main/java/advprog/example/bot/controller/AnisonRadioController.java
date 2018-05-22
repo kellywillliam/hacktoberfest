@@ -4,6 +4,7 @@ import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.AudioMessage;
+import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
@@ -34,7 +35,7 @@ public class AnisonRadioController {
     private boolean askTitleInputState = false;
     
     @EventMapping
-    public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws IOException, JSONException {
+    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws IOException, JSONException {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -76,11 +77,12 @@ public class AnisonRadioController {
             if (askTitleInputState == false) {
                 //replies as carousel from list of songs this userID has to listen
 //            	handleAudioMessage(event);
-            	JSONObject json = new JSONObject();
-            	json.put("type", "audio");
-            	json.put("originalContentUrl", "https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a");
-            	json.put("duration", "30000");
-            	return new TextMessage(json.toString());
+//            	JSONObject json = new JSONObject();
+//            	json.put("type", "audio");
+//            	json.put("originalContentUrl", "https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a");
+//            	json.put("duration", "30000");
+//            	return new TextMessage(json.toString());
+            	return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
             } else {
                 return new TextMessage("Please enter song title first for us to find");
             } 
