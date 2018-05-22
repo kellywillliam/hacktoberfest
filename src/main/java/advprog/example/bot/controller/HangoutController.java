@@ -195,7 +195,7 @@ public class HangoutController {
             }
             br.close();
             String[] partial = csvString[minIndex].split(",");
-            return (Arrays.toString(partial)+ ","+ minimum).split(",");
+            return (Arrays.toString(partial).replace("]", "")+ ","+ minimum).split(",");
         }
         catch (IOException e){
             e.printStackTrace();
