@@ -70,13 +70,13 @@ public class ImageCropControllerTest {
         assertEquals(reply.getText(), "succesfully uploaded your image");
     }
 
-//    @Test
-//    void testHandleImageDoesNotExist() throws IOException {
-//        ImageCropController imageCropController = new ImageCropController();
-//        String result = imageCropController.uploadContentToImgur();
-//        System.out.println(result);
-//        assertEquals(result, "file does not exists");
-//    }
+    @Test
+    void testHandleImageDoesNotExist() throws IOException {
+        ImageCropController imageCropController = new ImageCropController();
+        String result = imageCropController.uploadContentToImgur();
+        System.out.println(result);
+        assertEquals(result, "file does not exist");
+    }
 
 
     @Test
