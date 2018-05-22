@@ -24,14 +24,17 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 
 @LineMessageHandler
 public class HangoutController {
@@ -41,7 +44,7 @@ public class HangoutController {
     private static final Logger LOGGER = Logger.getLogger(HangoutController.class.getName());
     private static int flag = 0;
     private double radius = 0;
-
+    
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
@@ -64,7 +67,7 @@ public class HangoutController {
 
         List<Message> messages = new ArrayList<Message>();
         messages.add(new TextMessage(replyText));
-        this.reply(event.getReplyToken(), Arrays.asList(new TextMessage(replyText)));
+        reply(event.getReplyToken(), Arrays.asList(new TextMessage(replyText)));
 
     }
 
@@ -113,7 +116,7 @@ public class HangoutController {
     public void handlePostbackEvent(PostbackEvent event) {
         String chosen = "";
         String[] partial;
-        String replyToken = event.getReplyToken();
+
         if (event.getPostbackContent().getData().equals("1")) {
             chosen = carouselList[0];
         } else if (event.getPostbackContent().getData().equals("2")) {
@@ -129,7 +132,7 @@ public class HangoutController {
         double lat = Double.parseDouble(partial[4]);
         double longit = Double.parseDouble(partial[5]);
 
-        this.reply(replyToken,
+        this.reply(event.getReplyToken(),
                 Arrays.asList(
                         new LocationMessage(partial[1], "Click to view location", lat, longit),
                         new TextMessage(partial[2] + "\n" + partial[3]),
@@ -140,7 +143,6 @@ public class HangoutController {
 
     public List<Message> nearestHangout(double latitude, double longitude) {
 
-        String replyText = "";
         String[] reply = getNearestPlace(latitude, longitude);
 
         reply[2] = reply[2].replace("+", ",");
@@ -153,7 +155,7 @@ public class HangoutController {
 
         messages.add(new TextMessage(reply[2] + "\n" + reply[3]));
 
-        replyText = "Approximated distance from your location "
+        String replyText = "Approximated distance from your location "
                 + (int) Double.parseDouble(reply[reply.length - 1]) + " metres";
         messages.add(new TextMessage(replyText));
 
@@ -240,8 +242,9 @@ public class HangoutController {
             line = br.readLine(); // Skip the first line
 
             while ((line = br.readLine()) != null) {
-                if (index == 3)
+                if (index == 3) {
                     break;
+                }
                 if (counter == list.get(0) || counter == list.get(1) || counter == list.get(2)) {
                     carouselList[index] = line;
                     index++;
@@ -275,7 +278,7 @@ public class HangoutController {
                 .toUriString();
     }
 
-    private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
+    public void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
         try {
             BotApiResponse apiResponse = lineMessagingClient
                     .replyMessage(new ReplyMessage(replyToken, messages)).get();
