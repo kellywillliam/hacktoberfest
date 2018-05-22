@@ -1,28 +1,31 @@
 package advprog.example.bot.controller;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
+import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.action.URIAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
@@ -44,12 +47,20 @@ public class UberController {
     private LineMessagingClient lineMessagingClient;
 
     private static final Logger LOGGER = Logger.getLogger(UberController.class.getName());
+    private static final File FILE = new File("src/main/resources/data.json");
     private static String destination;
     private static double start_latitude;
     private static double start_longitude;
     private static String end_latitude;
     private static String end_longitude;
-    
+    private static ObjectMapper objectMapper = new ObjectMapper();
+    private static LinkedHashMap<String, Object> addedLocation = new LinkedHashMap();
+    private static LinkedHashMap<String, LinkedHashMap<String, Object>> 
+    locations = new LinkedHashMap();
+    private static LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, Object>>> 
+    users = new LinkedHashMap();
+    private static int pointer = -1;
+    private static int pbPointer = -1;
     
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
@@ -63,6 +74,17 @@ public class UberController {
     @EventMapping
     public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
         LocationMessageContent locationMessage = event.getMessage();
+        String userId = event.getSource().getUserId();
+        String replyToken = event.getReplyToken();
+        if (pointer == 0) {
+        	start_latitude = locationMessage.getLatitude();
+        	start_longitude = locationMessage.getLongitude();
+        	chooseDestination(replyToken, userId);
+        } else if (pointer == 1) {
+        	
+        } else {
+        	replyText(replyToken, "Incorrect input");
+        }
         
     }
     
@@ -76,11 +98,11 @@ public class UberController {
     	//TODO implement text content handler
     	String cmd = content.getText();
     	if (cmd.equalsIgnoreCase("/uber")) {
-    		String imageUrl = createUri("static/buttons/1040.jpg");
+    		String imageUrl = createUri("static/buttons/location.jpg");
     		ButtonsTemplate buttonsTemplate = new ButtonsTemplate(
     				imageUrl,
-    				"test",
-    				"test",
+    				"Choose Your Starting Point",
+    				"Tap to set your location.",
     				Arrays.asList(
     						new URIAction("Share Location",
     								"line://nv/location")
@@ -107,21 +129,36 @@ public class UberController {
     	//TODO implement function when user inputs /delete_destination
     }
     
-    private void chooseDestination(String replyToken) {
-    	String imageUrl = createUri("/static/buttons/1040.jpg");
-    	
+    private void chooseDestination(String replyToken, String userId) {
+    	locations = users.get(userId);
+    	pbPointer = 3;
     	CarouselTemplate carouselTemplate = new CarouselTemplate(
     			Arrays.asList(
-    					new CarouselColumn(imageUrl, "test", "test",
-    							Arrays.asList(
-    									)
-    							)
-    					)
-    			);
+    					createCarouselItemList()
+    			));
     	TemplateMessage templateMessage = new TemplateMessage(
     			"Choose Destination", carouselTemplate
     			);
     	this.reply(replyToken, templateMessage);
+    }
+    
+    private CarouselColumn[] createCarouselItemList() {
+    	String imageUrl = createUri("/static/images/location.jpg");
+    	CarouselColumn[] itemList = new CarouselColumn[locations.size()];
+    	int idx = 0;
+    	
+    	for (String key : locations.keySet()) {
+    		LinkedHashMap<String, Object> location = locations.get(key);
+    		String data = key + "@" + location.get("address") + "@"
+    				+ location.get("latitude") + "@" + location.get("location");
+    		PostbackAction pba = new PostbackAction("Choose", data, key);
+    		String address = "" + location.get("address");
+    		PostbackAction[] pbaList = new PostbackAction[1];
+    		pbaList[0] = pba;
+    		itemList[idx++] = new CarouselColumn(imageUrl, key, address, 
+    				Arrays.asList(pbaList));
+    	}
+    	return itemList;
     }
     
     private void estimatRide(String replyToken) throws Exception {
@@ -133,17 +170,18 @@ public class UberController {
     	
     	HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     	connection.setDoInput(true);
+    	connection.setDoOutput(true);
     	connection.setRequestMethod("GET");
-    	connection.setRequestProperty("Accept-Language", "en_US");
     	connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+    	connection.setRequestProperty("Accept", "application/json");
     	connection.setRequestProperty("Authorization", "Token " + serverToken);
     	
     	int httpResult = connection.getResponseCode();
     	String output;
     	
     	if (httpResult == HttpURLConnection.HTTP_OK) {
-    		JSONArray jsonArray = readJsonFromConnection(connection);
-    		output = createMessage(JSONArray);
+    		JsonArray jsonArray = readJsonFromConnection(connection);
+    		output = createMessage(jsonArray);
     	}
     	else {
     		output = "There is a problem while processing your request, please try again.";
@@ -160,34 +198,35 @@ public class UberController {
         return sb.toString();
     }
     
-    public static JSONArray readJsonFromConnection(HttpURLConnection connection) throws IOException, JSONException {
+    public static JsonArray readJsonFromConnection(HttpURLConnection connection) throws Exception {
         BufferedReader rd = 
                 new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"));
         String jsonText = readAll(rd);
-        JSONObject jsonObject = new JSONObject(jsonText);
-        JSONArray jsonArray = jsonObject.getJSONArray("prices");
+        JsonObject jsonObject = new JsonParser().parse(jsonText.toString()).getAsJsonObject();
+        JsonArray jsonArray = jsonObject.get("prices").getAsJsonArray();
         return jsonArray;   
     }
     
-    private String createMessage(JSONArray jsonArray) throws Exception {
+    private String createMessage(JsonArray jsonArray) throws Exception {
     	//TODO implement message constructor
-    	if (jsonArray.length() == 0) {
+    	if (jsonArray.size() == 0) {
     		String output = "This service is unavailable for your location";
     		return output;
     	}
     	else {
-    		double distance = jsonArray.getJSONObject(0).getDouble("distance");
+    		double distance = Double.parseDouble(
+    				jsonArray.get(0).getAsJsonObject().get("distance").toString());
     		StringBuilder message = new StringBuilder(
     				String.format("Destination: %s (%.2f kilometers from current position)\n\n"
     				+ "Estimated travel time and fares for each Uber services:\n\n", 
     				destination, (distance * 1.60934)));
     		
-    		for (int x = 0; x < jsonArray.length(); x++) {
-    			JSONObject jsonObject = jsonArray.getJSONObject(x);
-    			String name = jsonObject.getString("display_name");
-    			int duration = jsonObject.getInt("duration")/60;
-    			int highEstimate = jsonObject.getInt("high_estimate") * 14084;
-    			int lowEstimate = jsonObject.getInt("low_estimate") * 14084;
+    		for (JsonElement jsonElement : jsonArray) {
+    			JsonObject jsonObject = jsonElement.getAsJsonObject();
+    			String name = jsonObject.get("display_name").getAsString();
+    			int duration = Integer.parseInt(jsonObject.get("duration").getAsString())/60;
+    			int highEstimate = Integer.parseInt(jsonObject.get("high_estimate").getAsString()) * 14084;
+    			int lowEstimate = Integer.parseInt(jsonObject.get("low_estimate").getAsString()) * 14084;
     			String price;
     			if (highEstimate == lowEstimate) {
     				price = "" + highEstimate;
