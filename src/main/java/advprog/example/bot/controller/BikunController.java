@@ -61,7 +61,7 @@ public class BikunController {
 		}
 
 		else if (contentText.equalsIgnoreCase("/bikun_stop")) {
-			String replyText = contentText.replace("/bikun_stop", "");
+			//String replyText = contentText.replace("/bikun_stop", "");
 			String replyToken = event.getReplyToken();
 			CarouselTemplate carouselTemplate = new CarouselTemplate(Arrays.asList(
 					new CarouselColumn("‭https://image.ibb.co/hYHEO8/DSC_1000.jpg‬", "Halte FH", "Fakultas Hukum",
@@ -98,9 +98,9 @@ public class BikunController {
 					Double.parseDouble(reply[4])));
 
 			messages.add(new TextMessage(reply[2]));
-
+			
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + abs(getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
+					"bus stop " + Math.abs(getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 			reply(event.getReplyToken(), messages);
@@ -116,17 +116,12 @@ public class BikunController {
 			messages.add(new TextMessage(reply[2]));
 
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + abs(getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
+					"bus stop " + Math.abs(getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 
 			reply(event.getReplyToken(), messages);
 		}
-	}
-
-	private String abs(int i) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	private void replyText(@NonNull String replyToken, @NonNull String message) {
@@ -159,15 +154,7 @@ public class BikunController {
 	@EventMapping
 	public void handlePostbackEvent(PostbackEvent event) throws IOException {
 		String replyToken = event.getReplyToken();
-		//String jawaban = "";
 		String[] reply = getBusStop(event.getPostbackContent().getData());
-//		if (event.getPostbackContent().getData().equals("0")) {
-//			
-//		} else if (event.getPostbackContent().getData().equals("1")) {
-//
-//		} else if (event.getPostbackContent().getData().equals("2")) {
-//
-//		}
 		reply[2] = reply[2].replace("+", ",");
 
 		List<Message> messages = new ArrayList<Message>();
@@ -177,8 +164,7 @@ public class BikunController {
 
 		messages.add(new TextMessage(reply[2]));
 
-		this.reply(event.getReplyToken(), messages);
-		//this.reply(replyToken, new TextMessage());
+		this.reply(replyToken, messages);
 	}
 
 	public String[] getNearestBusStop(double userLatitude, double userLongitude) {
