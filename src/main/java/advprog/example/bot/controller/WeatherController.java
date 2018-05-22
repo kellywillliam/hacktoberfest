@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class WeatherController {
 
-    private HashMap<String,String> userConfig = new HashMap<>();
+    private static HashMap<String,String> userConfig = new HashMap<>();
     private static final String URL = "http://api.openweathermap.org/data/2.5/weather?";
     private static final String COUNTRYURL = "https://restcountries.eu/rest/v2/alpha/";
     private static final String APIWEATHERKEY = "&appid=e2379a68cf1e649b79bd43beff3a0407";
