@@ -262,12 +262,17 @@ public class UberController {
         for (String key : locations.keySet()) {
             LinkedHashMap<String, Object> location = locations.get(key);
             String data = key + "@" + location.get("address") + "@"
-                    + location.get("latitude") + "@" + location.get("location");
+                    + location.get("latitude") + "@" + location.get("longitude");
             PostbackAction pba = new PostbackAction("Choose", data, key);
-            String address = "" + location.get("address");
             PostbackAction[] pbaList = new PostbackAction[1];
             pbaList[0] = pba;
-            itemList[idx++] = new CarouselColumn(imageUrl, key, address, 
+            String title = "";
+            if (pbPointer == 0) {
+                title = "Choose Destination";
+            } else {
+                title = "Remove Destination";
+            }
+            itemList[idx++] = new CarouselColumn(imageUrl, title, key, 
                     Arrays.asList(pbaList));
         }
         return itemList;
