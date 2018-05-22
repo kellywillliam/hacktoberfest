@@ -137,7 +137,8 @@ public class EchoController {
 
             flag = false;
 
-            return new TextMessage(replyText);
+            return new TextMessage(replyText + "\n longitude :" + longitude + "\n latitude :" + latitude
+                    + "\n Id User: " + userId);
         }
 
         return new TextMessage("Info yang kamu masukkan salah");
