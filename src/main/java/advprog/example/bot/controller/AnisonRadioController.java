@@ -90,7 +90,11 @@ public class AnisonRadioController {
             if (askTitleInputState == false) {
                 //replies as carousel from list of songs this userID has to delete
             	ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
-                for (int i = 0 ; i < userIDtoSongs.get(userId).size() ; i++) {
+            	int librarySize = userIDtoSongs.get(userId).size();
+                if (librarySize == 0) {
+                	return new TextMessage("You have no songs! /add_song to add new songs");
+                }
+                for (int i = 0 ; i < librarySize ; i++) {
                 	String song = userIDtoSongs.get(userId).get(i);
                 	carouselList.add(new CarouselColumn(songsToAlbumCover.get(song), song, "Artist: " + songsToArtist.get(song), Arrays.asList(
                             new PostbackAction("Remove", "#remove#" + userId + "#" + (song)))));
@@ -104,7 +108,11 @@ public class AnisonRadioController {
         } else if (contentText.equalsIgnoreCase("/listen_song")) {
             if (askTitleInputState == false) {
                 ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
-                for (int i = 0 ; i < userIDtoSongs.get(userId).size() ; i++) {
+                int librarySize = userIDtoSongs.get(userId).size();
+                if (librarySize == 0) {
+                	return new TextMessage("You have no songs! /add_song to add new songs");
+                }
+                for (int i = 0 ; i < librarySize ; i++) {
                 	String song = userIDtoSongs.get(userId).get(i);
                 	carouselList.add(new CarouselColumn(songsToAlbumCover.get(song), song, "Artist: " + songsToArtist.get(song), Arrays.asList(
                             new PostbackAction("Play",(song)))));
