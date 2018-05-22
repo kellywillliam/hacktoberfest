@@ -51,14 +51,8 @@ public class BikunController {
 			return new TextMessage("echo from bikun");
 		}
 
-		if (event.getSource() instanceof GroupSource) {
-            if (songsToPreviewUrl.containsKey(contentText)) {
-                return new TextMessage("We have that song, chat me "
-                        + "and add to your songs to listen!");
-
-		
 		else if (contentText.equalsIgnoreCase("/bikun")) {
-//			String replyText = contentText.replace("/bikun", "");
+			// String replyText = contentText.replace("/bikun", "");
 			String replyText = "Please send your location";
 			return new TextMessage(replyText);
 		}
@@ -84,7 +78,7 @@ public class BikunController {
 
 	private static double userLatitude;
 	private static double userLongitude;
-	
+
 	@EventMapping
 	public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
 		LocationMessageContent locationMessage = event.getMessage();
@@ -92,27 +86,42 @@ public class BikunController {
 		userLongitude = locationMessage.getLongitude();
 		String replyText = "";
 		String[] reply = getNearestBusStop(userLatitude, userLongitude);
-		
-		reply[2] = reply[2].replace("+", ",");
-		
-		List<Message> messages = new ArrayList<Message>();
-		
-		messages.add(new LocationMessage(reply[1], "Click to view location",
-                Double.parseDouble(reply[3]), Double.parseDouble(reply[4])));
+		if (event.getSource() instanceof GroupSource) {
+			reply[2] = reply[2].replace("+", ",");
 
+			List<Message> messages = new ArrayList<Message>();
 
-		messages.add(new TextMessage(reply[2]));
-		
-		replyText = "Approximate distance from your location "
-                + (int) Double.parseDouble(reply[reply.length - 1]) + " meters";
-        messages.add(new TextMessage(replyText));
-		
-//		replyText(event.getReplyToken(),
-//				"latitude: " + locationMessage.getLatitude() + ", longitude: " + locationMessage.getLongitude());
-		// System.out.println(locationMessage.getLatitude());
-		// System.out.println(locationMessage.getLongitude());
-		
-		reply(event.getReplyToken(), messages);
+			messages.add(new LocationMessage(reply[1], "Click to view location", Double.parseDouble(reply[3]),
+					Double.parseDouble(reply[4])));
+
+			messages.add(new TextMessage(reply[2]));
+
+			replyText = "Approximate distance from your location " + (int) Double.parseDouble(reply[reply.length - 1])
+					+ " meters";
+			messages.add(new TextMessage(replyText));
+
+		} else {
+			reply[2] = reply[2].replace("+", ",");
+
+			List<Message> messages = new ArrayList<Message>();
+
+			messages.add(new LocationMessage(reply[1], "Click to view location", Double.parseDouble(reply[3]),
+					Double.parseDouble(reply[4])));
+
+			messages.add(new TextMessage(reply[2]));
+
+			replyText = "Approximate distance from your location " + (int) Double.parseDouble(reply[reply.length - 1])
+					+ " meters";
+			messages.add(new TextMessage(replyText));
+
+			// replyText(event.getReplyToken(),
+			// "latitude: " + locationMessage.getLatitude() + ", longitude: " +
+			// locationMessage.getLongitude());
+			// System.out.println(locationMessage.getLatitude());
+			// System.out.println(locationMessage.getLongitude());
+
+			reply(event.getReplyToken(), messages);
+		}
 	}
 
 	private void replyText(@NonNull String replyToken, @NonNull String message) {
@@ -155,45 +164,45 @@ public class BikunController {
 		}
 		this.reply(replyToken, new TextMessage(jawaban));
 	}
-	
+
 	public String[] getNearestBusStop(double userLatitude, double userLongitude) {
-        String csvFile = "Bikun.csv";
-        String line;
-        String[] csvString = new String[3];
+		String csvFile = "Bikun.csv";
+		String line;
+		String[] csvString = new String[3];
 
-        int index = 0;
-        int minIndex = 0;
+		int index = 0;
+		int minIndex = 0;
 
-        double distance;
-        double busstopLatitude;
-        double busstopLongitude;
-        double minimum = Double.MAX_VALUE;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(csvFile));
-            line = br.readLine(); // Skip the first line
-            while ((line = br.readLine()) != null) {
-                csvString[index] = line;
-                String[] place = line.split(",");
-                busstopLatitude = Double.parseDouble(place[3]);
-                busstopLongitude = Double.parseDouble(place[4]);
-                distance = getDistance(userLatitude, busstopLatitude, userLongitude, busstopLongitude);
-                if (distance < minimum) {
-                    minimum = distance;
-                    minIndex = index;
-                }
-                index++;
-            }
-            br.close();
-            String[] partial = csvString[minIndex].split(",");
-            return (Arrays.toString(partial).replace("]", "") + "," + minimum).split(",");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
+		double distance;
+		double busstopLatitude;
+		double busstopLongitude;
+		double minimum = Double.MAX_VALUE;
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(csvFile));
+			line = br.readLine(); // Skip the first line
+			while ((line = br.readLine()) != null) {
+				csvString[index] = line;
+				String[] place = line.split(",");
+				busstopLatitude = Double.parseDouble(place[3]);
+				busstopLongitude = Double.parseDouble(place[4]);
+				distance = getDistance(userLatitude, busstopLatitude, userLongitude, busstopLongitude);
+				if (distance < minimum) {
+					minimum = distance;
+					minIndex = index;
+				}
+				index++;
+			}
+			br.close();
+			String[] partial = csvString[minIndex].split(",");
+			return (Arrays.toString(partial).replace("]", "") + "," + minimum).split(",");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 
-
-	public double getDistance(double userLatitude, double busstopLatitude, double userLongitude, double busstopLongitude) {
+	public double getDistance(double userLatitude, double busstopLatitude, double userLongitude,
+			double busstopLongitude) {
 		final int earthRadius = 6371; // Radius of the earth
 		double latDistance = Math.toRadians(userLatitude - busstopLatitude);
 		double lonDistance = Math.toRadians(userLongitude - busstopLongitude);
