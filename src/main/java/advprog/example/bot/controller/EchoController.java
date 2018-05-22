@@ -88,11 +88,11 @@ public class EchoController {
             String userId = content.getId();
             String tipe = temp[1];
             if (tipe.equalsIgnoreCase("STANDARD")) {
-                replyText = eventController.updateUserConfig(userId,tipe);
+                replyText = eventController.updateUserConfig(userId,"STANDARD");
             } else if (tipe.equalsIgnoreCase("METRIC")) {
-                replyText = eventController.updateUserConfig(userId,tipe);
+                replyText = eventController.updateUserConfig(userId,"METRIC");
             } else if (tipe.equalsIgnoreCase("IMPERIAL")) {
-                replyText = eventController.updateUserConfig(userId,tipe);
+                replyText = eventController.updateUserConfig(userId,"IMPERIAL");
             } else {
                 replyText = "Opsi yang kamu pilih tidak tersedia :( ";
             }

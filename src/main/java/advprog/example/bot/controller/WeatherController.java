@@ -68,6 +68,7 @@ public class WeatherController {
 
     public String updateUserConfig(String userId, String tipe) {
         userConfig.put(userId,tipe);
+        System.out.println("WOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
         return "Konfigurasi data kamu sudah di-update YEAY !";
     }
 
@@ -106,6 +107,10 @@ public class WeatherController {
             windUnit = "miles/hour";
             tempUnit = "Fahrenheit";
         }
+//        } else {
+//             windUnit = "meter/sec";
+//             tempUnit = "Kelvin";
+//         }
 
         String result = text(location,weather,temperature,wind,humidity,windUnit,tempUnit);
 
