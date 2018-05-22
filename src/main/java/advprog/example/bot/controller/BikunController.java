@@ -172,7 +172,7 @@ public class BikunController {
 
 		messages.add(new TextMessage(reply[2]));
 
-		reply(event.getReplyToken(), messages);
+		this.reply(event.getReplyToken(), messages);
 		//this.reply(replyToken, new TextMessage());
 	}
 
@@ -250,31 +250,31 @@ public class BikunController {
 		return distance;
 	}
 	
-	public double getMinimumTime(String time) {
-		double minimumTime = 0;
+	public int getMinimumTime(String time) {
+		int minimumTime = 0;
 		String[] times = time.split("T");
 		String[] minutes = times[1].split(":");
-		double doubleMinutes = Double.parseDouble(minutes[1]);
-		if(doubleMinutes>=0 && doubleMinutes<15) {
+		int intMinutes = Integer.parseInt(minutes[1]);
+		if(intMinutes>=0 && intMinutes<15) {
 			minimumTime = 15;
 		}
-		if(doubleMinutes>=15 && doubleMinutes<30) {
+		if(intMinutes>=15 && intMinutes<30) {
 			minimumTime = 30;
 		}
-		if(doubleMinutes>=30 && doubleMinutes<45) {
+		if(intMinutes>=30 && intMinutes<45) {
 			minimumTime = 45;
 		}
-		if(doubleMinutes>=45 && doubleMinutes<60) {
+		if(intMinutes>=45 && intMinutes<60) {
 			minimumTime = 00;
 		}
 		return minimumTime;
 	}
 
-	public double getMinutes(String time) {
+	public int getMinutes(String time) {
 		String[] times = time.split("T");
 		String[] minutes = times[1].split(":");
-		double doubleMinutes = Double.parseDouble(minutes[1]);
-		return doubleMinutes;
+		int intMinutes = Integer.parseInt(minutes[1]);
+		return intMinutes;
 	}
 	
 }
