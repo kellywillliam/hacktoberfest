@@ -1,4 +1,4 @@
-package advprog.example.bot.controller;
+package advprog.weather.bot.controller;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
