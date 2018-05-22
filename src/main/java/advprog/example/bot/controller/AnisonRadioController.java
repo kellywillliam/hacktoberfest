@@ -9,6 +9,7 @@ import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.AudioMessage;
 import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.model.message.template.CarouselColumn;
 import com.linecorp.bot.model.message.template.CarouselTemplate;
@@ -22,6 +23,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -104,7 +106,10 @@ public class AnisonRadioController {
                 	String song = userIDtoSongs.get(userId).get(i);
                 	carouselList.add(new CarouselColumn(songsToAlbumCover.get(song), song, "Artist: " + songsToArtist.get(song), Arrays.asList(
                             new PostbackAction("Play",(song)))));
-                }            
+                }
+                CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
+                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+                this.reply(event.getReplyToken(), templateMessage);
             } else {
                 return new TextMessage("Please enter song title first for us to find");
             } 
@@ -164,8 +169,12 @@ public class AnisonRadioController {
         String replyToken = event.getReplyToken();
         this.reply(replyToken, new AudioMessage(songsToPreviewUrl.get(event.getPostbackContent().getData()), 30000));
     }
+    
+    private void reply(String replyToken, Message message) {
+        reply(replyToken, Collections.singletonList(message));
+    }
 
-    private void reply(String replyToken, Message messages) {
+    private void reply(String replyToken, List<Message> messages) {
         try {
             BotApiResponse apiResponse = lineMessagingClient
                     .replyMessage(new ReplyMessage(replyToken, messages))
@@ -174,6 +183,7 @@ public class AnisonRadioController {
             throw new RuntimeException(e);
         }
     }
+
     
     public String loveLiveSongOrNot(String title) throws IOException, JSONException {
         // uses api to find the song from Love Live School Idol API
