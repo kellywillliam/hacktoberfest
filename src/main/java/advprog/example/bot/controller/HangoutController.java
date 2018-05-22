@@ -8,6 +8,7 @@ import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
+import com.linecorp.bot.model.message.LocationMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
@@ -67,11 +68,14 @@ public class HangoutController {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
     }
+    
+    private static double latitude;
+    private static double longitude;
     @EventMapping
     public void handleLocationMessage(MessageEvent<LocationMessageContent> event){
         LocationMessageContent message = event.getMessage();
-        double latitude = message.getLatitude();
-        double longitude = message.getLongitude();
+        latitude = message.getLatitude();
+        longitude = message.getLongitude();
         List<Message> messages = new ArrayList<Message>();;
         messages.add(new TextMessage("a"));
         if(flag == 1){
@@ -88,7 +92,32 @@ public class HangoutController {
     @EventMapping
     public void handlePostbackEvent(PostbackEvent event) {
         String replyToken = event.getReplyToken();
-     //   this.replyText(replyToken, "Got postback data " + event.getPostbackContent().getData() + ", param " + event.getPostbackContent().getParams().toString());
+        String chosen = "" ;
+        String[] partial;
+
+        if( event.getPostbackContent().getData().equals("1")){
+             chosen = carouselList[0] ;  
+             
+        }
+        else if( event.getPostbackContent().getData().equals("2")){
+            chosen = carouselList[1] ;
+        }
+        else if( event.getPostbackContent().getData().equals("3")){
+            chosen = carouselList[2] ;
+        }
+        
+        partial = chosen.split(",");
+        partial[2] = partial[2].replace("+", ",");
+        partial[3] = partial[3].replace("+", ",");
+        
+        double lat = Double.parseDouble(partial[4]) ;
+        double longit= Double.parseDouble(partial[5]) ; 
+        
+        this.reply(replyToken, Arrays.asList(
+                new LocationMessage(partial[1],partial[2]+"\n"+partial[3] ,
+                        lat ,longit ),
+                new TextMessage("Approximated distance from your location "
+                        + (int)getDistance(latitude,lat,longitude,longit) )));
     }
 
     
@@ -155,22 +184,25 @@ public class HangoutController {
         double distance = earthRadius * c * 1000; // convert to meters
         return distance;
     }
+    private static String[] carouselList;
     private TemplateMessage carousel(String nama){
-        String[] carouselList = getListCarousel();
+        carouselList = getListCarousel();
         String imageUrl = createUri("/static/buttons/1040.jpg");
         String[] c1 = carouselList[0].split(",");
         String[] c2 = carouselList[1].split(",");
         String[] c3 = carouselList[2].split(",");
-        c1[2] = c1[2].replace("+", ",");
-        c2[2] = c2[2].replace("+", ",");
         CarouselTemplate carouselTemplate = new CarouselTemplate(
                 Arrays.asList(
-                        new CarouselColumn(imageUrl, c1[1], "place", Arrays.asList(
-                                new PostbackAction("INFO", "hoho")
+                        new CarouselColumn(imageUrl, c1[1], "Hangoutplace", Arrays.asList(
+                                new PostbackAction("INFO", "1")
                         )),
-                        new CarouselColumn(imageUrl, c1[1], "place", Arrays.asList(
+                        new CarouselColumn(imageUrl, c2[1], "Hangoutplace", Arrays.asList(
                                 new PostbackAction("INFO",
-                                                   "haha")
+                                                   "2")
+                        )),
+                        new CarouselColumn(imageUrl, c3[1], "Hangoutplace", Arrays.asList(
+                                new PostbackAction("INFO",
+                                                   "3")
                         ))
                 ));
         
