@@ -1,55 +1,55 @@
 package advprog.example.bot.countryhot;
 
-public class Hospital {
-    String alamat;
-    int id;
-    String jenis;
-    String kota;
-    long latitude;
-    long longitude;
-    String nama;
-    String image;
+import org.jetbrains.annotations.NotNull;
 
-    public Hospital(String alamat, int id, String jenis, String kota, long latitude, long longitude, String nama, String image) {
-        this.alamat = alamat;
-        this.id = id;
-        this.jenis = jenis;
-        this.kota = kota;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.nama = nama;
-        this.image = image;
+public class Hospital implements Comparable<Hospital>{
+    private String name;
+    private String address;
+    private double latitude;
+    private double longitude;
+    private String phone;
+    private String imageLink;
+    private String description;
+    private int distance = -1;
+
+    public String getName() {
+        return name;
     }
 
-    public String getAlamat() {
-        return alamat;
+    public String getAddress() {
+        return address;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getJenis() {
-        return jenis;
-    }
-
-    public String getKota() {
-        return kota;
-    }
-
-    public long getLatitude() {
+    public double getLatitude() {
         return latitude;
     }
 
-    public long getLongitude() {
+    public double getLongitude() {
         return longitude;
     }
 
-    public String getNama() {
-        return nama;
+    public String getPhone() {
+        return phone;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageLink() {
+        return imageLink;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
+    public void setDistance(int distance) {
+        this.distance = distance;
+    }
+
+    @Override
+    public int compareTo(@NotNull Hospital hospital) {
+        return this.distance - hospital.distance;
     }
 }
