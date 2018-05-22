@@ -168,7 +168,7 @@ public class UberController {
     			users.put(userId, new LinkedHashMap<>());
     		}
     		
-    		String imageUrl = createUri("/static/images/location.jpg");
+    		String imageUrl = createUri("/static/buttons/location.jpg");
     		ButtonsTemplate buttonTemplate = new ButtonsTemplate(
     				imageUrl, "Add a New Destination", "Tap to set location of the new destination",
     				Arrays.asList(
@@ -216,7 +216,13 @@ public class UberController {
     }
     
     private void chooseDestination(String replyToken, String userId) {
+    	if (!users.containsKey(userId)) {
+    		replyText(replyToken, "There are no added destination");
+    	}
     	locations = users.get(userId);
+    	if (locations.size() == 0) {
+    		replyText(replyToken, "There are no added destination");
+    	}
     	pbPointer = 0;
     	CarouselTemplate carouselTemplate = new CarouselTemplate(
     			Arrays.asList(
@@ -229,7 +235,7 @@ public class UberController {
     }
     
     private CarouselColumn[] createCarouselItemList() {
-    	String imageUrl = createUri("/static/images/location.jpg");
+    	String imageUrl = createUri("/static/buttons/location.jpg");
     	CarouselColumn[] itemList = new CarouselColumn[locations.size()];
     	int idx = 0;
     	
