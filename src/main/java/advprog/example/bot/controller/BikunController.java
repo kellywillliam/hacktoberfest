@@ -21,6 +21,7 @@ import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.GroupSource;
 import com.linecorp.bot.model.message.LocationMessage;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
@@ -50,10 +51,16 @@ public class BikunController {
 			return new TextMessage("echo from bikun");
 		}
 
+		if (event.getSource() instanceof GroupSource) {
+            if (songsToPreviewUrl.containsKey(contentText)) {
+                return new TextMessage("We have that song, chat me "
+                        + "and add to your songs to listen!");
+
+		
 		else if (contentText.equalsIgnoreCase("/bikun")) {
 //			String replyText = contentText.replace("/bikun", "");
 			String replyText = "Please send your location";
-			return new TextMessage(replyText.substring(1));
+			return new TextMessage(replyText);
 		}
 
 		else if (contentText.equalsIgnoreCase("/bikun_stop")) {
@@ -96,8 +103,8 @@ public class BikunController {
 
 		messages.add(new TextMessage(reply[2]));
 		
-		replyText = "Approximated distance from your location "
-                + (int) Double.parseDouble(reply[reply.length - 1]) + " metres";
+		replyText = "Approximate distance from your location "
+                + (int) Double.parseDouble(reply[reply.length - 1]) + " meters";
         messages.add(new TextMessage(replyText));
 		
 //		replyText(event.getReplyToken(),
