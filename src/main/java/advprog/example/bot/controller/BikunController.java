@@ -99,6 +99,7 @@ public class BikunController {
 			replyText = "Approximate distance from your location " + (int) Double.parseDouble(reply[reply.length - 1])
 					+ " meters";
 			messages.add(new TextMessage(replyText));
+			reply(event.getReplyToken(), messages);
 
 		} else {
 			reply[2] = reply[2].replace("+", ",");
