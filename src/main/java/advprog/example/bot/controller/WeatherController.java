@@ -67,7 +67,7 @@ public class WeatherController {
     }
 
     public String getData(String dataInformation, String userId) {
-        String[] info = dataInformation.split("-");
+        String[] info = dataInformation.split("#");
         String jsonData;
         String userUnit;
 
