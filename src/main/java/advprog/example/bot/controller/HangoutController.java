@@ -101,9 +101,9 @@ public class HangoutController {
              messages.add(new TextMessage("There is no Hangoutplace near your location")) ;     
             }
             else{
-                messages.add(new LocationMessage(place[1],place[2],
+                messages.add(new LocationMessage(place[1],"Click to view location",
                             Double.parseDouble(place[4]) , Double.parseDouble(place[5])) );
-                messages.add(new TextMessage(place[3]));
+                messages.add(new TextMessage(place[2]+"\n"+place[3]));
                 messages.add(new TextMessage("Approximated distance from your location " 
                         + (int)distance+ " metres"));
             }
@@ -136,9 +136,9 @@ public class HangoutController {
         double longit= Double.parseDouble(partial[5]) ; 
         
         this.reply(replyToken, Arrays.asList(
-                new LocationMessage(partial[1],partial[2],
+                new LocationMessage(partial[1],"Click to view location",
                         lat ,longit ),
-                new TextMessage(partial[3]),
+                new TextMessage(partial[2]+"\n"+partial[3]),
                 new TextMessage("Approximated distance from your location "
                         + (int)getDistance(userLatitude,lat,userlongitude,longit) +" metres" )));
     }
@@ -154,13 +154,13 @@ public class HangoutController {
         
         List<Message> messages = new ArrayList<Message>();
         
-        messages.add(new LocationMessage(reply[1],"haha"
+        messages.add(new LocationMessage(reply[1],"Click to view location"
                 ,Double.parseDouble(reply[4]),Double.parseDouble(reply[5])));
         
-        messages.add(new TextMessage(reply[3]));
+        messages.add(new TextMessage(reply[2]+"\n"+reply[3]));
         
         replyText = "Approximated distance from your location " 
-                + reply[reply.length-1] + " metres";
+                + (int)Double.parseDouble(reply[reply.length-1]) + " metres";
         messages.add(new TextMessage(replyText));
         
         return messages;
@@ -255,7 +255,7 @@ public class HangoutController {
                 if(index == 3) break;
                 if(counter == list.get(0) || counter == list.get(1) || counter == list.get(2)){
                     carouselList[index] = line ;
-                    index++;System.out.println("a");
+                    index++;
                 }
                 counter++;
             }
