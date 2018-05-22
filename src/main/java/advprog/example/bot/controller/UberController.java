@@ -18,19 +18,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.action.URIAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.postback.PostbackContent;
 import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
@@ -91,6 +93,37 @@ public class UberController {
     }
     
     @EventMapping
+    public void handlePostbackEvent(PostbackEvent event) throws Exception {
+    	PostbackContent postbackContent = event.getPostbackContent();
+    	String replyToken = event.getReplyToken();
+    	String userId = event.getSource().getUserId();
+    	try {
+    		String[] data = postbackContent.getData().split("@");
+    		destination = data[0];
+    		end_latitude = data[2];
+    		end_longitude = data[3];
+    		
+    		if (pbPointer == 0) {
+    			estimateRide(replyToken);
+    		} else if (pbPointer == 1) {
+    			locations = users.get(userId);
+    			locations.remove(destination);
+    			users.put(userId, locations);
+    			objectMapper.writeValue(FILE, users);
+    			replyText(replyToken, "Successfully removed destination: " + destination);
+    			pointer = -1;
+    			pbPointer = -1;
+    		} else if (pbPointer == -1) {
+    			replyText(replyToken, "Please input a command first");
+    		}
+    	} catch (NullPointerException e) {
+    		replyText(replyToken, "An error occured when reading the location");
+    		pbPointer = -1;
+    		pointer = -1;
+    	}
+    }
+    
+    @EventMapping
     public void handleDefaultMessage(Event event) {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
                 event.getTimestamp(), event.getSource()));
@@ -99,7 +132,7 @@ public class UberController {
     private void handleTextContent(TextMessageContent content, String replyToken, String userId) throws Exception{
     	//TODO implement text content handler
     	String cmd = content.getText();
-    	if (cmd.equalsIgnoreCase("/uber")) {
+    	if (cmd.equalsIgnoreCase("/uber") && pointer == -1) {
     		pointer = 0;
     		String imageUrl = createUri("static/buttons/location.jpg");
     		ButtonsTemplate buttonsTemplate = new ButtonsTemplate(
@@ -115,7 +148,7 @@ public class UberController {
     				"Share Location", buttonsTemplate
     				);
     		reply(replyToken, templateMessage);
-    	} else if (cmd.equalsIgnoreCase("/add_destination")) {
+    	} else if (cmd.equalsIgnoreCase("/add_destination") && pointer == -1) {
     		pointer = 1;
     		if (!users.containsKey(userId)) {
     			users.put(userId, new LinkedHashMap<>());
@@ -129,8 +162,22 @@ public class UberController {
     		
     		TemplateMessage templateMessage = new TemplateMessage("Add Destination", buttonTemplate);
     		reply(replyToken, templateMessage);
-    	} else if (cmd.equalsIgnoreCase("/remove_destination")) {
-    		
+    	} else if (cmd.equalsIgnoreCase("/remove_destination") && pointer == -1) {
+    		if (!users.containsKey(userId)) {
+    			replyText(replyToken, "There are no destinations added yet");
+    		}
+    		locations = users.get(userId);
+    		if (locations.size() == 0) {
+    			replyText(replyToken, "There are no destinations added yet");
+    		} else {
+    			pointer = 3;
+    			pbPointer = 1;
+    			CarouselTemplate carouselTemplate = new CarouselTemplate(
+    					Arrays.asList(createCarouselItemList()));
+    			TemplateMessage templateMessage = new TemplateMessage(
+        				"Remove Destination", carouselTemplate);
+    			reply(replyToken, templateMessage);
+    		}
     	} else if (pointer == 2) {
     		String locationName = content.getText();
     		locations = users.get(userId);
@@ -145,22 +192,18 @@ public class UberController {
     			objectMapper.writeValue(FILE, users);
     		}
     		pointer = -1;
-    	} else {
-    		
+    	} else if (pointer == -1) {
+    		replyText(replyToken, 
+    				"The commands are\n"
+    				+ "/uber - To Estimate Price\n"
+    				+ "/add_destination - To add a new Destination\n"
+    				+ "/remove_destination - To remove an already added destination");
     	}
-    }
-    
-    private void addDestination() {
-    	//TODO implement function when user inputs /add_destination
-    }
-    
-    private void removeDestination() {
-    	//TODO implement function when user inputs /delete_destination
     }
     
     private void chooseDestination(String replyToken, String userId) {
     	locations = users.get(userId);
-    	pbPointer = 3;
+    	pbPointer = 0;
     	CarouselTemplate carouselTemplate = new CarouselTemplate(
     			Arrays.asList(
     					createCarouselItemList()
@@ -190,8 +233,10 @@ public class UberController {
     	return itemList;
     }
     
-    private void estimatRide(String replyToken) throws Exception {
+    private void estimateRide(String replyToken) throws Exception {
     	//TODO implement function when user asks for estimation from /uber
+    	pbPointer = -1;
+    	pointer = -1;
     	URL url = new URL("https://api.uber.com/v1.2/estimates/price?start_latitude="
     			+ start_latitude + "&start_longitude=" + start_longitude + "&end_latitude="
     			+ end_latitude + "&end_longitude=" + end_longitude);
