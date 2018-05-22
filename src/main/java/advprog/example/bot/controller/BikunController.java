@@ -100,7 +100,7 @@ public class BikunController {
 			messages.add(new TextMessage(reply[2]));
 
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + event.getTimestamp().toString()
+					"bus stop " + getMinimumTime(event.getTimestamp().toString())
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 			reply(event.getReplyToken(), messages);
@@ -116,7 +116,7 @@ public class BikunController {
 			messages.add(new TextMessage(reply[2]));
 
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + event.getTimestamp().toString()
+					"bus stop " + getMinimumTime(event.getTimestamp().toString())
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 
@@ -250,9 +250,24 @@ public class BikunController {
 		return distance;
 	}
 	
-	public void getMinimumTime(String time) {
-		double minimumTime = Double.MAX_VALUE;
-		
+	public double getMinimumTime(String time) {
+		double minimumTime = 0;
+		String[] times = time.split("T");
+		String[] minutes = times[1].split(":");
+		double doubleMinutes = Double.parseDouble(minutes[1]);
+		if(doubleMinutes>=0 && doubleMinutes<15) {
+			minimumTime = 15;
+		}
+		if(doubleMinutes>=15 && doubleMinutes<30) {
+			minimumTime = 30;
+		}
+		if(doubleMinutes>=30 && doubleMinutes<45) {
+			minimumTime = 45;
+		}
+		if(doubleMinutes>=45 && doubleMinutes<60) {
+			minimumTime = 00;
+		}
+		return minimumTime;
 	}
 
 }
