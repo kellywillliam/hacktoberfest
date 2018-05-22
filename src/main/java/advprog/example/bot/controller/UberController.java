@@ -54,11 +54,11 @@ public class UberController {
     private static String end_latitude;
     private static String end_longitude;
     private static ObjectMapper objectMapper = new ObjectMapper();
-    private static LinkedHashMap<String, Object> addedLocation = new LinkedHashMap();
+    private static LinkedHashMap<String, Object> addedLocation = new LinkedHashMap<>();
     private static LinkedHashMap<String, LinkedHashMap<String, Object>> 
-    locations = new LinkedHashMap();
+    locations = new LinkedHashMap<>();
     private static LinkedHashMap<String, LinkedHashMap<String, LinkedHashMap<String, Object>>> 
-    users = new LinkedHashMap();
+    users = new LinkedHashMap<>();
     private static int pointer = -1;
     private static int pbPointer = -1;
     
@@ -68,7 +68,7 @@ public class UberController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
        
-        handleTextContent(content, event.getReplyToken());
+        handleTextContent(content, event.getReplyToken(), event.getSource().getUserId());
     }
     
     @EventMapping
@@ -94,10 +94,11 @@ public class UberController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    private void handleTextContent(TextMessageContent content, String replyToken) {
+    private void handleTextContent(TextMessageContent content, String replyToken, String userId) {
     	//TODO implement text content handler
     	String cmd = content.getText();
     	if (cmd.equalsIgnoreCase("/uber")) {
+    		pointer = 0;
     		String imageUrl = createUri("static/buttons/location.jpg");
     		ButtonsTemplate buttonsTemplate = new ButtonsTemplate(
     				imageUrl,
@@ -113,8 +114,22 @@ public class UberController {
     				);
     		reply(replyToken, templateMessage);
     	} else if (cmd.equalsIgnoreCase("/add_destination")) {
+    		pointer = 1;
+    		if (!users.containsKey(userId)) {
+    			users.put(userId, new LinkedHashMap<>());
+    		}
     		
+    		String imageUrl = createUri("/static/images/location.jpg");
+    		ButtonsTemplate buttonTemplate = new ButtonsTemplate(
+    				imageUrl, "Add a New Destination", "Tap to set location of the new destination",
+    				Arrays.asList(
+                        new URIAction("Add Destination", "line://nv/location")));
+    		
+    		TemplateMessage templateMessage = new TemplateMessage("Add Destination", buttonTemplate);
+    		reply(replyToken, templateMessage);
     	} else if (cmd.equalsIgnoreCase("/remove_destination")) {
+    		
+    	} else if (pointer == 2) {
     		
     	} else {
     		
