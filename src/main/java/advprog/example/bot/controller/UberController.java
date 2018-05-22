@@ -68,6 +68,7 @@ public class UberController {
     	initiateData();
     }
     
+    @SuppressWarnings("unchecked")
     private static void initiateData() {
     	try {
     		users = objectMapper.readValue(FILE, LinkedHashMap.class);
@@ -84,8 +85,9 @@ public class UberController {
        
         handleTextContent(content, event.getReplyToken(), event.getSource().getUserId());
     }
-    
+     
     @EventMapping
+    @SuppressWarnings("unchecked")
     public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
         LocationMessageContent locationMessage = event.getMessage();
         String userId = event.getSource().getUserId();
@@ -354,7 +356,7 @@ public class UberController {
             throw new IllegalArgumentException("replyToken must not be empty");
         }
         if (message.length() > 1000) {
-            message = message.substring(0, 1000 - 2) + "……";
+            message = message.substring(0, 1000 - 2) + "";
         }
         this.reply(replyToken, new TextMessage(message));
     }
