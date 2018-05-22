@@ -11,6 +11,7 @@ buildscript {
 
     repositories {
         mavenCentral()
+        jcenter()
     }
 
     dependencies {
@@ -20,6 +21,7 @@ buildscript {
 
 // Use core Gradle plugins or plugins published on Gradle plugin repository
 plugins {
+    id 'application'
     id 'checkstyle'
     id 'jacoco'
     id 'java'
@@ -36,6 +38,7 @@ targetCompatibility = java_version
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {

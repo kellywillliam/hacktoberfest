@@ -2,6 +2,8 @@ package advprog.example.bot.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +13,7 @@ class MediaWikiControllerTest {
     @BeforeEach
     void setUp() {
         mwc = new MediaWikiController();
+        mwc.setUrlList("./wikiUrlTest.csv");
     }
 
     @Test
@@ -31,6 +34,14 @@ class MediaWikiControllerTest {
         assertEquals("URL yang kamu masukkan sudah terdaftar.",
                 mwc.execute("/add_wiki marvel.wikia.com/api.php"));
 
+        try {
+            PrintWriter writer = null;
+            writer = new PrintWriter(mwc.getUrlList());
+            writer.print("wikiUrl\n");
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

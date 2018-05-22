@@ -1,10 +1,12 @@
 package advprog.example.bot.controller;
 
-import fastily.jwiki.core.*;
-import fastily.jwiki.dwrap.*;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-
-import java.io.*;
+import fastily.jwiki.core.Wiki;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class MediaWikiController {
@@ -13,6 +15,7 @@ public class MediaWikiController {
     String addWikiSuccess;
     String addWikiFail;
     String addWikiOldUrl;
+    String urlList;
 
     public MediaWikiController() {
         this.randomInput = "Halo, terima kasih atas pesan yang dikirimkan. "
@@ -25,6 +28,7 @@ public class MediaWikiController {
         this.addWikiSuccess = "URL berhasil ditambahkan.";
         this.addWikiFail = "URL yang kamu masukkan tidak valid. Silakan coba lagi.";
         this.addWikiOldUrl = "URL yang kamu masukkan sudah terdaftar.";
+        this.urlList = "./wikiUrl.csv";
     }
 
     public String execute(String contentText) {
@@ -70,7 +74,7 @@ public class MediaWikiController {
     }
 
     public boolean isNewUrl(String urlGiven) {
-        File file = new File("./wikiUrl.csv");
+        File file = new File(urlList);
         boolean res = false;
         try {
             Scanner scanner = new Scanner(file);
@@ -81,12 +85,11 @@ public class MediaWikiController {
                 if (line.equalsIgnoreCase(urlGiven)) {
                     res = false;
                     break;
-                }
-                else {
+                } else {
                     res = true;
                 }
             }
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return res;
@@ -94,7 +97,7 @@ public class MediaWikiController {
 
     public void saveUrl(String url) {
         try {
-            FileWriter fw = new FileWriter("./wikiUrl.csv", true);
+            FileWriter fw = new FileWriter(urlList, true);
             BufferedWriter bw = new BufferedWriter(fw);
             PrintWriter pw = new PrintWriter(bw);
 
@@ -105,5 +108,13 @@ public class MediaWikiController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public String getUrlList() {
+        return urlList;
+    }
+
+    public void setUrlList(String urlList) {
+        this.urlList = urlList;
     }
 }
