@@ -13,6 +13,8 @@ import java.util.logging.Logger;
 public class QuranController {
 
     private static final Logger LOGGER = Logger.getLogger(QuranController.class.getName());
+    public static boolean isWaitingForReply = false;
+    public static Fitur currentFitur = null;
 
     @EventMapping
     public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
