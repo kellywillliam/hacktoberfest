@@ -154,7 +154,7 @@ public class HangoutController {
         
         List<Message> messages = new ArrayList<Message>();
         
-        messages.add(new LocationMessage(reply[1],reply[2]
+        messages.add(new LocationMessage(reply[1],"haha"
                 ,Double.parseDouble(reply[4]),Double.parseDouble(reply[5])));
         
         messages.add(new TextMessage(reply[3]));
