@@ -48,6 +48,7 @@ public class AnisonRadioController {
     private HashMap<String, String> songsToAlbumCover = new HashMap<String, String>();
     private HashMap<String, String> songsToArtist = new HashMap<String, String>();
     private boolean askTitleInputState = false;
+    private boolean removeOrNot = false;
     
     @Autowired
     private LineMessagingClient lineMessagingClient;
@@ -88,20 +89,21 @@ public class AnisonRadioController {
         } else if (contentText.equalsIgnoreCase("/remove_song")) {
             if (askTitleInputState == false) {
                 //replies as carousel from list of songs this userID has to delete
+            	ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
+                for (int i = 0 ; i < userIDtoSongs.get(userId).size() ; i++) {
+                	String song = userIDtoSongs.get(userId).get(i);
+                	carouselList.add(new CarouselColumn(songsToAlbumCover.get(song), song, "Artist: " + songsToArtist.get(song), Arrays.asList(
+                            new PostbackAction("Remove", "#remove#" + userId + "#" + (song)))));
+                }
+                CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
+                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+                this.reply(event.getReplyToken(), templateMessage);
             } else {
                 return new TextMessage("Please enter song title first for us to find");
             }
         } else if (contentText.equalsIgnoreCase("/listen_song")) {
             if (askTitleInputState == false) {
-                //replies as carousel from list of songs this userID has to listen
-//            	handleAudioMessage(event);
-//            	JSONObject json = new JSONObject();
-//            	json.put("type", "audio");
-//            	json.put("originalContentUrl", "https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a");
-//            	json.put("duration", "30000");
-//            	return new TextMessage(json.toString());
-//            	return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 30000);
-            	ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
+                ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
                 for (int i = 0 ; i < userIDtoSongs.get(userId).size() ; i++) {
                 	String song = userIDtoSongs.get(userId).get(i);
                 	carouselList.add(new CarouselColumn(songsToAlbumCover.get(song), song, "Artist: " + songsToArtist.get(song), Arrays.asList(
@@ -133,8 +135,7 @@ public class AnisonRadioController {
                 	            + "available as a Love Live song, search for another one!");
                 	}
                     askTitleInputState = false;
-                    return new TextMessage("Your new song is added, your user id: " + userId +
-                    		", your song: " + contentText + ", itunes id: " + songsToPreviewUrl.get(contentText));
+                    return new TextMessage("Your new song is added, you can listen your new song from /listen_song");
                 } else {
                 	return new TextMessage("You have that song already, listen with /listen_song");
                 }
@@ -143,20 +144,6 @@ public class AnisonRadioController {
         return new TextMessage("Please enter a valid input, "
                 + "such as /add_song or /remove_song or /listen_song");
     }
-    
-//    @EventMapping
-//    public AudioMessage handleAudioMessage(MessageEvent<TextMessageContent> event) {
-//    	LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
-//                event.getTimestamp(), event.getSource()));
-//    	TextMessageContent content = event.getMessage();
-//        String contentText = content.getText();
-//        
-//        if (contentText.equalsIgnoreCase("/listen_song")){
-//        	return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
-//        }
-//        
-//        return new AudioMessage("https://audio-ssl.itunes.apple.com/apple-assets-us-std-000001/Music/v4/87/4d/b7/874db71d-8a98-6e74-c476-22bbc3c2d32f/mzaf_998286111950970369.plus.aac.p.m4a", 100);
-//    }
 
     @EventMapping
     public void handleDefaultMessage(Event event) {
@@ -167,7 +154,17 @@ public class AnisonRadioController {
     @EventMapping
     public void handlePostbackEvent(PostbackEvent event) {
         String replyToken = event.getReplyToken();
-        this.reply(replyToken, new AudioMessage(songsToPreviewUrl.get(event.getPostbackContent().getData()), 30000));
+        String content = event.getPostbackContent().getData();
+        if (content.startsWith("#remove#")) {
+        	content = content.replaceAll("#remove#", "");
+        	String[] userIdAndSong = content.split("#");
+        	String userId = userIdAndSong[0];
+        	String song = userIdAndSong[1];
+        	userIDtoSongs.get(userId).remove(song);
+        	this.reply(replyToken, new TextMessage("Your song has been removed"));
+        }
+        
+        this.reply(replyToken, new AudioMessage(songsToPreviewUrl.get(content), 30000));
     }
     
     private void reply(String replyToken, Message message) {
