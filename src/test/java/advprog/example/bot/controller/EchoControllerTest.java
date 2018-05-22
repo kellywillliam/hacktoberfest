@@ -72,9 +72,9 @@ public class EchoControllerTest {
                 + "(2) /oricon jpsingles YYYY-MM (untuk info bulanan)\n"
                 + "(3) /oricon jpsingles weekly YYYY-MM-DD (untuk info mingguan ,"
                 + "ps: untuk info ini hanya ada untuk tanggal yang jatuh di hari senin)\n"
-                + "(4) /oricon jpsingles daily YYYY-MM-DD"
-                + "(5) /weather (untuk informasi cuaca)"
-                + "(6) /configure_weather (untuk mengupdate satuan "
+                + "(4) /oricon jpsingles daily YYYY-MM-DD\n"
+                + "(5) /weather (untuk informasi cuaca)\n"
+                + "(6) /configure_weather (untuk mengupdate satuan\n"
                 + "informasi cuaca)", reply.getText());
     }
 

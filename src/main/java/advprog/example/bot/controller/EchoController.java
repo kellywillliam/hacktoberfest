@@ -27,8 +27,8 @@ public class EchoController {
             + "(2) /oricon jpsingles YYYY-MM (untuk info bulanan)\n"
             + "(3) /oricon jpsingles weekly YYYY-MM-DD (untuk info mingguan ,"
             + "ps: untuk info ini hanya ada untuk tanggal yang jatuh di hari senin)\n"
-            + "(4) /oricon jpsingles daily YYYY-MM-DD"
-            + "(5) /weather (untuk informasi cuaca)"
+            + "(4) /oricon jpsingles daily YYYY-MM-DD\n"
+            + "(5) /weather (untuk informasi cuaca)\n"
             + "(6) /configure_weather (untuk mengupdate satuan informasi cuaca)";
 
     @EventMapping
@@ -134,7 +134,7 @@ public class EchoController {
             String latitude = Double.toString(content.getLatitude());
             String userId = content.getId();
 
-            String dataInformation = longitude + ';' + latitude;
+            String dataInformation = longitude + '/' + latitude;
 
             replyText = eventController.getData(dataInformation, userId);
 
@@ -142,7 +142,7 @@ public class EchoController {
 
             return new TextMessage(replyText + "\n longitude :"
                     + longitude + "\n latitude :" + latitude
-                    + "\n Id User: " + userId);
+                    + "\n Id User: " + userId + "\n hehe");
         }
 
         return new TextMessage("Info yang kamu masukkan salah");
