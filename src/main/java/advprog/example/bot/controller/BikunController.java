@@ -99,8 +99,9 @@ public class BikunController {
 
 			messages.add(new TextMessage(reply[2]));
 
-			replyText = "Approximate distance from your location " + (int) Double.parseDouble(reply[reply.length - 1])
-					+ " meters";
+			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
+					"bus stop " + (int) Double.parseDouble(reply[reply.length - 1])
+					+ " minutes";
 			messages.add(new TextMessage(replyText));
 			reply(event.getReplyToken(), messages);
 
@@ -114,8 +115,9 @@ public class BikunController {
 
 			messages.add(new TextMessage(reply[2]));
 
-			replyText = "Approximate distance from your location " + (int) Double.parseDouble(reply[reply.length - 1])
-					+ " meters";
+			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
+					"bus stop " + (int) Double.parseDouble(reply[reply.length - 1])
+					+ " minutes";
 			messages.add(new TextMessage(replyText));
 
 			reply(event.getReplyToken(), messages);
@@ -170,12 +172,8 @@ public class BikunController {
 
 		messages.add(new TextMessage(reply[2]));
 
-//		replyText = "Approximate distance from your location " + (int) Double.parseDouble(reply[reply.length - 1])
-//				+ " meters";
-//		messages.add(new TextMessage(replyText));
-
 		reply(event.getReplyToken(), messages);
-		//this.reply(replyToken, new TextMessage(jawaban));
+		//this.reply(replyToken, new TextMessage(messages));
 	}
 
 	public String[] getNearestBusStop(double userLatitude, double userLongitude) {
