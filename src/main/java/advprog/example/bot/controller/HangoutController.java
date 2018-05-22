@@ -58,7 +58,7 @@ public class HangoutController {
             replyText = "Please send your location to me";
             flag = 2;
         }
-        else if (contentText.startsWith("/random_hangout_kuy")){
+        else if (contentText.startsWith("/nearby_hangout_kuy")){
             replyText = "Please send your location to me";
             flag = 3; 
             radius = Double.parseDouble(contentText.split(" ")[1]);
@@ -83,6 +83,7 @@ public class HangoutController {
         userLatitude = message.getLatitude();
         userlongitude = message.getLongitude();
         List<Message> messages = new ArrayList<Message>();
+        
         if(flag == 1){
             messages = nearestHangout(userLatitude,userlongitude);
             flag = 0;
@@ -159,7 +160,7 @@ public class HangoutController {
         messages.add(new TextMessage(reply[3]));
         
         replyText = "Approximated distance from your location " 
-                + Double.parseDouble(reply[reply.length-1]) + " metres";
+                + reply[reply.length-1] + " metres";
         messages.add(new TextMessage(replyText));
         
         return messages;
