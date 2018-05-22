@@ -95,8 +95,6 @@ public class HangoutController {
         String[] partial;
         
         
-        this.reply(replyToken,Collections.singletonList(
-                new TextMessage(event.getPostbackContent().getData())));
         
         if( event.getPostbackContent().getData().equals("1")){
              chosen = carouselList[0] ;  
@@ -117,8 +115,9 @@ public class HangoutController {
         double longit= Double.parseDouble(partial[5]) ; 
         
         this.reply(replyToken, Arrays.asList(
-                new LocationMessage(partial[1],partial[2]+"\n"+partial[3] ,
+                new LocationMessage(partial[1],partial[2],
                         lat ,longit ),
+                new TextMessage(partial[3]),
                 new TextMessage("Approximated distance from your location "
                         + (int)getDistance(latitude,lat,longitude,longit) )));
     }
