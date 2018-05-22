@@ -29,8 +29,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -39,11 +37,14 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @LineMessageHandler
 public class AnisonRadioController {
     private static final Logger LOGGER = Logger.getLogger(AnisonRadioController.class.getName());
-    private HashMap<String, ArrayList<String>> userIDtoSongs = new HashMap<String, ArrayList<String>>();
+    private HashMap<String, ArrayList<String>> userIDtoSongs = 
+            new HashMap<String, ArrayList<String>>();
     private HashMap<String, String> songsToPreviewUrl = new HashMap<String, String>();
     private HashMap<String, String> songsToAlbumCover = new HashMap<String, String>();
     private HashMap<String, String> songsToArtist = new HashMap<String, String>();
@@ -54,7 +55,8 @@ public class AnisonRadioController {
     private LineMessagingClient lineMessagingClient;
     
     @EventMapping
-    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws IOException, JSONException {
+    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) 
+            throws IOException, JSONException {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -73,10 +75,10 @@ public class AnisonRadioController {
         String userId = event.getSource().getUserId();
         if (contentText.equalsIgnoreCase("/add_song")) {
             if (askTitleInputState == false) {
-                //enter state where bot waits for song title 
+                //enter state where bot waits for song title
                 //and put userId to the HashMap for personal song list
                 if (!userIDtoSongs.containsKey(userId)) {
-                	userIDtoSongs.put(userId, new ArrayList<String>());
+                    userIDtoSongs.put(userId, new ArrayList<String>());
                     askTitleInputState = true;
                     return new TextMessage("Please enter song title");
                 } else {
@@ -89,18 +91,19 @@ public class AnisonRadioController {
         } else if (contentText.equalsIgnoreCase("/remove_song")) {
             if (askTitleInputState == false) {
                 //replies as carousel from list of songs this userID has to delete
-            	ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
-            	int librarySize = userIDtoSongs.get(userId).size();
-                if (librarySize == 0) {
-                	return new TextMessage("You have no songs! /add_song to add new songs");
+                ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
+                if (!userIDtoSongs.containsKey(userId) || userIDtoSongs.get(userId).size() == 0) {
+                    return new TextMessage("You have no songs! /add_song to add new songs");
                 }
-                for (int i = 0 ; i < librarySize ; i++) {
-                	String song = userIDtoSongs.get(userId).get(i);
-                	carouselList.add(new CarouselColumn(songsToAlbumCover.get(song), song, "Artist: " + songsToArtist.get(song), Arrays.asList(
+                for (int i = 0; i < userIDtoSongs.get(userId).size(); i++) {
+                    String song = userIDtoSongs.get(userId).get(i);
+                    carouselList.add(new CarouselColumn(songsToAlbumCover.get(song),
+                            song, "Artist: " + songsToArtist.get(song), Arrays.asList(
                             new PostbackAction("Remove", "#remove#" + userId + "#" + (song)))));
                 }
                 CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
-                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+                TemplateMessage templateMessage = 
+                        new TemplateMessage("Carousel alt text", carouselTemplate);
                 this.reply(event.getReplyToken(), templateMessage);
             } else {
                 return new TextMessage("Please enter song title first for us to find");
@@ -108,17 +111,18 @@ public class AnisonRadioController {
         } else if (contentText.equalsIgnoreCase("/listen_song")) {
             if (askTitleInputState == false) {
                 ArrayList<CarouselColumn> carouselList = new ArrayList<CarouselColumn>();
-                int librarySize = userIDtoSongs.get(userId).size();
-                if (librarySize == 0) {
-                	return new TextMessage("You have no songs! /add_song to add new songs");
+                if (!userIDtoSongs.containsKey(userId) || userIDtoSongs.get(userId).size() == 0) {
+                    return new TextMessage("You have no songs! /add_song to add new songs");
                 }
-                for (int i = 0 ; i < librarySize ; i++) {
-                	String song = userIDtoSongs.get(userId).get(i);
-                	carouselList.add(new CarouselColumn(songsToAlbumCover.get(song), song, "Artist: " + songsToArtist.get(song), Arrays.asList(
+                for (int i = 0; i < userIDtoSongs.get(userId).size(); i++) {
+                    String song = userIDtoSongs.get(userId).get(i);
+                    carouselList.add(new CarouselColumn(songsToAlbumCover.get(song),
+                            song, "Artist: " + songsToArtist.get(song), Arrays.asList(
                             new PostbackAction("Play",(song)))));
                 }
                 CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
-                TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+                TemplateMessage templateMessage = 
+                        new TemplateMessage("Carousel alt text", carouselTemplate);
                 this.reply(event.getReplyToken(), templateMessage);
             } else {
                 return new TextMessage("Please enter song title first for us to find");
@@ -127,25 +131,26 @@ public class AnisonRadioController {
             if (askTitleInputState) {
                 if (!userIDtoSongs.get(userId).contains(contentText)) { 
                     //checks song title is a Love Live song or not if yes add to his/her map
-                	String answer = loveLiveSongOrNot(contentText);
-                	if (answer != null) {
-                		String[] index = answer.split("#");
-                		String itunesID = index[0];
-                		String albumCover = index[1];
-                		String artist = index[2];
-                		userIDtoSongs.get(userId).add(contentText);
-                		String previewUrl = findMusicUrl(itunesID);
-                		songsToPreviewUrl.put(contentText, previewUrl);
-                		songsToAlbumCover.put(contentText, albumCover);
-                		songsToArtist.put(contentText, artist);
-                	} else {
-                   	    return new TextMessage("Your song is not "
-                	            + "available as a Love Live song, search for another one!");
-                	}
+                    String answer = loveLiveSongOrNot(contentText);
+                    if (answer != null) {
+                        String[] index = answer.split("#");
+                        String itunesId = index[0];
+                        String albumCover = index[1];
+                        final String artist = index[2];
+                        userIDtoSongs.get(userId).add(contentText);
+                        String previewUrl = findMusicUrl(itunesId);
+                        songsToPreviewUrl.put(contentText, previewUrl);
+                        songsToAlbumCover.put(contentText, albumCover);
+                        songsToArtist.put(contentText, artist);
+                    } else {
+                        return new TextMessage("Your song is not "
+                                + "available as a Love Live song, search for another one!");
+                    }
                     askTitleInputState = false;
-                    return new TextMessage("Your new song is added, you can listen your new song from /listen_song");
+                    return new TextMessage("Your new song is added,"
+                            + " you can listen your new song from /listen_song");
                 } else {
-                	return new TextMessage("You have that song already, listen with /listen_song");
+                    return new TextMessage("You have that song already, listen with /listen_song");
                 }
             }
         }
@@ -164,17 +169,16 @@ public class AnisonRadioController {
         String replyToken = event.getReplyToken();
         String content = event.getPostbackContent().getData();
         if (content.startsWith("#remove#")) {
-        	content = content.replaceAll("#remove#", "");
-        	String[] userIdAndSong = content.split("#");
-        	String userId = userIdAndSong[0];
-        	String song = userIdAndSong[1];
-        	userIDtoSongs.get(userId).remove(song);
-        	this.reply(replyToken, new TextMessage("Your song has been removed"));
+            content = content.replaceAll("#remove#", "");
+            String[] userIdAndSong = content.split("#");
+            String userId = userIdAndSong[0];
+            String song = userIdAndSong[1];
+            userIDtoSongs.get(userId).remove(song);
+            this.reply(replyToken, new TextMessage("Your song has been removed"));
         }
-        
         this.reply(replyToken, new AudioMessage(songsToPreviewUrl.get(content), 30000));
     }
-    
+
     private void reply(String replyToken, Message message) {
         reply(replyToken, Collections.singletonList(message));
     }
@@ -189,91 +193,86 @@ public class AnisonRadioController {
         }
     }
 
-    
     public String loveLiveSongOrNot(String title) throws IOException, JSONException {
         // uses api to find the song from Love Live School Idol API
-    	InputStream is = null;
-		String result = "";
-		JSONObject jsonResponse = null;
-		title = title.replace(" ", "%20");
-		String url = "http://schoolido.lu/api/songs/?search=" + title;
+        InputStream is = null;
+        title = title.replace(" ", "%20");
+        String url = "http://schoolido.lu/api/songs/?search=" + title;
 
-		//http post
-		HttpClient httpclient = HttpClientBuilder.create().build();
-		HttpGet httpget = new HttpGet(url);
-		HttpResponse response = httpclient.execute(httpget);
-		HttpEntity entity = response.getEntity();
-		is = entity.getContent();
+        //http post
+        HttpClient httpclient = HttpClientBuilder.create().build();
+        HttpGet httpget = new HttpGet(url);
+        HttpResponse response = httpclient.execute(httpget);
+        HttpEntity entity = response.getEntity();
+        is = entity.getContent();
 
-		//convert response to string
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF-8"),8);
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line + "\n");
-		}
-		is.close();
-		result=sb.toString();
+        //convert response to string
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF-8"),8);
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line + "\n");
+        }
+        is.close();
+        String result = sb.toString();
 
-		//try parse the string to a JSON object
-	    jsonResponse = new JSONObject(result);
-    	String itunesID = "";
-    	String albumCover = "";
-    	String artist = "";
-    	String answer = "";
-    	int count = jsonResponse.getInt("count");
-		JSONArray results;
-		if (count >= 1) {
-		    results = jsonResponse.getJSONArray("results");
-		    itunesID = results.getJSONObject(0).get("itunes_id").toString();
-		    albumCover = "https:" + results.getJSONObject(0).get("image").toString();
-		    artist = results.getJSONObject(0).get("main_unit").toString();
-		    answer = itunesID + "#" + albumCover + "#" + artist;
-		} else {
-			answer = null;
-		}
-    	return answer;
+        //try parse the string to a JSON object
+        JSONObject jsonResponse = new JSONObject(result);
+        String itunesId = "";
+        String albumCover = "";
+        String artist = "";
+        String answer = "";
+        int count = jsonResponse.getInt("count");
+        JSONArray results;
+        if (count >= 1) {
+            results = jsonResponse.getJSONArray("results");
+            itunesId = results.getJSONObject(0).get("itunes_id").toString();
+            albumCover = "https:" + results.getJSONObject(0).get("image").toString();
+            artist = results.getJSONObject(0).get("main_unit").toString();
+            answer = itunesId + "#" + albumCover + "#" + artist;
+        } else {
+            answer = null;
+        }
+        return answer;
     }
 
-    public String findMusicUrl(String title) throws ClientProtocolException, IOException, JSONException {
+    public String findMusicUrl(String title) 
+            throws ClientProtocolException, IOException, JSONException {
         // uses api to find the song url sample from iTunes API
-    	 // uses api to find the song from Love Live School Idol API
-    	InputStream is = null;
-		String result = "";
-		JSONObject jsonResponse = null;
-		String url = "https://itunes.apple.com/lookup?id=" + title;
+        // uses api to find the song from Love Live School Idol API
+        InputStream is = null;
+        String url = "https://itunes.apple.com/lookup?id=" + title;
 
-		//http post
-		HttpClient httpclient = HttpClientBuilder.create().build();
-		HttpGet httpget = new HttpGet(url);
-		HttpResponse response = httpclient.execute(httpget);
-		HttpEntity entity = response.getEntity();
-		is = entity.getContent();
+        //http post
+        HttpClient httpclient = HttpClientBuilder.create().build();
+        HttpGet httpget = new HttpGet(url);
+        HttpResponse response = httpclient.execute(httpget);
+        HttpEntity entity = response.getEntity();
+        is = entity.getContent();
 
-		//convert response to string
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF-8"),8);
-		StringBuilder sb = new StringBuilder();
-		String line = null;
-		while ((line = reader.readLine()) != null) {
-			sb.append(line + "\n");
-		}
-		is.close();
-		result=sb.toString();
+        //convert response to string
+        BufferedReader reader = new BufferedReader(new InputStreamReader(is,"UTF-8"),8);
+        StringBuilder sb = new StringBuilder();
+        String line = null;
+        while ((line = reader.readLine()) != null) {
+            sb.append(line + "\n");
+        }
+        is.close();
+        String result = sb.toString();
 
-		//try parse the string to a JSON object
-	    jsonResponse = new JSONObject(result);
-    	String previewUrl = "";
-    	int count = jsonResponse.getInt("resultCount");
-		JSONArray results;
-		if (count >= 1) {
-		    results = jsonResponse.getJSONArray("results");
-		    previewUrl = results.getJSONObject(0).get("previewUrl").toString();
-		} else {
-			previewUrl = null;
-		}
+        //try parse the string to a JSON object
+        JSONObject jsonResponse = new JSONObject(result);
+        String previewUrl = "";
+        int count = jsonResponse.getInt("resultCount");
+        JSONArray results;
+        if (count >= 1) {
+            results = jsonResponse.getJSONArray("results");
+            previewUrl = results.getJSONObject(0).get("previewUrl").toString();
+        } else {
+            previewUrl = null;
+        }
         System.out.println(previewUrl);
-
-    	return previewUrl;
+        return previewUrl;
     }
 
     public HashMap<String, ArrayList<String>> getMap() {
