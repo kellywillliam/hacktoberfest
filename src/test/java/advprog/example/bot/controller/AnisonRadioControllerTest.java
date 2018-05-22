@@ -6,18 +6,23 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import java.io.IOException;
-
-import org.json.JSONException;
-
 import advprog.example.bot.EventTestUtil;
 
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.GroupSource;
+import com.linecorp.bot.model.event.source.UserSource;
+import com.linecorp.bot.model.message.Message;
 import com.linecorp.bot.model.message.TextMessage;
 
+import java.io.IOException;
+import java.time.Instant;
+
 import junit.framework.TestCase;
+
+import org.apache.http.client.ClientProtocolException;
+import org.json.JSONException;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,8 +52,19 @@ public class AnisonRadioControllerTest extends TestCase {
     public void testHandleTextMessageEvent() throws IOException, JSONException {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Test");
-        TextMessage reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event); //kalau ada error ini casted
+        TextMessage reply = (TextMessage) 
+                anisonRadioController.handleTextMessageEvent(event); //kalau ada error ini casted
         assertEquals("echo dari anison radio", reply.getText());
+        
+        event = EventTestUtil.createDummyTextMessage("/listen_song");
+        assertEquals(anisonRadioController.getMap().size(), 0);
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
+        assertEquals("You have no songs! /add_song to add new songs", reply.getText());
+        
+        event = EventTestUtil.createDummyTextMessage("/remove_song");
+        assertEquals(anisonRadioController.getMap().size(), 0);
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
+        assertEquals("You have no songs! /add_song to add new songs", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("/add_song");
         assertEquals(anisonRadioController.getMap().size(), 0);
@@ -67,19 +83,48 @@ public class AnisonRadioControllerTest extends TestCase {
         reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Please enter song title first for us to find", reply.getText());
         
-        event = EventTestUtil.createDummyTextMessage("Anything");
+        event = EventTestUtil.createDummyTextMessage("ImpossibleTextASDASDASDAS");
         reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
-        assertEquals("Your new song is added", reply.getText());
+        assertEquals("Your song is not available "
+                + "as a Love Live song, search for another one!", reply.getText());
+        
+        event = EventTestUtil.createDummyTextMessage("Snow halation");
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
+        assertEquals("Your new song is added, "
+                + "you can listen your new song from /listen_song", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("/add_song");
         assertEquals(anisonRadioController.getMap().size(), 1);
         reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Please enter song title", reply.getText());
         
+        event = EventTestUtil.createDummyTextMessage("Future Style");
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
+        assertEquals("Your new song is added, "
+                + "you can listen your new song from /listen_song", reply.getText());
+        
         event = EventTestUtil.createDummyTextMessage("Anything");
         reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("Please enter a valid input, "
                 + "such as /add_song or /remove_song or /listen_song", reply.getText());
+        
+        MessageEvent<TextMessageContent> group 
+                = new MessageEvent<TextMessageContent>("replyToken", new GroupSource("1", "test"),
+                new TextMessageContent("id", "Future Style"),
+                Instant.parse("2018-01-01T00:00:00.000Z"));
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(group);
+        assertEquals("We have that song, chat me "
+                + "and add to your songs to listen!", reply.getText());
+        
+        event = EventTestUtil.createDummyTextMessage("/add_song");
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
+        assertEquals("Please enter song title", reply.getText());
+        
+        event = EventTestUtil.createDummyTextMessage("Future Style");
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
+        assertEquals("You have that "
+                + "song already, listen with /listen_song", reply.getText());
+
     }
 
     @Test
@@ -97,8 +142,8 @@ public class AnisonRadioControllerTest extends TestCase {
         assertEquals(anisonRadioController.loveLiveSongOrNot("Anything"), null);
     }
     
-//    @Test
-//    public void testFindMusicUrl() {
-//        assertEquals(anisonRadioController.findMusicUrl("Anything"), null);
-//    }
+    @Test
+    public void testFindMusicUrl() throws ClientProtocolException, IOException, JSONException {
+        assertEquals(anisonRadioController.findMusicUrl("123123123123"), null);
+    }
 }
