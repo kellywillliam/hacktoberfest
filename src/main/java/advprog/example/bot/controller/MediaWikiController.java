@@ -1,5 +1,6 @@
 package advprog.example.bot.controller;
 
+import fastily.jwiki.core.NS;
 import fastily.jwiki.core.Wiki;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -7,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class MediaWikiController {
@@ -16,6 +18,7 @@ public class MediaWikiController {
     private String addWikiInvalidUrl;
     private String addWikiOldUrl;
     private String urlList;
+    private Wiki wiki;
 
     public MediaWikiController() {
         this.randomInput = "Halo, terima kasih atas pesan yang dikirimkan. "
@@ -44,13 +47,19 @@ public class MediaWikiController {
             }
 
         } else if (command[0].equals("/random_wiki_article")) {
-            replyText = "test";
+            replyText = getArticle();
 
         } else {
             replyText = randomInput;
         }
 
         return replyText;
+    }
+
+    private String getArticle() {
+        ArrayList<String> rand = wiki.getRandomPages(1, NS.MAIN);
+        String title = rand.get(1);
+        return wiki.getPageText(title);
     }
 
     private String addWiki(String urlGiven) {

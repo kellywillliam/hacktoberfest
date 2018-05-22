@@ -35,6 +35,7 @@ version '1.0-SNAPSHOT'
 // Set Java version compatibility
 sourceCompatibility = java_version
 targetCompatibility = java_version
+mainClassName = 'advprog.example.bot.BotExampleApplication'
 
 repositories {
     mavenCentral()
