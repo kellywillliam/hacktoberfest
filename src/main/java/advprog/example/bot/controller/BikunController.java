@@ -68,14 +68,25 @@ public class BikunController {
 		return new TextMessage("Wrong input, use '/bikun' or '/bikun_stop'");
 
 	}
-	
+
 	@EventMapping
-	 public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
-        LocationMessageContent locationMessage = event.getMessage();
-        System.out.println(locationMessage.getLatitude());
-        System.out.println(locationMessage.getLongitude());
+	public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
+		LocationMessageContent locationMessage = event.getMessage();
+		replyText(event.getReplyToken(),
+				"latitude: " + locationMessage.getLatitude() + ", longitude: " + locationMessage.getLongitude());
+		// System.out.println(locationMessage.getLatitude());
+		// System.out.println(locationMessage.getLongitude());
 	}
 
+	private void replyText(@NonNull String replyToken, @NonNull String message) {
+		if (replyToken.isEmpty()) {
+			throw new IllegalArgumentException("replyToken must not be empty");
+		}
+		if (message.length() > 1000) {
+			message = message.substring(0, 1000 - 2) + "";
+		}
+		this.reply(replyToken, new TextMessage(message));
+	}
 
 	@EventMapping
 	public void handleDefaultMessage(Event event) {
@@ -99,7 +110,7 @@ public class BikunController {
 		String replyToken = event.getReplyToken();
 		String jawaban = "";
 		if (event.getPostbackContent().getData().equals("0")) {
-			
+
 		} else if (event.getPostbackContent().getData().equals("1")) {
 
 		} else if (event.getPostbackContent().getData().equals("2")) {
