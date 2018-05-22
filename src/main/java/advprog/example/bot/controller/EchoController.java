@@ -142,7 +142,7 @@ public class EchoController {
 
             return new TextMessage(replyText + "\n longitude :"
                     + longitude + "\n latitude :" + latitude
-                    + "\n Id User: " + userId + "\n hehe");
+                    + "\n Id User: " + userId + "\n " + dataInformation);
         }
 
         return new TextMessage("Info yang kamu masukkan salah");
