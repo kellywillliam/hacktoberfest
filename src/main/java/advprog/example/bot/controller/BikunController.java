@@ -100,7 +100,7 @@ public class BikunController {
 			messages.add(new TextMessage(reply[2]));
 
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + getMinimumTime(event.getTimestamp().toString())
+					"bus stop " + (getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 			reply(event.getReplyToken(), messages);
@@ -116,7 +116,7 @@ public class BikunController {
 			messages.add(new TextMessage(reply[2]));
 
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + getMinimumTime(event.getTimestamp().toString())
+					"bus stop " + (getMinimumTime(event.getTimestamp().toString())-getMinutes(event.getTimestamp().toString()))
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 
@@ -270,4 +270,11 @@ public class BikunController {
 		return minimumTime;
 	}
 
+	public double getMinutes(String time) {
+		String[] times = time.split("T");
+		String[] minutes = times[1].split(":");
+		double doubleMinutes = Double.parseDouble(minutes[1]);
+		return doubleMinutes;
+	}
+	
 }
