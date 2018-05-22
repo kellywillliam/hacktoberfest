@@ -21,8 +21,19 @@ public class EchoController {
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
-        String replyText = contentText.replace("/echo", "");
-        return new TextMessage(replyText.substring(1));
+        String[] contentTexts = contentText.split(" ");
+
+        if (contentTexts[0].equalsIgnoreCase("/echo")) {
+            String replyText = contentText.replace("/echo", "");
+            return new TextMessage(replyText.substring(1));
+        }
+
+        else if (contentTexts[0].equalsIgnoreCase("/youtube")) {
+            String url = contentTexts[1];
+            return new TextMessage("");
+
+        }
+        return new TextMessage("");
     }
 
     @EventMapping
