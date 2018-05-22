@@ -76,15 +76,14 @@ public class HangoutController {
         LocationMessageContent message = event.getMessage();
         latitude = message.getLatitude();
         longitude = message.getLongitude();
-        List<Message> messages = new ArrayList<Message>();;
-        messages.add(new TextMessage("a"));
+        List<Message> messages = new ArrayList<Message>();
         if(flag == 1){
             messages = nearestHangout(latitude,longitude);
             flag = 0;
         }
         else if (flag == 2){
             TemplateMessage template = carousel("a");
-            messages.add(template);
+            messages = Collections.singletonList(template);
             flag=0;
         }
         reply(event.getReplyToken(),messages);
