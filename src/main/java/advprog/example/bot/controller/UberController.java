@@ -78,17 +78,17 @@ public class UberController {
     }
     
     @EventMapping
-    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
+    public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
 
-        handleTextContent(content, event.getReplyToken(), event.getSource().getUserId());
+        return handleTextContent(content, event.getReplyToken(), event.getSource().getUserId());
     }
      
     @EventMapping
     @SuppressWarnings("unchecked")
-    public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
+    public Message handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
         LocationMessageContent locationMessage = event.getMessage();
         String userId = event.getSource().getUserId();
         String replyToken = event.getReplyToken();
@@ -96,19 +96,21 @@ public class UberController {
             pointer = -1;
             start_latitude = locationMessage.getLatitude();
             start_longitude = locationMessage.getLongitude();
-            chooseDestination(replyToken, userId);
+            return chooseDestination(replyToken, userId);
         } else if (pointer == 1) {
             addedLocation = objectMapper.convertValue(locationMessage, LinkedHashMap.class);
             pointer = 2;
-            replyText(replyToken, "What is the name of the location?");
+            //replyText(replyToken, "What is the name of the location?");
+            return new TextMessage("What is the name of the location?");
         } else {
-            replyText(replyToken, "Incorrect input");
+            //replyText(replyToken, "Incorrect input");
+        	return new TextMessage("Incorrect input");
         }
         
     }
     
     @EventMapping
-    public void handlePostbackEvent(PostbackEvent event) throws Exception {
+    public Message handlePostbackEvent(PostbackEvent event) throws Exception {
         PostbackContent postbackContent = event.getPostbackContent();
         String replyToken = event.getReplyToken();
         String userId = event.getSource().getUserId();
@@ -119,22 +121,26 @@ public class UberController {
             end_longitude = data[3];
 
             if (pbPointer == 0) {
-                estimateRide(replyToken);
+                return estimateRide(replyToken);
             } else if (pbPointer == 1) {
                 locations = users.get(userId);
                 locations.remove(destination);
                 users.put(userId, locations);
                 objectMapper.writeValue(FILE, users);
-                replyText(replyToken, "Successfully removed destination: " + destination);
+                //replyText(replyToken, "Successfully removed destination: " + destination);
                 pointer = -1;
                 pbPointer = -1;
-            } else if (pbPointer == -1) {
-                replyText(replyToken, "Please input a command first");
+                return new TextMessage("Successfully removed destination: " 
+                        + destination);
+            } else {
+                //replyText(replyToken, "Please input a command first");
+                return new TextMessage("Please input a command first");
             }
         } catch (NullPointerException e) {
-            replyText(replyToken, "An error occured when reading the location");
+            //replyText(replyToken, "An error occured when reading the location");
             pbPointer = -1;
             pointer = -1;
+            return new TextMessage("An error occured when reading the location");
         }
     }
 
@@ -144,7 +150,7 @@ public class UberController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    private void handleTextContent(
+    private Message handleTextContent(
             TextMessageContent content, String replyToken, String userId) throws Exception {
         String cmd = content.getText();
         if (cmd.equalsIgnoreCase("/uber") && pointer == -1) {
@@ -162,7 +168,8 @@ public class UberController {
             TemplateMessage templateMessage = new TemplateMessage(
                     "Share Location", buttonsTemplate
                     );
-            reply(replyToken, templateMessage);
+            //reply(replyToken, templateMessage);
+            return templateMessage;
         } else if (cmd.equalsIgnoreCase("/add_destination") && pointer == -1) {
             pointer = 1;
             if (!users.containsKey(userId)) {
@@ -177,14 +184,17 @@ public class UberController {
 
             TemplateMessage templateMessage = 
                     new TemplateMessage("Add Destination", buttonTemplate);
-            reply(replyToken, templateMessage);
+            //reply(replyToken, templateMessage);
+            return templateMessage;
         } else if (cmd.equalsIgnoreCase("/remove_destination") && pointer == -1) {
             if (!users.containsKey(userId)) {
-                replyText(replyToken, "There are no destinations added yet");
+                //replyText(replyToken, "There are no destinations added yet");
+                return new TextMessage("There are no destinations added yer");
             }
             locations = users.get(userId);
             if (locations.size() == 0) {
-                replyText(replyToken, "There are no destinations added yet");
+                //replyText(replyToken, "There are no destinations added yet");
+                return new TextMessage("There are no destinations added yer");
             } else {
                 pointer = 3;
                 pbPointer = 1;
@@ -192,56 +202,43 @@ public class UberController {
                         Arrays.asList(createCarouselItemList()));
                 TemplateMessage templateMessage = new TemplateMessage(
                         "Remove Destination", carouselTemplate);
-                reply(replyToken, templateMessage);
+                //reply(replyToken, templateMessage);
+                return templateMessage;
             }
         } else if (pointer == 2) {
             String locationName = content.getText();
             locations = users.get(userId);
             if (locations.containsKey(locationName)) {
-                replyText(replyToken, 
+                //replyText(replyToken, 
+                //        "There is already a destination by that name, please try again");
+                return new TextMessage(
                         "There is already a destination by that name, please try again");
             } else {
                 locations.put(locationName, addedLocation);
-                replyText(replyToken,
-                        "Successfully added destination");
+                //replyText(replyToken,
+                //        "Successfully added destination");
                 users.put(userId, locations);
                 objectMapper.writeValue(FILE, users);
             }
             pointer = -1;
-        } else if (pointer == -1) {
-            replyText(replyToken, 
-                    "The commands are\n"
+            return new TextMessage("Successfully added destination");
+        } else {
+        	return new TextMessage("The commands are\n"
                     + "/uber - To Estimate Price\n"
                     + "/add_destination - To add a new Destination\n"
                     + "/remove_destination - To remove an already added destination");
-        } else if (pointer == 0) {
-        	pointer = -1;
-        	replyText(replyToken, 
-                    "Pointer = 0\n"
-                    + "The commands are\n"
-                    + "/uber - To Estimate Price\n"
-                    + "/add_destination - To add a new Destination\n"
-                    + "/remove_destination - To remove an already added destination");
-        } else if (pointer == 1) {
-        	pointer = -1;
-        	replyText(replyToken, 
-                    "Pointer = 1\n"
-                    + "The commands are\n"
-                    + "/uber - To Estimate Price\n"
-                    + "/add_destination - To add a new Destination\n"
-                    + "/remove_destination - To remove an already added destination");
-        } 
+        }
     }
 
-    private void chooseDestination(String replyToken, String userId) {
+    private Message chooseDestination(String replyToken, String userId) {
         if (!users.containsKey(userId)) {
-            replyText(replyToken, "There are no added destination");
-            return;
+            //replyText(replyToken, "There are no added destination");
+            return new TextMessage("There are no added destination");
         }
         locations = users.get(userId);
         if (locations.size() == 0) {
-            replyText(replyToken, "There are no added destination");
-            return;
+            //replyText(replyToken, "There are no added destination");
+        	return new TextMessage("There are no added destination");
         }
         pbPointer = 0;
         CarouselTemplate carouselTemplate = new CarouselTemplate(
@@ -251,7 +248,8 @@ public class UberController {
         TemplateMessage templateMessage = new TemplateMessage(
                 "Choose Destination", carouselTemplate
                 );
-        this.reply(replyToken, templateMessage);
+        //this.reply(replyToken, templateMessage);
+        return templateMessage;
     }
 
     private CarouselColumn[] createCarouselItemList() {
@@ -278,7 +276,7 @@ public class UberController {
         return itemList;
     }
 
-    private void estimateRide(String replyToken) throws Exception {
+    private Message estimateRide(String replyToken) throws Exception {
         pbPointer = -1;
         URL url = new URL("https://api.uber.com/v1.2/estimates/price?start_latitude="
                 + start_latitude + "&start_longitude=" + start_longitude + "&end_latitude="
@@ -302,7 +300,8 @@ public class UberController {
         } else {
             output = "There is a problem while processing your request, please try again.";
         }
-        replyText(replyToken, output);
+        //replyText(replyToken, output);
+        return new TextMessage(output);
     }
 
     private static String readAll(Reader rd) throws IOException {
@@ -363,27 +362,27 @@ public class UberController {
                                           .toUriString();
     }
 
-    private void reply(@NonNull String replyToken, @NonNull Message message) {
-        reply(replyToken, Collections.singletonList(message));
-    }
+    //private void reply(@NonNull String replyToken, @NonNull Message message) {
+    //    reply(replyToken, Collections.singletonList(message));
+    //}
 
-    private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
-        try {
-            BotApiResponse apiResponse = lineMessagingClient
-                    .replyMessage(new ReplyMessage(replyToken, messages))
-                    .get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    //private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
+    //    try {
+    //        BotApiResponse apiResponse = lineMessagingClient
+    //                .replyMessage(new ReplyMessage(replyToken, messages))
+    //                .get();
+    //    } catch (InterruptedException | ExecutionException e) {
+    //        throw new RuntimeException(e);
+    //    }
+    //}
 
-    private void replyText(@NonNull String replyToken, @NonNull String message) {
-        if (replyToken.isEmpty()) {
-            throw new IllegalArgumentException("replyToken must not be empty");
-        }
-        if (message.length() > 1000) {
-            message = message.substring(0, 1000 - 2) + "";
-        }
-        this.reply(replyToken, new TextMessage(message));
-    }
+    //private void replyText(@NonNull String replyToken, @NonNull String message) {
+    //    if (replyToken.isEmpty()) {
+    //        throw new IllegalArgumentException("replyToken must not be empty");
+    //    }
+    //    if (message.length() > 1000) {
+    //        message = message.substring(0, 1000 - 2) + "";
+    //    }
+    //    this.reply(replyToken, new TextMessage(message));
+    //}
 }
