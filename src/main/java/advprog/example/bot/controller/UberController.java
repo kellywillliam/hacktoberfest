@@ -63,7 +63,7 @@ public class UberController {
     private static int pbPointer = -1;
     
     @EventMapping
-    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) throws Exception {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -81,7 +81,9 @@ public class UberController {
         	start_longitude = locationMessage.getLongitude();
         	chooseDestination(replyToken, userId);
         } else if (pointer == 1) {
-        	
+        	addedLocation = objectMapper.convertValue(locationMessage, LinkedHashMap.class);
+        	pointer = 2;
+        	replyText(replyToken, "What is the name of the location?");
         } else {
         	replyText(replyToken, "Incorrect input");
         }
@@ -94,7 +96,7 @@ public class UberController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    private void handleTextContent(TextMessageContent content, String replyToken, String userId) {
+    private void handleTextContent(TextMessageContent content, String replyToken, String userId) throws Exception{
     	//TODO implement text content handler
     	String cmd = content.getText();
     	if (cmd.equalsIgnoreCase("/uber")) {
@@ -130,7 +132,19 @@ public class UberController {
     	} else if (cmd.equalsIgnoreCase("/remove_destination")) {
     		
     	} else if (pointer == 2) {
-    		
+    		String locationName = content.getText();
+    		locations = users.get(userId);
+    		if (locations.containsKey(locationName)) {
+    			replyText(replyToken, 
+    					"There is already a destination by that name, please try again");
+    		} else {
+    			locations.put(locationName, addedLocation);
+    			replyText(replyToken,
+    					"Successfully added destination");
+    			users.put(userId, locations);
+    			objectMapper.writeValue(FILE, users);
+    		}
+    		pointer = -1;
     	} else {
     		
     	}
