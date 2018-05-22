@@ -106,6 +106,7 @@ public class HangoutController {
                 messages.add(new TextMessage("Approximated distance from your location " 
                         + (int)distance+ " metres"));
             }
+            flag = 0;
         }
         reply(event.getReplyToken(),messages);
      }
@@ -158,7 +159,7 @@ public class HangoutController {
         messages.add(new TextMessage(reply[3]));
         
         replyText = "Approximated distance from your location " 
-                + (int)Double.parseDouble(reply[reply.length-1]) + " metres";
+                + Double.parseDouble(reply[reply.length-1]) + " metres";
         messages.add(new TextMessage(replyText));
         
         return messages;
