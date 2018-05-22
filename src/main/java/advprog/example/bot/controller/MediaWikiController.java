@@ -1,5 +1,13 @@
 package advprog.example.bot.controller;
 
+import fastily.jwiki.core.*;
+import fastily.jwiki.dwrap.*;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 public class MediaWikiController {
     String randomInput;
     String notEnoughInput;
@@ -46,10 +54,27 @@ public class MediaWikiController {
     }
 
     public boolean isValidUrl(String urlGiven) {
-        return true;
+        try {
+            Wiki wiki = new Wiki(urlGiven);
+            wiki.getCategoriesOnPage("Main Page");
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public void saveUrl(String url) {
+        try {
+            FileWriter fw = new FileWriter("./wikiUrl.csv", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
 
+            pw.println(url);
+            pw.flush();
+            pw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
