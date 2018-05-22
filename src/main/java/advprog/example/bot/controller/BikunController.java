@@ -150,17 +150,32 @@ public class BikunController {
 	}
 
 	@EventMapping
-	public void handlePostbackEvent(PostbackEvent event) {
+	public void handlePostbackEvent(PostbackEvent event) throws IOException {
 		String replyToken = event.getReplyToken();
-		String jawaban = "";
-		if (event.getPostbackContent().getData().equals("0")) {
+		//String jawaban = "";
+		String[] reply = getBusStop(event.getPostbackContent().getData());
+//		if (event.getPostbackContent().getData().equals("0")) {
+//			
+//		} else if (event.getPostbackContent().getData().equals("1")) {
+//
+//		} else if (event.getPostbackContent().getData().equals("2")) {
+//
+//		}
+		reply[2] = reply[2].replace("+", ",");
 
-		} else if (event.getPostbackContent().getData().equals("1")) {
+		List<Message> messages = new ArrayList<Message>();
 
-		} else if (event.getPostbackContent().getData().equals("2")) {
+		messages.add(new LocationMessage(reply[1], "Click to view location", Double.parseDouble(reply[3]),
+				Double.parseDouble(reply[4])));
 
-		}
-		this.reply(replyToken, new TextMessage(jawaban));
+		messages.add(new TextMessage(reply[2]));
+
+//		replyText = "Approximate distance from your location " + (int) Double.parseDouble(reply[reply.length - 1])
+//				+ " meters";
+//		messages.add(new TextMessage(replyText));
+
+		reply(event.getReplyToken(), messages);
+		//this.reply(replyToken, new TextMessage(jawaban));
 	}
 
 	public String[] getNearestBusStop(double userLatitude, double userLongitude) {
@@ -209,7 +224,7 @@ public class BikunController {
 		double busstopLongitude;
 		
 		BufferedReader br = new BufferedReader(new FileReader(csvFile));
-		for(int i=1; i<busStopIndex; i++) {
+		for(int i=1; i<busStopIndex+1; i++) {
 			line = br.readLine();
 		}
 		csvString[busStopIndex] = line;
