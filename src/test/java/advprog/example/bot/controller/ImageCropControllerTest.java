@@ -72,8 +72,6 @@ public class ImageCropControllerTest {
 
     @Test
     void testHandleImageDoesNotExist() throws IOException {
-        File fileToBeDeleted = new File("src/main/resources/imagecrop.jpg");
-        fileToBeDeleted.delete();
         ImageCropController imageCropController = new ImageCropController();
         String result = imageCropController.uploadContentToImgur();
         System.out.println(result);
