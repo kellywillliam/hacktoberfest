@@ -30,6 +30,10 @@ public class WeatherController {
 
     }
 
+    public HashMap<String, String> getUserConfig() {
+        return userConfig;
+    }
+
     public String getWeather(JSONObject json) {
         JSONArray weather = (JSONArray) json.get("weather");
         JSONObject weatherArr = (JSONObject) weather.get(0);
@@ -62,8 +66,9 @@ public class WeatherController {
         return restTemplate.getForObject(url, String.class, header);
     }
 
-    public void updateUserConfig(String userId, String tipe) {
+    public String updateUserConfig(String userId, String tipe) {
         userConfig.put(userId,tipe);
+        return "Konfigurasi data kamu sudah di-update YEAY !";
     }
 
     public String getData(String lon,String lat, String userId) {

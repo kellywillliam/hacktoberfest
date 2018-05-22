@@ -88,14 +88,11 @@ public class EchoController {
             String userId = content.getId();
             String tipe = temp[1];
             if (tipe.equalsIgnoreCase("STANDARD")) {
-                eventController.updateUserConfig(userId,tipe);
-                replyText = "Konfigurasi data kamu sudah di-update YEAY !";
+                replyText = eventController.updateUserConfig(userId,tipe);
             } else if (tipe.equalsIgnoreCase("METRIC")) {
-                eventController.updateUserConfig(userId,tipe);
-                replyText = "Konfigurasi data kamu sudah di-update YEAY !";
+                replyText = eventController.updateUserConfig(userId,tipe);
             } else if (tipe.equalsIgnoreCase("IMPERIAL")) {
-                eventController.updateUserConfig(userId,tipe);
-                replyText = "Konfigurasi data kamu sudah di-update YEAY !";
+                replyText = eventController.updateUserConfig(userId,tipe);
             } else {
                 replyText = "Opsi yang kamu pilih tidak tersedia :( ";
             }
@@ -134,15 +131,11 @@ public class EchoController {
             String latitude = Double.toString(content.getLatitude());
             String userId = content.getId();
 
-            String dataInformation = longitude + "#" + latitude;
-
             replyText = eventController.getData(longitude,latitude, userId);
 
             flag = false;
 
-            return new TextMessage(replyText + "\n longitude :"
-                    + longitude + "\n latitude :" + latitude
-                    + "\n Id User: " + userId + "\n " + dataInformation);
+            return new TextMessage(replyText + " Hashmap: " + eventController.getUserConfig().get(userId));
         }
 
         return new TextMessage("Info yang kamu masukkan salah");
