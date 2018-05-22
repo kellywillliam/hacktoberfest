@@ -41,18 +41,21 @@ public class BikunController {
 	private LineMessagingClient lineMessagingClient;
 
 	@EventMapping
-	public TextMessage handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+	public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
 		LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')", event.getTimestamp(),
 				event.getMessage()));
 		TextMessageContent content = event.getMessage();
 		String contentText = content.getText();
 
+		if (event.getSource() instanceof GroupSource) {
+			return null;
+		}
+		
 		if (contentText.startsWith("/echo")) {
 			return new TextMessage("echo from bikun");
 		}
 
 		else if (contentText.equalsIgnoreCase("/bikun")) {
-			// String replyText = contentText.replace("/bikun", "");
 			String replyText = "Please send your location";
 			return new TextMessage(replyText);
 		}
@@ -69,7 +72,7 @@ public class BikunController {
 							Collections.singletonList(new PostbackAction("Pilih", "2")))));
 
 			TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
-			this.reply(replyToken, templateMessage);
+			return templateMessage;
 		}
 
 		return new TextMessage("Wrong input, use '/bikun' or '/bikun_stop'");
@@ -114,12 +117,6 @@ public class BikunController {
 			replyText = "Approximate distance from your location " + (int) Double.parseDouble(reply[reply.length - 1])
 					+ " meters";
 			messages.add(new TextMessage(replyText));
-
-			// replyText(event.getReplyToken(),
-			// "latitude: " + locationMessage.getLatitude() + ", longitude: " +
-			// locationMessage.getLongitude());
-			// System.out.println(locationMessage.getLatitude());
-			// System.out.println(locationMessage.getLongitude());
 
 			reply(event.getReplyToken(), messages);
 		}
@@ -200,6 +197,29 @@ public class BikunController {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public String[] getBusStop(String index) throws IOException {
+		int busStopIndex = Integer.parseInt(index);
+		String csvFile = "Bikun.csv";
+		String line = "";
+		String[] csvString = new String[3];
+
+		double busstopLatitude;
+		double busstopLongitude;
+		
+		BufferedReader br = new BufferedReader(new FileReader(csvFile));
+		for(int i=1; i<busStopIndex; i++) {
+			line = br.readLine();
+		}
+		csvString[busStopIndex] = line;
+		String[] place = line.split(",");
+		busstopLatitude = Double.parseDouble(place[3]);
+		busstopLongitude = Double.parseDouble(place[4]);
+		br.close();
+		String[] partial = csvString[busStopIndex].split(",");
+		return (Arrays.toString(partial).replace("]", "")).split(",");
+		
 	}
 
 	public double getDistance(double userLatitude, double busstopLatitude, double userLongitude,
