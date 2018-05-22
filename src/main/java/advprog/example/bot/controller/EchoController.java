@@ -131,7 +131,7 @@ public class EchoController {
             String latitude = Double.toString(content.getLatitude());
             String userId = content.getId();
 
-            String dataInformation = longitude + '-' + latitude;
+            String dataInformation = longitude + ';' + latitude;
 
             replyText = eventController.getData(dataInformation, userId);
 
