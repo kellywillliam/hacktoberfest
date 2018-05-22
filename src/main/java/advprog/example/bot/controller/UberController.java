@@ -104,7 +104,7 @@ public class UberController {
             return new TextMessage("What is the name of the location?");
         } else {
             //replyText(replyToken, "Incorrect input");
-        	return new TextMessage("Incorrect input");
+            return new TextMessage("Incorrect input");
         }
         
     }
@@ -223,7 +223,7 @@ public class UberController {
             pointer = -1;
             return new TextMessage("Successfully added destination");
         } else {
-        	return new TextMessage("The commands are\n"
+            return new TextMessage("The commands are\n"
                     + "/uber - To Estimate Price\n"
                     + "/add_destination - To add a new Destination\n"
                     + "/remove_destination - To remove an already added destination");
@@ -238,7 +238,7 @@ public class UberController {
         locations = users.get(userId);
         if (locations.size() == 0) {
             //replyText(replyToken, "There are no added destination");
-        	return new TextMessage("There are no added destination");
+            return new TextMessage("There are no added destination");
         }
         pbPointer = 0;
         CarouselTemplate carouselTemplate = new CarouselTemplate(
