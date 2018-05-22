@@ -6,9 +6,11 @@ import advprog.example.bot.countryhot.HotNewAgeSong;
 import advprog.example.bot.countryhot.SongInfo;
 import advprog.example.bot.countryhot.TopSong;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.linecorp.bot.model.action.PostbackAction;
 import com.linecorp.bot.model.action.URIAction;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.PostbackEvent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.source.GroupSource;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import okhttp3.OkHttpClient;
@@ -137,15 +140,51 @@ public class EchoController {
             }
 
             return Collections.singletonList(new TextMessage(replyBillboardText));
-        } else if ((replyText[0].equalsIgnoreCase("/hospital") && event.getSource()
-                instanceof UserSource) || (contentText.contains("darurat") && event.getSource()
-                instanceof GroupSource) && currentStage.isEmpty()) {
+        } else if (((contentText.equals("/hospital") && event.getSource() instanceof UserSource)
+                || (contentText.contains("darurat") && event.getSource() instanceof GroupSource))
+                && currentStage.isEmpty()) {
             currentStage = "nearest_hospital";
             return requestLocationMessage();
+        } else if ((contentText.equals("/random_hospital") && event.getSource()
+                instanceof UserSource)) {
+            currentStage = "random_hospital";
+            List<Message> messageList = new ArrayList<>();
+            for (int i = 0; i < randomHospital.length; i++) {
+                Random random = new Random();
+                int value = random.nextInt(9);
+                randomHospital[i] = hospitals[value];
+            }
+            CarouselTemplate carouselTemplate = new CarouselTemplate(
+                    Arrays.asList(
+                            new CarouselColumn(randomHospital[0].getImageLink(),"Hospital1",
+                                    randomHospital[0].getName(),
+                                    Collections.singletonList(new PostbackAction("Choose", "0"))),
+                            new CarouselColumn(randomHospital[1].getImageLink(),"Hospital2",
+                                    randomHospital[1].getName(),
+                                    Collections.singletonList(new PostbackAction("Choose", "1"))),
+                            new CarouselColumn(randomHospital[2].getImageLink(),"Hospital3",
+                                    randomHospital[2].getName(),
+                                    Collections.singletonList(new PostbackAction("Choose", "2")))
+                    )
+            );
+            TextMessage textMessage = new TextMessage("Please choose onr of the hospitals");
+            TemplateMessage templateMessage =
+                    new TemplateMessage("choose hospital", carouselTemplate);
+            messageList.add(textMessage);
+            messageList.add(templateMessage);
+            return messageList;
         } else {
             return Collections.singletonList(new TextMessage("input tidak dapat dibaca"));
         }
     }
+
+    @EventMapping
+    public List<Message> handlePostbackEvent(PostbackEvent event) {
+        int chosenNumber = Integer.parseInt(event.getPostbackContent().getData());
+        chosenRandomHospital = randomHospital[chosenNumber];
+        return requestLocationMessage();
+    }
+
 
     private List<Message> requestLocationMessage() {
         List<Message> messageList = new ArrayList<>();
