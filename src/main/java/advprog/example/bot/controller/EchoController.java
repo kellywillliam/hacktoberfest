@@ -132,8 +132,13 @@ public class EchoController {
             String longitude = Double.toString(content.getLongitude());
             String latitude = Double.toString(content.getLatitude());
             String userId = content.getId();
-            String tipe = userConfig.get(userId);
-
+            String tipe;
+            if(!userConfig.containsKey(userId)) {
+                userConfig.put(userId,"STANDARD");
+                tipe = userConfig.get(userId);
+            } else {
+                tipe = userConfig.get(userId);
+            }
             replyText = eventController.getData(longitude,latitude, userId,tipe);
 
             flag = false;
