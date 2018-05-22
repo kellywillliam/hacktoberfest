@@ -100,7 +100,7 @@ public class BikunController {
 			messages.add(new TextMessage(reply[2]));
 
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + (int) Double.parseDouble(reply[reply.length - 1])
+					"bus stop " + event.getTimestamp().toString()
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 			reply(event.getReplyToken(), messages);
@@ -116,7 +116,7 @@ public class BikunController {
 			messages.add(new TextMessage(reply[2]));
 
 			replyText = "remaining minutes to the closest bus departure time at the\r\n" + 
-					"bus stop " + (int) Double.parseDouble(reply[reply.length - 1])
+					"bus stop " + event.getTimestamp().toString()
 					+ " minutes";
 			messages.add(new TextMessage(replyText));
 
@@ -173,7 +173,7 @@ public class BikunController {
 		messages.add(new TextMessage(reply[2]));
 
 		reply(event.getReplyToken(), messages);
-		//this.reply(replyToken, new TextMessage(messages));
+		//this.reply(replyToken, new TextMessage());
 	}
 
 	public String[] getNearestBusStop(double userLatitude, double userLongitude) {
@@ -231,6 +231,9 @@ public class BikunController {
 		busstopLongitude = Double.parseDouble(place[4]);
 		br.close();
 		String[] partial = csvString[busStopIndex].split(",");
+		System.out.println(Arrays.toString(partial).replace("]", ""));
+		System.out.println(Arrays.toString(partial).replace("]", ""));
+		System.out.println(Arrays.toString(partial).replace("]", ""));
 		return (Arrays.toString(partial).replace("]", "")).split(",");
 		
 	}
@@ -245,6 +248,11 @@ public class BikunController {
 		double y = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
 		double distance = earthRadius * y * 1000; // convert to meters
 		return distance;
+	}
+	
+	public void getMinimumTime(String time) {
+		double minimumTime = Double.MAX_VALUE;
+		
 	}
 
 }
