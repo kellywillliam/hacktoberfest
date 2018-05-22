@@ -106,7 +106,8 @@ public class AnisonRadioController {
                     CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
                     TemplateMessage templateMessage = 
                             new TemplateMessage("Carousel alt text", carouselTemplate);
-                    this.reply(event.getReplyToken(), templateMessage);
+                    return templateMessage;
+                    // this.reply(event.getReplyToken(), templateMessage);
                 } else {
                     return new TextMessage("Please enter song title first for us to find");
                 }
@@ -127,7 +128,8 @@ public class AnisonRadioController {
                     CarouselTemplate carouselTemplate = new CarouselTemplate(carouselList);
                     TemplateMessage templateMessage = 
                             new TemplateMessage("Carousel alt text", carouselTemplate);
-                    this.reply(event.getReplyToken(), templateMessage);
+                    return templateMessage;
+                    // this.reply(event.getReplyToken(), templateMessage);
                 } else {
                     return new TextMessage("Please enter song title first for us to find");
                 } 
@@ -198,16 +200,6 @@ public class AnisonRadioController {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-    }
-    
-    private void replyText(String replyToken, String message) {
-        if (replyToken.isEmpty()) {
-            throw new IllegalArgumentException("replyToken must not be empty");
-        }
-        if (message.length() > 1000) {
-            message = message.substring(0, 1000 - 2) + "……";
-        }
-        this.reply(replyToken, new TextMessage(message));
     }
 
     public String loveLiveSongOrNot(String title) throws IOException, JSONException {

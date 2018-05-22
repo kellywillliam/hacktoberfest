@@ -8,13 +8,17 @@ import static org.mockito.Mockito.verify;
 
 import advprog.example.bot.EventTestUtil;
 
+import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.event.source.GroupSource;
 import com.linecorp.bot.model.event.source.UserSource;
 import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.message.TemplateMessage;
 import com.linecorp.bot.model.message.TextMessage;
+import com.linecorp.bot.model.message.template.CarouselColumn;
+import com.linecorp.bot.model.message.template.CarouselTemplate;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -53,7 +57,7 @@ public class AnisonRadioControllerTest extends TestCase {
         MessageEvent<TextMessageContent> event =
                 EventTestUtil.createDummyTextMessage("/echo Test");
         TextMessage reply = (TextMessage) 
-                anisonRadioController.handleTextMessageEvent(event); //kalau ada error ini casted
+                anisonRadioController.handleTextMessageEvent(event);
         assertEquals("echo dari anison radio", reply.getText());
         
         event = EventTestUtil.createDummyTextMessage("/listen_song");
@@ -124,6 +128,27 @@ public class AnisonRadioControllerTest extends TestCase {
         reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
         assertEquals("You have that "
                 + "song already, listen with /listen_song", reply.getText());
+        
+        event = EventTestUtil.createDummyTextMessage("SUNNY DAY SONG");
+        reply = (TextMessage) anisonRadioController.handleTextMessageEvent(event);
+        assertEquals("Your new song is added, "
+                + "you can listen your new song from /listen_song", reply.getText());
+        
+        event = EventTestUtil.createDummyTextMessage("/listen_song");
+        Message replyMessage = anisonRadioController.handleTextMessageEvent(event);
+        assertTrue(replyMessage instanceof TemplateMessage);
+        CarouselTemplate template = (CarouselTemplate)((TemplateMessage)replyMessage).getTemplate();
+        for (CarouselColumn column: template.getColumns()) {
+            assertTrue(anisonRadioController.getMap().get("1").contains(column.getTitle()));
+        }
+        
+        event = EventTestUtil.createDummyTextMessage("/remove_song");
+        replyMessage = anisonRadioController.handleTextMessageEvent(event);
+        assertTrue(replyMessage instanceof TemplateMessage);
+        template = (CarouselTemplate)((TemplateMessage)replyMessage).getTemplate();
+        for (CarouselColumn column: template.getColumns()) {
+            assertTrue(anisonRadioController.getMap().get("1").contains(column.getTitle()));
+        }
 
     }
 
