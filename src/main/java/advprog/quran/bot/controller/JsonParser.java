@@ -13,7 +13,7 @@ public class JsonParser {
     private JSONArray jsonArray;
 
     public JsonParser() {
-        jsonArray = loadData("quran.json");
+        jsonArray = loadData("Quran.json");
     }
 
     private JSONArray loadData(String namaFile) {

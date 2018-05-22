@@ -38,9 +38,6 @@ public class QuranControllerTest {
     private QuranController quranController;
 
     @Test
-
-
-    @Test
     void testContextLoads() {
         assertNotNull(quranController);
     }
