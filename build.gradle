@@ -46,6 +46,7 @@ dependencies {
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junit5_version"
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:$junit5_version"
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.2.0"
+    implementation "com.googlecode.json-simple:json-simple:1.1.1"
 }
 
 // Configure Checkstyle plugin
