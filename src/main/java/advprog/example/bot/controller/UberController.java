@@ -93,6 +93,7 @@ public class UberController {
         String userId = event.getSource().getUserId();
         String replyToken = event.getReplyToken();
         if (pointer == 0) {
+            pointer = -1;
             start_latitude = locationMessage.getLatitude();
             start_longitude = locationMessage.getLongitude();
             chooseDestination(replyToken, userId);
@@ -143,7 +144,8 @@ public class UberController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    private void handleTextContent(TextMessageContent content, String replyToken, String userId) throws Exception{
+    private void handleTextContent(
+            TextMessageContent content, String replyToken, String userId) throws Exception {
         String cmd = content.getText();
         if (cmd.equalsIgnoreCase("/uber") && pointer == -1) {
             pointer = 0;
@@ -172,8 +174,9 @@ public class UberController {
                     imageUrl, "Add a New Destination", "Tap to set location of the new destination",
                     Arrays.asList(
                         new URIAction("Add Destination", "line://nv/location")));
-    		
-            TemplateMessage templateMessage = new TemplateMessage("Add Destination", buttonTemplate);
+
+            TemplateMessage templateMessage = 
+                    new TemplateMessage("Add Destination", buttonTemplate);
             reply(replyToken, templateMessage);
         } else if (cmd.equalsIgnoreCase("/remove_destination") && pointer == -1) {
             if (!users.containsKey(userId)) {
@@ -211,25 +214,39 @@ public class UberController {
                     + "/uber - To Estimate Price\n"
                     + "/add_destination - To add a new Destination\n"
                     + "/remove_destination - To remove an already added destination");
-        }
+        } else if (pointer == 0) {
+        	pointer = -1;
+        	replyText(replyToken, 
+                    "Pointer = 0\n"
+                    + "The commands are\n"
+                    + "/uber - To Estimate Price\n"
+                    + "/add_destination - To add a new Destination\n"
+                    + "/remove_destination - To remove an already added destination");
+        } else if (pointer == 1) {
+        	pointer = -1;
+        	replyText(replyToken, 
+                    "Pointer = 1\n"
+                    + "The commands are\n"
+                    + "/uber - To Estimate Price\n"
+                    + "/add_destination - To add a new Destination\n"
+                    + "/remove_destination - To remove an already added destination");
+        } 
     }
 
     private void chooseDestination(String replyToken, String userId) {
         if (!users.containsKey(userId)) {
             replyText(replyToken, "There are no added destination");
-            pointer = -1;
             return;
         }
         locations = users.get(userId);
         if (locations.size() == 0) {
             replyText(replyToken, "There are no added destination");
-            pointer = -1;
             return;
         }
         pbPointer = 0;
         CarouselTemplate carouselTemplate = new CarouselTemplate(
                 Arrays.asList(
-    			        createCarouselItemList()
+                        createCarouselItemList()
                 ));
         TemplateMessage templateMessage = new TemplateMessage(
                 "Choose Destination", carouselTemplate
@@ -258,7 +275,6 @@ public class UberController {
 
     private void estimateRide(String replyToken) throws Exception {
         pbPointer = -1;
-        pointer = -1;	
         URL url = new URL("https://api.uber.com/v1.2/estimates/price?start_latitude="
                 + start_latitude + "&start_longitude=" + start_longitude + "&end_latitude="
                 + end_latitude + "&end_longitude=" + end_longitude);
@@ -278,8 +294,7 @@ public class UberController {
         if (httpResult == HttpURLConnection.HTTP_OK) {
             JsonArray jsonArray = readJsonFromConnection(connection);
             output = createMessage(jsonArray);
-        }
-        else {
+        } else {
             output = "There is a problem while processing your request, please try again.";
         }
         replyText(replyToken, output);
@@ -307,8 +322,7 @@ public class UberController {
         if (jsonArray.size() == 0) {
             String output = "This service is unavailable for your location";
             return output;
-        }
-        else {
+        } else {
             double distance = Double.parseDouble(
                     jsonArray.get(0).getAsJsonObject().get("distance").toString());
             StringBuilder message = new StringBuilder(
@@ -319,14 +333,15 @@ public class UberController {
             for (JsonElement jsonElement : jsonArray) {
                 JsonObject jsonObject = jsonElement.getAsJsonObject();
                 String name = jsonObject.get("display_name").getAsString();
-                int duration = Integer.parseInt(jsonObject.get("duration").getAsString())/60;
-                int highEstimate = Integer.parseInt(jsonObject.get("high_estimate").getAsString()) * 14084;
-                int lowEstimate = Integer.parseInt(jsonObject.get("low_estimate").getAsString()) * 14084;
+                int duration = Integer.parseInt(jsonObject.get("duration").getAsString()) / 60;
+                int highEstimate = Integer.parseInt(jsonObject.get("high_estimate")
+                        .getAsString()) * 14084;
+                int lowEstimate = Integer.parseInt(jsonObject.get("low_estimate")
+                        .getAsString()) * 14084;
                 String price;
                 if (highEstimate == lowEstimate) {
                     price = "" + highEstimate;
-                }
-                else {
+                } else {
                     price = "" + lowEstimate + "-" + highEstimate;
                 }
                 String info = String.format("- %s (%s minutes, %s rupiah)\n",
