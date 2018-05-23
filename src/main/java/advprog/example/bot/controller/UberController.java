@@ -338,9 +338,9 @@ public class UberController {
                 JsonObject jsonObject = jsonElement.getAsJsonObject();
                 String name = jsonObject.get("display_name").getAsString();
                 int duration = Integer.parseInt(jsonObject.get("duration").getAsString()) / 60;
-                int highEstimate = Integer.parseInt(jsonObject.get("high_estimate")
+                double highEstimate = Double.parseDouble(jsonObject.get("high_estimate")
                         .getAsString()) * 14084;
-                int lowEstimate = Integer.parseInt(jsonObject.get("low_estimate")
+                double lowEstimate = Double.parseDouble(jsonObject.get("low_estimate")
                         .getAsString()) * 14084;
                 String price;
                 if (highEstimate == lowEstimate) {
