@@ -21,7 +21,7 @@ class MediaWikiControllerTest {
         assertEquals("Halo, terima kasih atas pesan yang dikirimkan. "
                         + "Untuk menggunakan bot ini, ada dua perintah yang bisa dilakukan:\n"
                         + "1. /add_wiki [URL-API-endpoint]\n"
-                        + "Contoh: /add_wiki http://marvel.wikia.com/api.php\n"
+                        + "Contoh: /add_wiki marvel.wikia.com/api.php\n"
                         + "2. /random_wiki_article",
                 mwc.execute("Semoga kuis statprob saya lancar"));
         assertEquals("Pesan yang kamu kirimkan belum sesuai format. "
