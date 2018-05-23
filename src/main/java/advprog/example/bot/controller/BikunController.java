@@ -1,5 +1,17 @@
 package advprog.example.bot.controller;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
+
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.action.PostbackAction;
@@ -18,19 +30,6 @@ import com.linecorp.bot.model.message.template.CarouselTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
 
 @LineMessageHandler
 public class BikunController {
@@ -82,7 +81,7 @@ public class BikunController {
     private static double userLongitude;
 
     @EventMapping
-    public void handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
+    public List<Message> handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) throws IOException {
         LocationMessageContent locationMessage = event.getMessage();
         userLatitude = locationMessage.getLatitude();
         userLongitude = locationMessage.getLongitude();
@@ -103,7 +102,7 @@ public class BikunController {
                     + "bus stop " + Math.abs(getMinimumTime(event.getTimestamp().toString()) 
                     - getMinutes(event.getTimestamp().toString())) + " minutes";
             messages.add(new TextMessage(replyText));
-            reply(event.getReplyToken(), messages);
+            return messages;
 
         } else {
             reply[2] = reply[2].replace("+", ",");
@@ -121,18 +120,8 @@ public class BikunController {
                     - getMinutes(event.getTimestamp().toString())) + " minutes";
             messages.add(new TextMessage(replyText));
 
-            reply(event.getReplyToken(), messages);
+            return messages;
         }
-    }
-
-    private void replyText(@NonNull String replyToken, @NonNull String message) {
-        if (replyToken.isEmpty()) {
-            throw new IllegalArgumentException("replyToken must not be empty");
-        }
-        if (message.length() > 1000) {
-            message = message.substring(0, 1000 - 2) + "";
-        }
-        this.reply(replyToken, new TextMessage(message));
     }
 
     @EventMapping
@@ -141,21 +130,17 @@ public class BikunController {
                 event.getTimestamp(), event.getSource()));
     }
 
-    private void reply(@NonNull String replyToken, @NonNull Message locationMessage) {
-        reply(replyToken, Collections.singletonList(locationMessage));
-    }
-
-    private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
-        try {
-            BotApiResponse apiResponse = lineMessagingClient.replyMessage(
-                    new ReplyMessage(replyToken, messages)).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
+//        try {
+//            BotApiResponse apiResponse = lineMessagingClient.replyMessage(
+//                    new ReplyMessage(replyToken, messages)).get();
+//        } catch (InterruptedException | ExecutionException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     @EventMapping
-    public void handlePostbackEvent(PostbackEvent event) throws IOException {
+    public List<Message> handlePostbackEvent(PostbackEvent event) throws IOException {
         String[] reply = getBusStop(event.getPostbackContent().getData());
         reply[2] = reply[2].replace("+", ",");
 
@@ -165,11 +150,11 @@ public class BikunController {
                 Double.parseDouble(reply[3]), Double.parseDouble(reply[4])));
 
         messages.add(new TextMessage(reply[2]));
-
-        this.reply(event.getReplyToken(), messages);
+        
+        return messages;
     }
 
-    public String[] getNearestBusStop(double userLatitude, double userLongitude) {
+    public String[] getNearestBusStop(double userLatitude, double userLongitude) throws IOException {
         String csvFile = "Bikun.csv";
         String line;
         String[] csvString = new String[3];
@@ -181,29 +166,25 @@ public class BikunController {
         double busstopLatitude;
         double busstopLongitude;
         double minimum = Double.MAX_VALUE;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(csvFile));
-            line = br.readLine(); // Skip the first line
-            while ((line = br.readLine()) != null) {
-                csvString[index] = line;
-                String[] place = line.split(",");
-                busstopLatitude = Double.parseDouble(place[3]);
-                busstopLongitude = Double.parseDouble(place[4]);
-                distance = getDistance(userLatitude, 
-                        busstopLatitude, userLongitude, busstopLongitude);
-                if (distance < minimum) {
-                    minimum = distance;
-                    minIndex = index;
-                }
-                index++;
+        
+        BufferedReader br = new BufferedReader(new FileReader(csvFile));
+        line = br.readLine(); // Skip the first line
+        while ((line = br.readLine()) != null) {
+            csvString[index] = line;
+            String[] place = line.split(",");
+            busstopLatitude = Double.parseDouble(place[3]);
+            busstopLongitude = Double.parseDouble(place[4]);
+            distance = getDistance(userLatitude, 
+                    busstopLatitude, userLongitude, busstopLongitude);
+            if (distance < minimum) {
+                minimum = distance;
+                minIndex = index;
             }
-            br.close();
-            String[] partial = csvString[minIndex].split(",");
-            return (Arrays.toString(partial).replace("]", "") + "," + minimum).split(",");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            index++;
         }
+        br.close();
+        String[] partial = csvString[minIndex].split(",");
+        return (Arrays.toString(partial).replace("]", "") + "," + minimum).split(",");
     }
 
     public String[] getBusStop(String index) throws IOException {
@@ -212,18 +193,12 @@ public class BikunController {
         String line = "";
         String[] csvString = new String[3];
 
-        //double busstopLatitude;
-        //double busstopLongitude;
-
         BufferedReader br = new BufferedReader(new FileReader(csvFile));
         line = br.readLine();
         for (int i = 0; i < busStopIndex + 1; i++) {
             line = br.readLine();
         }
         csvString[busStopIndex] = line;
-        String[] place = line.split(",");
-        //busstopLatitude = Double.parseDouble(place[3]);
-        //busstopLongitude = Double.parseDouble(place[4]);
         br.close();
         String[] partial = csvString[busStopIndex].split(",");
         return (Arrays.toString(partial).replace("]", "")).split(",");
