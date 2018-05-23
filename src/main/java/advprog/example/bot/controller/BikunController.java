@@ -62,14 +62,14 @@ public class BikunController {
         } else if (contentText.equalsIgnoreCase("/bikun_stop")) {
             // String replyText = contentText.replace("/bikun_stop", "");
             //String replyToken = event.getReplyToken();
-             CarouselTemplate carouselTemplate = new CarouselTemplate(
-                     Arrays.asList(
-                             new CarouselColumn("https://image.ibb.co/hYHEO8/DSC_1000.jpg","Halte FH", "Fakultas Hukum",
-                                     Arrays.asList(new PostbackAction("Pilih", "0"))),
-                             new CarouselColumn("‭https://image.ibb.co/gBWDGT/DSC_1001.jpg‬","Halte MUI", "Masjid Ukhuwah Islamiyah",
-                            		 Arrays.asList(new PostbackAction("Pilih", "1"))),
-                             new CarouselColumn("‭https://image.ibb.co/j0jpqo/DSC_1002.jpg‬","Halte Pocin", "Pondok Cina",
-                            		 Arrays.asList(new PostbackAction("Pilih", "2")))));
+        	ArrayList<CarouselColumn> list = new ArrayList<CarouselColumn>();
+        	list.add(new CarouselColumn("https://image.ibb.co/hYHEO8/DSC_1000.jpg","Halte FH", "Fakultas Hukum",
+                    Arrays.asList(new PostbackAction("Pilih", "0"))));
+        	list.add(new CarouselColumn("https://image.ibb.co/gBWDGT/DSC_1001.jpg","Halte MUI", "Masjid Ukhuwah Islamiyah",
+                    Arrays.asList(new PostbackAction("Pilih", "1"))));
+        	list.add(new CarouselColumn("https://image.ibb.co/j0jpqo/DSC_1003.jpg","Halte Pocin", "Pondok Cina",
+                    Arrays.asList(new PostbackAction("Pilih", "2"))));
+             CarouselTemplate carouselTemplate = new CarouselTemplate(list);
 
             TemplateMessage templateMessage = new TemplateMessage(
                     "Carousel alt text", carouselTemplate);
