@@ -43,8 +43,8 @@ public class BikunController {
     @EventMapping
     public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format(
-        		"TextMessageContent(timestamp='%s',content='%s')", 
-        		event.getTimestamp(), event.getMessage()));
+                "TextMessageContent(timestamp='%s',content='%s')", 
+                event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
@@ -101,7 +101,7 @@ public class BikunController {
             messages.add(new TextMessage(reply[2]));
 
             replyText = "remaining minutes to the closest bus departure time at the\r\n" 
-            + "bus stop " + Math.abs(getMinimumTime(event.getTimestamp().toString()) 
+                    + "bus stop " + Math.abs(getMinimumTime(event.getTimestamp().toString()) 
                     - getMinutes(event.getTimestamp().toString())) + " minutes";
             messages.add(new TextMessage(replyText));
             reply(event.getReplyToken(), messages);
@@ -118,7 +118,7 @@ public class BikunController {
             messages.add(new TextMessage(reply[2]));
 
             replyText = "remaining minutes to the closest bus departure time at the\r\n" 
-            + "bus stop " + Math.abs(getMinimumTime(event.getTimestamp().toString()) 
+                    + "bus stop " + Math.abs(getMinimumTime(event.getTimestamp().toString()) 
                     - getMinutes(event.getTimestamp().toString())) + " minutes";
             messages.add(new TextMessage(replyText));
 
@@ -157,8 +157,6 @@ public class BikunController {
 
     @EventMapping
     public void handlePostbackEvent(PostbackEvent event) throws IOException {
-        String replyToken = event.getReplyToken();
-        String content = event.getPostbackContent().getData();
         String[] reply = getBusStop(event.getPostbackContent().getData());
         reply[2] = reply[2].replace("+", ",");
 
@@ -169,7 +167,7 @@ public class BikunController {
 
         messages.add(new TextMessage(reply[2]));
 
-        this.reply(replyToken, messages);
+        this.reply(event.getReplyToken(), messages);
     }
 
     public String[] getNearestBusStop(double userLatitude, double userLongitude) {
@@ -238,7 +236,7 @@ public class BikunController {
         double latDistance = Math.toRadians(userLatitude - busstopLatitude);
         double lonDistance = Math.toRadians(userLongitude - busstopLongitude);
         double x = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) 
-        		+ Math.cos(Math.toRadians(userLatitude))
+                + Math.cos(Math.toRadians(userLatitude))
                 * Math.cos(Math.toRadians(busstopLatitude)) 
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double y = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
