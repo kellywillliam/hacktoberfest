@@ -259,7 +259,7 @@ public class BikunController {
             minimumTime = 45;
         }
         if (intMinutes >= 45 && intMinutes < 60) {
-            minimumTime = 00;
+            minimumTime = 60;
         }
         return minimumTime;
     }
