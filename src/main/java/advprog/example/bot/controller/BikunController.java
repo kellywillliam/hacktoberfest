@@ -156,20 +156,20 @@ public class BikunController {
         }
     }
 
-	    @EventMapping
-	    public void handlePostbackEvent(PostbackEvent event) throws IOException {
-	        String[] reply = getBusStop(event.getPostbackContent().getData());
-	        reply[2] = reply[2].replace("+", ",");
-	
-	        List<Message> messages = new ArrayList<Message>();
-	
-	        messages.add(new LocationMessage(reply[1], "Click to view location", 
-	                Double.parseDouble(reply[3]), Double.parseDouble(reply[4])));
-	
-	        messages.add(new TextMessage(reply[2]));
-	
-	        this.reply(event.getReplyToken(), messages);
-	    }
+    @EventMapping
+    public void handlePostbackEvent(PostbackEvent event) throws IOException {
+        String[] reply = getBusStop(event.getPostbackContent().getData());
+        reply[2] = reply[2].replace("+", ",");
+
+        List<Message> messages = new ArrayList<Message>();
+
+        messages.add(new LocationMessage(reply[1], "Click to view location", 
+                Double.parseDouble(reply[3]), Double.parseDouble(reply[4])));
+
+        messages.add(new TextMessage(reply[2]));
+
+        this.reply(event.getReplyToken(), messages);
+    }
 
     public String[] getNearestBusStop(double userLatitude, double userLongitude) {
         String csvFile = "Bikun.csv";
@@ -218,7 +218,8 @@ public class BikunController {
         //double busstopLongitude;
 
         BufferedReader br = new BufferedReader(new FileReader(csvFile));
-        for (int i = 1; i < busStopIndex + 1; i++) {
+        line = br.readLine();
+        for (int i = 0; i < busStopIndex + 1; i++) {
             line = br.readLine();
         }
         csvString[busStopIndex] = line;
