@@ -33,10 +33,15 @@ public class DiceController {
 
         if (contentTextArr[0].equalsIgnoreCase("/roll")) {
             String[] format = contentTextArr[1].split("d");
-            List<Integer> diceRoll = diceRolling(
-                    Integer.parseInt(format[0]), Integer.parseInt(format[1]));
-            String result = diceOutputBuilder(
-                    diceRoll, Integer.parseInt(format[0]), Integer.parseInt(format[1]));
+            String result = "";
+            try{
+                List<Integer> diceRoll = diceRolling(
+                        Integer.parseInt(format[0]), Integer.parseInt(format[1]));
+                result = diceOutputBuilder(
+                        diceRoll, Integer.parseInt(format[0]), Integer.parseInt(format[1]));
+            } catch (NumberFormatException e) {
+                result = "Format input salah, harap diulang (XdY)";
+            }
             return new TextMessage(result);
         }
 
@@ -61,6 +66,7 @@ public class DiceController {
                     Integer.parseInt(format[0]), Integer.parseInt(format[1]));
             return new TextMessage(result);
         }
+
 
         return new TextMessage("Maaf input yang kamu masukin salah, command tersedia :\n\n"
                 + "-) /coin : untuk memutar coin \n"
