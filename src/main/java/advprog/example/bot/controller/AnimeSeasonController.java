@@ -14,6 +14,7 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.logging.Logger;
 
 @LineMessageHandler
@@ -42,7 +43,7 @@ public class AnimeSeasonController {
                 return new TemplateMessage("Please pick year and season", carouselTemplate);
             }
             else {
-                return new TextMessage("What?");
+                return new TextMessage("");
             }
         }
         else {
@@ -51,11 +52,11 @@ public class AnimeSeasonController {
     }
 
     @EventMapping
-    public Message handlePostBackEvent(PostbackEvent event) throws IOException {
+    public List<TextMessage> handlePostBackEvent(PostbackEvent event) throws IOException {
         String data = event.getPostbackContent().getData();
         isLookUpAnime = false;
-        String info = animeSeasonComposer.getWebsite(data);
-        return new TextMessage(info);
+        List<TextMessage> info = animeSeasonComposer.getWebsite(data);
+        return info;
     }
 
         @EventMapping
