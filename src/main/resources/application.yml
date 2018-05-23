@@ -1,4 +1,4 @@
 line.bot:
-  channel-token: '2EoGg84oz9jI0+4uv0q2iSemaTwry34G5O6XhOyv3JIWrz5AM11NCVzMJvT7PQ//VQQ4hzv3o1g1EJ4sEAghU47bviQfwAD+0tWt3v51QNxTERu3SE8uvlJ+OjbHUR9weySIoM5YzuXsRrbjSyaYAdB04t89/1O/w1cDnyilFU='
-  channel-secret: '46da48a24a9f5c1628dda6acc7ba02cf'
+  channel-token: 'g+DEjOWWSYqfh2dKoMEbqpw+iwDp4Gf0LVwHAcvU/szUWEphCAcj/BFssroQMuhPBE4asYUDdXeL4OduECEpbktvjz05PwG93TeFyJXO5gYHDKfxN438+7HtJlC8qch/uwEjrO+q5TP/xkBHkwi+qwdB04t89/1O/w1cDnyilFU='
+  channel-secret: 'f3fe99681eb03bb34f8eb97047f9417b'
   handler.path: /callback
