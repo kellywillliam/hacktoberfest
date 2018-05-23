@@ -115,7 +115,7 @@ public class HangoutController {
     }
 
     @EventMapping
-    public void handlePostbackEvent(PostbackEvent event) {
+    public List<Message> handlePostbackEvent(PostbackEvent event) {
         String chosen = "";
         String[] partial;
 
@@ -134,13 +134,10 @@ public class HangoutController {
         double lat = Double.parseDouble(partial[4]);
         double longit = Double.parseDouble(partial[5]);
 
-        this.reply(event.getReplyToken(),
-                Arrays.asList(
-                        new LocationMessage(partial[1], "Click to view location", lat, longit),
-                        new TextMessage(partial[2] + "\n" + partial[3]),
-                        new TextMessage("Approximated distance from your location "
-                                + (int) getDistance(userLatitude, lat, userlongitude, longit)
-                                + " metres")));
+        return Arrays.asList(new LocationMessage(partial[1], "Click to view location", lat, longit),
+                new TextMessage(partial[2] + "\n" + partial[3]),
+                new TextMessage("Approximated distance from your location "
+                        + (int) getDistance(userLatitude, lat, userlongitude, longit) + " metres"));
     }
 
     public List<Message> nearestHangout(double latitude, double longitude) throws IOException {
@@ -269,13 +266,4 @@ public class HangoutController {
         return list;
     }
 
-    public void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
-        try {
-            BotApiResponse apiResponse = lineMessagingClient
-                    .replyMessage(new ReplyMessage(replyToken, messages)).get();
-            System.out.printf("Sent messages: " + apiResponse);
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }
