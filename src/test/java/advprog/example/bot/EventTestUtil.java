@@ -31,10 +31,4 @@ public class EventTestUtil {
         return new PostbackEvent("replyToken", new UserSource("userId"), content,
                 Instant.parse("2018-01-01T00:00:00.000Z"));
     }
-
-    public static PostbackEvent createDummyPostbackMessage(String data,
-            Map<String, String> params) {
-        return new PostbackEvent("replyToken", new UserSource("userId"),
-                new PostbackContent(data, params), Instant.parse("2018-01-01T00:00:00.000Z"));
-    }
 }

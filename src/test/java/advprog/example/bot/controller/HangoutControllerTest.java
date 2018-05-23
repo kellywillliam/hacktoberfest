@@ -72,11 +72,23 @@ public class HangoutControllerTest extends TestCase {
     }
 
     @Test
-    public void testHandleLocationMessageEvents() {
+    public void testHandleLocationMessageEvents() throws IOException {
+        hangoutController = new HangoutController();
+        MessageEvent<TextMessageContent> event = EventTestUtil
+                .createDummyTextMessage("/hangout_kuy");
         LocationMessageContent message = new LocationMessageContent("1", "UI",
                 "Kampus UI Depok, Pd. Cina, Beji, Kota Depok, Jawa Barat 16424", -6.3646009,
                 106.8286886);
-        MessageEvent<LocationMessageContent> event = EventTestUtil.locationMessage(message);
+        MessageEvent<LocationMessageContent> event2 = EventTestUtil.locationMessage(message);
+        hangoutController.handleLocationMessage(event2);
+
+        event = EventTestUtil.createDummyTextMessage("/random_hangout_kuy");
+        event2 = EventTestUtil.locationMessage(message);
+        hangoutController.handleLocationMessage(event2);
+
+        event = EventTestUtil.createDummyTextMessage("/nearby_hangout_kuy 130");
+        event2 = EventTestUtil.locationMessage(message);
+        hangoutController.handleLocationMessage(event2);
     }
 
     @Test
@@ -109,5 +121,16 @@ public class HangoutControllerTest extends TestCase {
         hangoutController.carousel();
         PostbackContent action = new PostbackContent("1", null);
         PostbackEvent event = EventTestUtil.postbackMessage(action);
+        hangoutController.handlePostbackEvent(event);
+
+        hangoutController.carousel();
+        action = new PostbackContent("2", null);
+        event = EventTestUtil.postbackMessage(action);
+        hangoutController.handlePostbackEvent(event);
+
+        hangoutController.carousel();
+        action = new PostbackContent("3", null);
+        event = EventTestUtil.postbackMessage(action);
+        hangoutController.handlePostbackEvent(event);
     }
 }
