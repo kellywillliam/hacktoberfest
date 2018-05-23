@@ -42,8 +42,9 @@ public class BikunController {
 
     @EventMapping
     public Message handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-        LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')", event.getTimestamp(),
-                event.getMessage()));
+        LOGGER.fine(String.format(
+        		"TextMessageContent(timestamp='%s',content='%s')", 
+        		event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText();
 
@@ -53,15 +54,13 @@ public class BikunController {
 
         if (contentText.startsWith("/echo")) {
             return new TextMessage("echo from bikun");
-        }
-
-        else if (contentText.equalsIgnoreCase("/bikun")) {
+          
+        } else if (contentText.equalsIgnoreCase("/bikun")) {
             String replyText = "Please send your location";
             return new TextMessage(replyText);
-        }
 
-        else if (contentText.equalsIgnoreCase("/bikun_stop")) {
-			// String replyText = contentText.replace("/bikun_stop", "");
+        } else if (contentText.equalsIgnoreCase("/bikun_stop")) {
+            // String replyText = contentText.replace("/bikun_stop", "");
             String replyToken = event.getReplyToken();
             CarouselTemplate carouselTemplate = new CarouselTemplate(Arrays.asList(
                     new CarouselColumn("‭https://image.ibb.co/hYHEO8/DSC_1000.jpg‬", "Halte FH", "Fakultas Hukum",
@@ -71,7 +70,8 @@ public class BikunController {
                     new CarouselColumn("‭https://image.ibb.co/j0jpqo/DSC_1002.jpg‬", "Halte Pocin", "Pondok Cina",
                             Collections.singletonList(new PostbackAction("Pilih", "2")))));
 
-            TemplateMessage templateMessage = new TemplateMessage("Carousel alt text", carouselTemplate);
+            TemplateMessage templateMessage = new TemplateMessage(
+                    "Carousel alt text", carouselTemplate);
             return templateMessage;
         }
 
@@ -94,14 +94,15 @@ public class BikunController {
 
             List<Message> messages = new ArrayList<Message>();
 
-            messages.add(new LocationMessage(reply[1], "Click to view location", Double.parseDouble(reply[3]),
+            messages.add(new LocationMessage(reply[1], 
+                    "Click to view location", Double.parseDouble(reply[3]),
                     Double.parseDouble(reply[4])));
 
             messages.add(new TextMessage(reply[2]));
 
-            replyText = "remaining minutes to the closest bus departure time at the\r\n" + "bus stop " + Math
-                    .abs(getMinimumTime(event.getTimestamp().toString()) - getMinutes(event.getTimestamp().toString()))
-                    + " minutes";
+            replyText = "remaining minutes to the closest bus departure time at the\r\n" 
+            + "bus stop " + Math.abs(getMinimumTime(event.getTimestamp().toString()) 
+                    - getMinutes(event.getTimestamp().toString())) + " minutes";
             messages.add(new TextMessage(replyText));
             reply(event.getReplyToken(), messages);
 
@@ -110,14 +111,15 @@ public class BikunController {
 
             List<Message> messages = new ArrayList<Message>();
 
-            messages.add(new LocationMessage(reply[1], "Click to view location", Double.parseDouble(reply[3]),
+            messages.add(new LocationMessage(reply[1],
+                    "Click to view location", Double.parseDouble(reply[3]),
                     Double.parseDouble(reply[4])));
 
             messages.add(new TextMessage(reply[2]));
 
-            replyText = "remaining minutes to the closest bus departure time at the\r\n" + "bus stop " + Math
-                    .abs(getMinimumTime(event.getTimestamp().toString()) - getMinutes(event.getTimestamp().toString()))
-                    + " minutes";
+            replyText = "remaining minutes to the closest bus departure time at the\r\n" 
+            + "bus stop " + Math.abs(getMinimumTime(event.getTimestamp().toString()) 
+                    - getMinutes(event.getTimestamp().toString())) + " minutes";
             messages.add(new TextMessage(replyText));
 
             reply(event.getReplyToken(), messages);
@@ -127,7 +129,7 @@ public class BikunController {
     private void replyText(@NonNull String replyToken, @NonNull String message) {
         if (replyToken.isEmpty()) {
             throw new IllegalArgumentException("replyToken must not be empty");
-		}
+        }
         if (message.length() > 1000) {
             message = message.substring(0, 1000 - 2) + "";
         }
@@ -136,7 +138,8 @@ public class BikunController {
 
     @EventMapping
     public void handleDefaultMessage(Event event) {
-        LOGGER.fine(String.format("Event(timestamp='%s',source='%s')", event.getTimestamp(), event.getSource()));
+        LOGGER.fine(String.format("Event(timestamp='%s',source='%s')", 
+                event.getTimestamp(), event.getSource()));
     }
 
     private void reply(@NonNull String replyToken, @NonNull Message locationMessage) {
@@ -145,10 +148,11 @@ public class BikunController {
 
     private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
         try {
-            BotApiResponse apiResponse = lineMessagingClient.replyMessage(new ReplyMessage(replyToken, messages)).get();
+            BotApiResponse apiResponse = lineMessagingClient.replyMessage(
+                    new ReplyMessage(replyToken, messages)).get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
-		}
+        }
     }
 
     @EventMapping
@@ -160,8 +164,8 @@ public class BikunController {
 
         List<Message> messages = new ArrayList<Message>();
 
-        messages.add(new LocationMessage(reply[1], "Click to view location", Double.parseDouble(reply[3]),
-                Double.parseDouble(reply[4])));
+        messages.add(new LocationMessage(reply[1], "Click to view location", 
+                Double.parseDouble(reply[3]), Double.parseDouble(reply[4])));
 
         messages.add(new TextMessage(reply[2]));
 
@@ -188,7 +192,8 @@ public class BikunController {
                 String[] place = line.split(",");
                 busstopLatitude = Double.parseDouble(place[3]);
                 busstopLongitude = Double.parseDouble(place[4]);
-                distance = getDistance(userLatitude, busstopLatitude, userLongitude, busstopLongitude);
+                distance = getDistance(userLatitude, 
+                        busstopLatitude, userLongitude, busstopLongitude);
                 if (distance < minimum) {
                     minimum = distance;
                     minIndex = index;
@@ -210,8 +215,8 @@ public class BikunController {
         String line = "";
         String[] csvString = new String[3];
 
-        double busstopLatitude;
-        double busstopLongitude;
+        //double busstopLatitude;
+        //double busstopLongitude;
 
         BufferedReader br = new BufferedReader(new FileReader(csvFile));
         for (int i = 1; i < busStopIndex + 1; i++) {
@@ -219,8 +224,8 @@ public class BikunController {
         }
         csvString[busStopIndex] = line;
         String[] place = line.split(",");
-        busstopLatitude = Double.parseDouble(place[3]);
-        busstopLongitude = Double.parseDouble(place[4]);
+        //busstopLatitude = Double.parseDouble(place[3]);
+        //busstopLongitude = Double.parseDouble(place[4]);
         br.close();
         String[] partial = csvString[busStopIndex].split(",");
         return (Arrays.toString(partial).replace("]", "")).split(",");
@@ -228,16 +233,18 @@ public class BikunController {
     }
 
     public double getDistance(double userLatitude, double busstopLatitude, double userLongitude,
-    	    double busstopLongitude) {
+            double busstopLongitude) {
         final int earthRadius = 6371; // Radius of the earth
         double latDistance = Math.toRadians(userLatitude - busstopLatitude);
         double lonDistance = Math.toRadians(userLongitude - busstopLongitude);
-        double x = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) + Math.cos(Math.toRadians(userLatitude))
-                * Math.cos(Math.toRadians(busstopLatitude)) * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double x = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) 
+        		+ Math.cos(Math.toRadians(userLatitude))
+                * Math.cos(Math.toRadians(busstopLatitude)) 
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double y = 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
         double distance = earthRadius * y * 1000; // convert to meters
         return distance;
-	}
+    }
 
     public int getMinimumTime(String time) {
         int minimumTime = 0;
