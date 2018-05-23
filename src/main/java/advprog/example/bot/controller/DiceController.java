@@ -34,7 +34,7 @@ public class DiceController {
         if (contentTextArr[0].equalsIgnoreCase("/roll")) {
             String[] format = contentTextArr[1].split("d");
             String result = "";
-            try{
+            try {
                 List<Integer> diceRoll = diceRolling(
                         Integer.parseInt(format[0]), Integer.parseInt(format[1]));
                 result = diceOutputBuilder(
@@ -48,19 +48,25 @@ public class DiceController {
         if (contentTextArr[0].equalsIgnoreCase("/multiroll")) {
             String attempt = contentTextArr[1];
             String[] format = contentTextArr[2].split("d");
-            List<Integer> result = multiRolling(
-                    Integer.parseInt(attempt),
-                    Integer.parseInt(format[0]), Integer.parseInt(format[1]));
-            String output = multiRollOutputBuilder(
-                    Integer.parseInt(attempt),
-                    Integer.parseInt(format[0]), Integer.parseInt(format[1]),
-                    result);
+            String output = "";
+            try {
+                List<Integer> result = multiRolling(
+                        Integer.parseInt(attempt),
+                        Integer.parseInt(format[0]), Integer.parseInt(format[1]));
+                output = multiRollOutputBuilder(
+                        Integer.parseInt(attempt),
+                        Integer.parseInt(format[0]), Integer.parseInt(format[1]),
+                        result);
+            } catch (NumberFormatException e) {
+                output = "Format input salah, harap diulang (XdY)";
+            }
             return new TextMessage(output);
         }
 
         if (contentTextArr[0].equalsIgnoreCase("/is_lucky")) {
             String luckyNum = contentTextArr[1];
             String[] format = contentTextArr[2].split("d");
+
             String result = isLuckyNumber(
                     Integer.parseInt(luckyNum),
                     Integer.parseInt(format[0]), Integer.parseInt(format[1]));
