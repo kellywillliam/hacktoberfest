@@ -209,16 +209,16 @@ public class HangoutController {
 
     public TemplateMessage carousel() throws IOException {
         carouselList = getListCarousel();
-        String imageUrl = "wallpaper.jpg";
+
         String[] c1 = carouselList[0].split(",");
         String[] c2 = carouselList[1].split(",");
         String[] c3 = carouselList[2].split(",");
         CarouselTemplate carouselTemplate = new CarouselTemplate(Arrays.asList(
-                new CarouselColumn(imageUrl, c1[1], "Hangoutplace",
+                new CarouselColumn(null, c1[1], "Hangoutplace",
                         Arrays.asList(new PostbackAction("INFO", "1"))),
-                new CarouselColumn(imageUrl, c2[1], "Hangoutplace",
+                new CarouselColumn(null, c2[1], "Hangoutplace",
                         Arrays.asList(new PostbackAction("INFO", "2"))),
-                new CarouselColumn(imageUrl, c3[1], "Hangoutplace",
+                new CarouselColumn(null, c3[1], "Hangoutplace",
                         Arrays.asList(new PostbackAction("INFO", "3")))));
         TemplateMessage templateMessage = new TemplateMessage("Carousel alt text",
                 carouselTemplate);
@@ -265,5 +265,4 @@ public class HangoutController {
         }
         return list;
     }
-
 }
