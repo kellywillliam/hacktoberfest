@@ -17,6 +17,7 @@ public class MediaWikiController {
     private String addWikiSuccess;
     private String addWikiInvalidUrl;
     private String addWikiOldUrl;
+    private String generalException;
     private String urlList;
     private Wiki wiki;
 
@@ -24,12 +25,13 @@ public class MediaWikiController {
         this.randomInput = "Halo, terima kasih atas pesan yang dikirimkan. "
                 + "Untuk menggunakan bot ini, ada dua perintah yang bisa dilakukan:\n"
                 + "1. /add_wiki [URL-API-endpoint]\n"
-                + "Contoh: /add_wiki http://marvel.wikia.com/api.php\n"
+                + "Contoh: /add_wiki marvel.wikia.com/api.php\n"
                 + "2. /random_wiki_article";
         this.notEnoughInput = "Pesan yang kamu kirimkan belum sesuai format. "
                 + "Pastikan format yang kamu kirimkan sudah lengkap.";
         this.addWikiSuccess = "URL berhasil ditambahkan.";
         this.addWikiInvalidUrl = "URL yang kamu masukkan tidak valid. Silakan coba lagi.";
+        this.generalException = "Maaf, terjadi kesalahan. Silakan coba lagi.";
         this.addWikiOldUrl = "URL yang kamu masukkan sudah terdaftar.";
         this.urlList = "./wikiUrl.csv";
     }
@@ -57,9 +59,13 @@ public class MediaWikiController {
     }
 
     private String getArticle() {
-        ArrayList<String> rand = wiki.getRandomPages(1, NS.MAIN);
-        String title = rand.get(1);
-        return wiki.getPageText(title);
+        try {
+            ArrayList<String> rand = wiki.getRandomPages(1, NS.MAIN);
+            String title = rand.get(0);
+            return wiki.getPageText(title);
+        } catch (Exception e) {
+            return generalException;
+        }
     }
 
     private String addWiki(String urlGiven) {
