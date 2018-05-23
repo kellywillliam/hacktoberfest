@@ -26,7 +26,8 @@ public class EventTestUtil {
                 Instant.parse("2018-01-01T00:00:00.000Z"));
     }
 
-    public static MessageEvent<LocationMessageContent> createDummyLocation(double longitude, double latitude) {
+    public static MessageEvent<LocationMessageContent> createDummyLocation(
+            double longitude, double latitude) {
         return new MessageEvent<>("replyToken", new UserSource("userId"),
                 new LocationMessageContent("id", "Depok","Depok",latitude,longitude),
                 Instant.parse("2018-01-01T00:00:00.000Z"));

@@ -7,19 +7,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import advprog.example.bot.EventTestUtil;
 import advprog.example.bot.controller.WeatherController;
 
-
 import com.linecorp.bot.model.event.Event;
-import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.LocationMessageContent;
 
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.TextMessage;
+
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-
-
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -39,7 +37,7 @@ public class WeatherControllerTest {
     }
 
     @Test
-    void TestHandleLocationMessageEvent() {
+    void testHandleLocationMessageEvent() {
         EchoController echoController = new EchoController();
 
         MessageEvent<TextMessageContent> eventCall =
@@ -54,7 +52,7 @@ public class WeatherControllerTest {
     }
 
     @Test
-    void TestHandleLocationMessageEventFail() {
+    void testHandleLocationMessageEventFail() {
         EchoController echoController = new EchoController();
 
         MessageEvent<LocationMessageContent> eventLoc =
@@ -66,7 +64,7 @@ public class WeatherControllerTest {
     }
 
     @Test
-    void TestHandleGroupLocationMessageEvent() {
+    void testHandleGroupLocationMessageEvent() {
         EchoController echoController = new EchoController();
 
         MessageEvent<TextMessageContent> event =
@@ -91,11 +89,12 @@ public class WeatherControllerTest {
     }
 
     @Test
-    void TestHandleGroupLocationMessageEventFail() {
+    void testHandleGroupLocationMessageEventFail() {
         EchoController echoController = new EchoController();
 
         MessageEvent<TextMessageContent> event3 =
-                EventTestUtil.createDummyTextMessageGroup("boboboiiii cuaca di Konohagakure gimana?");
+                EventTestUtil.createDummyTextMessageGroup(
+                        "boboboiiii cuaca di Konohagakure gimana?");
 
         TextMessage reply3 = echoController.handleTextMessageEvent(event3);
         assertTrue(reply3.getText().contains("Sana"));

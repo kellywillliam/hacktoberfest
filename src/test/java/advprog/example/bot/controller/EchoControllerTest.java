@@ -125,8 +125,8 @@ public class EchoControllerTest {
         TextMessage reply = echoController.handleTextMessageEvent(event);
 
         assertEquals("Silahkan kirim lokasi kamu agar Sana"
-                + " dapat memberitahu kamu kondisi cuaca ditempat kamu"
-                ,reply.getText());
+                + " dapat memberitahu kamu kondisi cuaca ditempat kamu",
+                reply.getText());
     }
 
     @Test

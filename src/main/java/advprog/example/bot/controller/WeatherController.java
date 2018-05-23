@@ -92,6 +92,7 @@ public class WeatherController {
 
         return result;
     }
+
     public String getDataCity(String kota, int tipe) {
         String jsonData;
 

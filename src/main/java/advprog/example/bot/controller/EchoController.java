@@ -25,8 +25,6 @@ public class EchoController {
 
     private boolean flag = false;
 
-    public
-
     TopChartController eventHandler = new TopChartController();
     WeatherController eventController = new WeatherController();
 
@@ -155,7 +153,7 @@ public class EchoController {
 
             String tipe;
 
-            if(state == STANDARD) {
+            if (state == STANDARD) {
                 tipe = "STANDARD";
             } else if (state == METRIC) {
                 tipe = "METRIC";
