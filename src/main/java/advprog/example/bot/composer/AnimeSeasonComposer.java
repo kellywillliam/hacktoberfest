@@ -24,7 +24,7 @@ public class AnimeSeasonComposer {
     public AnimeSeasonComposer() {
         animeSeason.add("winter");
         animeSeason.add("summer");
-//        animeSeason.add("Fall");
+//        animeSeason.add("Fall"); maksimal action cuma 3, gabisa 4
         animeSeason.add("spring");
 
         animeYear.add("2018");
@@ -32,6 +32,8 @@ public class AnimeSeasonComposer {
         animeYear.add("2016");
         animeYear.add("2015");
         animeYear.add("2014");
+
+        this.genre = "";
 
     }
 
@@ -41,22 +43,6 @@ public class AnimeSeasonComposer {
 
     public void setGenre(String genre) {
         this.genre = genre;
-    }
-
-    public List<String> getAnimeSeason() {
-        return animeSeason;
-    }
-
-    public void setAnimeSeason(List<String> animeSeason) {
-        this.animeSeason = animeSeason;
-    }
-
-    public List<String> getAnimeYear() {
-        return animeYear;
-    }
-
-    public void setAnimeYear(List<String> animeYear) {
-        this.animeYear = animeYear;
     }
 
     public CarouselTemplate carouselTemplate(List<CarouselColumn> carouselColumns) {
@@ -80,19 +66,15 @@ public class AnimeSeasonComposer {
     }
 
     public List<TextMessage> getWebsite(String routing){
-        String reply = "";
 
         try {
             String linkAnime = "https://myanimelist.net/anime/season/" + routing;
 
-            //String ua = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36";
             Document doc = Jsoup.connect(linkAnime).get();
-            System.out.println("Ini url nya: " + linkAnime);
             return getDataWebsite(doc);
 
         }
         catch (IOException e) {
-            reply = e.toString();
             return Collections.singletonList(new TextMessage("Cannot find resource"));
         }
     }
