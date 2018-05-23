@@ -209,7 +209,7 @@ public class HangoutController {
 
     public TemplateMessage carousel() throws IOException {
         carouselList = getListCarousel();
-        String imageUrl = "/static/buttons/1040.jpg";
+        String imageUrl = "wallpaper.jpg";
         String[] c1 = carouselList[0].split(",");
         String[] c2 = carouselList[1].split(",");
         String[] c3 = carouselList[2].split(",");
