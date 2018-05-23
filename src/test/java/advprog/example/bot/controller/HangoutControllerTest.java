@@ -7,6 +7,8 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
+import java.io.IOException;
+
 import advprog.example.bot.EventTestUtil;
 
 import com.linecorp.bot.model.event.Event;
@@ -19,6 +21,8 @@ import com.linecorp.bot.model.event.postback.PostbackContent;
 import junit.framework.TestCase;
 
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class HangoutControllerTest extends TestCase {
@@ -35,7 +39,7 @@ public class HangoutControllerTest extends TestCase {
         hangoutController = new HangoutController();
         MessageEvent<TextMessageContent> event = EventTestUtil
                 .createDummyTextMessage("/hangout_kuy");
-        // hangoutController.handleTextMessageEvent(event);
+        hangoutController.handleTextMessageEvent(event);
     }
 
     @Test
@@ -43,14 +47,14 @@ public class HangoutControllerTest extends TestCase {
         hangoutController = new HangoutController();
         MessageEvent<TextMessageContent> event = EventTestUtil
                 .createDummyTextMessage("/random_hangout_kuy");
-        // hangoutController.handleTextMessageEvent(event);
+        hangoutController.handleTextMessageEvent(event);
     }
 
     @Test
     public void testHandleTextMessageEvent3() {
         MessageEvent<TextMessageContent> event = EventTestUtil
                 .createDummyTextMessage("/nearby_hangout_kuy 1500");
-        // hangoutController.handleTextMessageEvent(event);
+        hangoutController.handleTextMessageEvent(event);
     }
 
     @Test
@@ -79,17 +83,17 @@ public class HangoutControllerTest extends TestCase {
     }
 
     @Test
-    public void testnearestHangout() {
+    public void testnearestHangout() throws IOException {
         hangoutController.nearestHangout(-6.3646009, 106.8286884);
     }
 
     @Test
-    public void testgetnearestPlace() {
+    public void testgetnearestPlace() throws IOException {
         hangoutController.getNearestPlace(-6.3646009, 106.8286884);
     }
 
     @Test
-    public void testgetListCarouel() {
+    public void testgetListCarouel() throws IOException {
         hangoutController.getListCarousel();
     }
 
@@ -99,25 +103,9 @@ public class HangoutControllerTest extends TestCase {
     }
 
     @Test
-    public void testcreateUri() {
-        // System.out.println(HangoutController.createUri("wallpaper.jpeg"));
-    }
-
-    @Test
-    public void testHandlePostbackEvent() {
-        /*
-         * hangoutController.carousel(); PostbackContent action = new
-         * PostbackContent("2", null); PostbackEvent event =
-         * EventTestUtil.postbackMessage(action);
-         * hangoutController.handlePostbackEvent(event);
-         * 
-         * action = new PostbackContent("2", null); event =
-         * EventTestUtil.postbackMessage(action);
-         * hangoutController.handlePostbackEvent(event);
-         * 
-         * action = new PostbackContent("3", null); event =
-         * EventTestUtil.postbackMessage(action);
-         * hangoutController.handlePostbackEvent(event);
-         */
+    public void testHandlePostbackEvent() throws IOException {
+        hangoutController.carousel();
+        PostbackContent action = new PostbackContent("1", null);
+        PostbackEvent event = EventTestUtil.postbackMessage(action);
     }
 }

@@ -21,6 +21,7 @@ import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -44,9 +45,9 @@ public class HangoutController {
     private static final Logger LOGGER = Logger.getLogger(HangoutController.class.getName());
     private static int flag = 0;
     private double radius = 0;
-    
+
     @EventMapping
-    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public List<TextMessage> handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         LOGGER.fine(String.format("TextMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
@@ -67,7 +68,7 @@ public class HangoutController {
 
         List<Message> messages = new ArrayList<Message>();
         messages.add(new TextMessage(replyText));
-        reply(event.getReplyToken(), Arrays.asList(new TextMessage(replyText)));
+        return Arrays.asList(new TextMessage(replyText));
 
     }
 
@@ -81,7 +82,8 @@ public class HangoutController {
     private static double userlongitude;
 
     @EventMapping
-    public void handleLocationMessage(MessageEvent<LocationMessageContent> event) {
+    public List<Message> handleLocationMessage(MessageEvent<LocationMessageContent> event)
+            throws IOException {
         LocationMessageContent message = event.getMessage();
         userLatitude = message.getLatitude();
         userlongitude = message.getLongitude();
@@ -109,7 +111,7 @@ public class HangoutController {
             }
             flag = 0;
         }
-        reply(event.getReplyToken(), messages);
+        return messages;
     }
 
     @EventMapping
@@ -141,7 +143,7 @@ public class HangoutController {
                                 + " metres")));
     }
 
-    public List<Message> nearestHangout(double latitude, double longitude) {
+    public List<Message> nearestHangout(double latitude, double longitude) throws IOException {
 
         String[] reply = getNearestPlace(latitude, longitude);
 
@@ -162,7 +164,7 @@ public class HangoutController {
         return messages;
     }
 
-    public String[] getNearestPlace(double lat1, double lon1) {
+    public String[] getNearestPlace(double lat1, double lon1) throws IOException {
         String csvFile = "hangouts.csv";
         String line;
         String[] csvString = new String[16];
@@ -174,28 +176,24 @@ public class HangoutController {
         double lat2;
         double lon2;
         double minimum = Double.MAX_VALUE;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(csvFile));
-            line = br.readLine(); // Skip the first line
-            while ((line = br.readLine()) != null) {
-                csvString[index] = line;
-                String[] place = line.split(",");
-                lat2 = Double.parseDouble(place[4]);
-                lon2 = Double.parseDouble(place[5]);
-                distance = getDistance(lat1, lat2, lon1, lon2);
-                if (distance < minimum) {
-                    minimum = distance;
-                    minIndex = index;
-                }
-                index++;
+        BufferedReader br = new BufferedReader(new FileReader(csvFile));
+        line = br.readLine(); // Skip the first line
+        while ((line = br.readLine()) != null) {
+            csvString[index] = line;
+            String[] place = line.split(",");
+            lat2 = Double.parseDouble(place[4]);
+            lon2 = Double.parseDouble(place[5]);
+            distance = getDistance(lat1, lat2, lon1, lon2);
+            if (distance < minimum) {
+                minimum = distance;
+                minIndex = index;
             }
-            br.close();
-            String[] partial = csvString[minIndex].split(",");
-            return (Arrays.toString(partial).replace("]", "") + "," + minimum).split(",");
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
+            index++;
         }
+        br.close();
+        String[] partial = csvString[minIndex].split(",");
+        return (Arrays.toString(partial).replace("]", "") + "," + minimum).split(",");
+
     }
 
     public double getDistance(double lat1, double lat2, double lon1, double lon2) {
@@ -212,9 +210,9 @@ public class HangoutController {
 
     private static String[] carouselList;
 
-    public TemplateMessage carousel() {
+    public TemplateMessage carousel() throws IOException {
         carouselList = getListCarousel();
-        String imageUrl = createUri("/static/buttons/1040.jpg");
+        String imageUrl = "/static/buttons/1040.jpg";
         String[] c1 = carouselList[0].split(",");
         String[] c2 = carouselList[1].split(",");
         String[] c3 = carouselList[2].split(",");
@@ -230,31 +228,29 @@ public class HangoutController {
         return templateMessage;
     }
 
-    public String[] getListCarousel() {
+    public String[] getListCarousel() throws IOException {
         String csvFile = "hangouts.csv";
         String line;
         List<Integer> list = getRandom();
         String[] carouselList = new String[3];
         int counter = 1;
         int index = 0;
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(csvFile));
-            line = br.readLine(); // Skip the first line
 
-            while ((line = br.readLine()) != null) {
-                if (index == 3) {
-                    break;
-                }
-                if (counter == list.get(0) || counter == list.get(1) || counter == list.get(2)) {
-                    carouselList[index] = line;
-                    index++;
-                }
-                counter++;
+        BufferedReader br = new BufferedReader(new FileReader(csvFile));
+        line = br.readLine(); // Skip the first line
+
+        while ((line = br.readLine()) != null) {
+            if (index == 3) {
+                break;
             }
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+            if (counter == list.get(0) || counter == list.get(1) || counter == list.get(2)) {
+                carouselList[index] = line;
+                index++;
+            }
+            counter++;
         }
+        br.close();
+
         return carouselList;
     }
 
@@ -271,11 +267,6 @@ public class HangoutController {
             list.add(n);
         }
         return list;
-    }
-
-    public static String createUri(String path) {
-        return ServletUriComponentsBuilder.fromCurrentContextPath().path(path).build()
-                .toUriString();
     }
 
     public void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
