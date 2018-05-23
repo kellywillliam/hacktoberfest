@@ -1,17 +1,5 @@
 package advprog.example.bot.controller;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.logging.Logger;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.NonNull;
-
 import com.linecorp.bot.client.LineMessagingClient;
 import com.linecorp.bot.model.ReplyMessage;
 import com.linecorp.bot.model.action.PostbackAction;
@@ -30,6 +18,19 @@ import com.linecorp.bot.model.message.template.CarouselTemplate;
 import com.linecorp.bot.model.response.BotApiResponse;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Logger;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.NonNull;
 
 @LineMessageHandler
 public class BikunController {
@@ -81,7 +82,8 @@ public class BikunController {
     private static double userLongitude;
 
     @EventMapping
-    public List<Message> handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) throws IOException {
+    public List<Message> handleLocationMessageEvent(
+            MessageEvent<LocationMessageContent> event) throws IOException {
         LocationMessageContent locationMessage = event.getMessage();
         userLatitude = locationMessage.getLatitude();
         userLongitude = locationMessage.getLongitude();
@@ -130,15 +132,6 @@ public class BikunController {
                 event.getTimestamp(), event.getSource()));
     }
 
-//    private void reply(@NonNull String replyToken, @NonNull List<Message> messages) {
-//        try {
-//            BotApiResponse apiResponse = lineMessagingClient.replyMessage(
-//                    new ReplyMessage(replyToken, messages)).get();
-//        } catch (InterruptedException | ExecutionException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
-
     @EventMapping
     public List<Message> handlePostbackEvent(PostbackEvent event) throws IOException {
         String[] reply = getBusStop(event.getPostbackContent().getData());
@@ -154,7 +147,8 @@ public class BikunController {
         return messages;
     }
 
-    public String[] getNearestBusStop(double userLatitude, double userLongitude) throws IOException {
+    public String[] getNearestBusStop(double userLatitude, 
+            double userLongitude) throws IOException {
         String csvFile = "Bikun.csv";
         String line;
         String[] csvString = new String[3];
