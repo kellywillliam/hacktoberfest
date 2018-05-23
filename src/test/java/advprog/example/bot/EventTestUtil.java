@@ -10,7 +10,6 @@ import java.time.Instant;
 public class EventTestUtil {
 
     private EventTestUtil() {
-        // Default private constructor
     }
 
     public static MessageEvent<TextMessageContent> createDummyTextMessage(String text) {
