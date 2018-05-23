@@ -63,7 +63,7 @@ public class BikunController {
             // String replyText = contentText.replace("/bikun_stop", "");
             String replyToken = event.getReplyToken();
             CarouselTemplate carouselTemplate = new CarouselTemplate(Arrays.asList(
-                    new CarouselColumn("‭https://image.ibb.co/hYHEO8/DSC_1000.jpg‬", "Halte FH", "Fakultas Hukum",
+                    new CarouselColumn("https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2016/04/wow-796x398.jpg‬", "Halte FH", "Fakultas Hukum",
                             Collections.singletonList(new PostbackAction("Pilih", "0"))),
                     new CarouselColumn("‭https://image.ibb.co/gBWDGT/DSC_1001.jpg‬", "Halte MUI", "Masjid Ukhuwah Islamiyah", 
                             Collections.singletonList(new PostbackAction("Pilih", "1"))), 
