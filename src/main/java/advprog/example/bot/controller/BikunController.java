@@ -61,15 +61,15 @@ public class BikunController {
 
         } else if (contentText.equalsIgnoreCase("/bikun_stop")) {
             // String replyText = contentText.replace("/bikun_stop", "");
-            String replyToken = event.getReplyToken();
+            //String replyToken = event.getReplyToken();
             CarouselTemplate carouselTemplate = new CarouselTemplate(Arrays.asList(
                     new CarouselColumn("https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2016/04/wow-796x398.jpg‬", "Halte FH", "Fakultas Hukum",
                             Collections.singletonList(new PostbackAction("Pilih", "0"))),
-                    new CarouselColumn("‭https://image.ibb.co/gBWDGT/DSC_1001.jpg‬", "Halte MUI", "Masjid Ukhuwah Islamiyah", 
+                    new CarouselColumn("‭https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2016/04/wow-796x398.jpg‬", "Halte MUI", "Masjid Ukhuwah Islamiyah", 
                             Collections.singletonList(new PostbackAction("Pilih", "1"))), 
-                    new CarouselColumn("‭https://image.ibb.co/j0jpqo/DSC_1002.jpg‬", "Halte Pocin", "Pondok Cina",
+                    new CarouselColumn("‭https://cdn0.tnwcdn.com/wp-content/blogs.dir/1/files/2016/04/wow-796x398.jpg‬‬", "Halte Pocin", "Pondok Cina",
                             Collections.singletonList(new PostbackAction("Pilih", "2")))));
-
+        
             TemplateMessage templateMessage = new TemplateMessage(
                     "Carousel alt text", carouselTemplate);
             return templateMessage;
