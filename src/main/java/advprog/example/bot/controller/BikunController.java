@@ -65,11 +65,11 @@ public class BikunController {
              CarouselTemplate carouselTemplate = new CarouselTemplate(
                      Arrays.asList(
                              new CarouselColumn("https://image.ibb.co/hYHEO8/DSC_1000.jpg","Halte FH", "Fakultas Hukum",
-                                     Collections.singletonList(new PostbackAction("Pilih", "0"))),
+                                     Arrays.asList(new PostbackAction("Pilih", "0"))),
                              new CarouselColumn("‭https://image.ibb.co/gBWDGT/DSC_1001.jpg‬","Halte MUI", "Masjid Ukhuwah Islamiyah",
-                                     Collections.singletonList(new PostbackAction("Pilih", "1"))),
+                            		 Arrays.asList(new PostbackAction("Pilih", "1"))),
                              new CarouselColumn("‭https://image.ibb.co/j0jpqo/DSC_1002.jpg‬","Halte Pocin", "Pondok Cina",
-                                     Collections.singletonList(new PostbackAction("Pilih", "2")))));
+                            		 Arrays.asList(new PostbackAction("Pilih", "2")))));
 
             TemplateMessage templateMessage = new TemplateMessage(
                     "Carousel alt text", carouselTemplate);
@@ -156,20 +156,20 @@ public class BikunController {
         }
     }
 
-	//    @EventMapping
-	//    public void handlePostbackEvent(PostbackEvent event) throws IOException {
-	//        String[] reply = getBusStop(event.getPostbackContent().getData());
-	//        reply[2] = reply[2].replace("+", ",");
-	//
-	//        List<Message> messages = new ArrayList<Message>();
-	//
-	//        messages.add(new LocationMessage(reply[1], "Click to view location", 
-	//                Double.parseDouble(reply[3]), Double.parseDouble(reply[4])));
-	//
-	//        messages.add(new TextMessage(reply[2]));
-	//
-	//        this.reply(event.getReplyToken(), messages);
-	//    }
+	    @EventMapping
+	    public void handlePostbackEvent(PostbackEvent event) throws IOException {
+	        String[] reply = getBusStop(event.getPostbackContent().getData());
+	        reply[2] = reply[2].replace("+", ",");
+	
+	        List<Message> messages = new ArrayList<Message>();
+	
+	        messages.add(new LocationMessage(reply[1], "Click to view location", 
+	                Double.parseDouble(reply[3]), Double.parseDouble(reply[4])));
+	
+	        messages.add(new TextMessage(reply[2]));
+	
+	        this.reply(event.getReplyToken(), messages);
+	    }
 
     public String[] getNearestBusStop(double userLatitude, double userLongitude) {
         String csvFile = "Bikun.csv";
