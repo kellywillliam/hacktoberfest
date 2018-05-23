@@ -38,23 +38,6 @@ public class EchoController {
         return new TextMessage(replyText);
     }
 
-/*    @EventMapping
-    public ImageMessage handleImageMessageEvent(MessageEvent<TextMessageContent> event) {
-        LOGGER.fine(String.format("ImageMessageContent(timestamp='%s',content='%s')",
-                event.getTimestamp(), event.getMessage()));
-        TextMessageContent content = event.getMessage();
-        String contentText = content.getText();
-        ImageMessage replyImage;
-
-        String[] tmp = contentText.split(" ");
-
-        if (tmp[0].equalsIgnoreCase("/echo")) {
-        } else {
-        }
-
-        return replyImage;
-    }*/
-
     @EventMapping
     public void handleDefaultMessage(Event event) {
         LOGGER.fine(String.format("Event(timestamp='%s',source='%s')",
