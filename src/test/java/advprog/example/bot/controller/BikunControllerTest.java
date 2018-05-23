@@ -31,18 +31,18 @@ public class BikunControllerTest {
     }
 
     @Autowired
-    private BikunController BikunController;
+    private BikunController bikunController;
 
     @Test
     void testContextLoads() {
-        assertNotNull(BikunController);
+        assertNotNull(bikunController);
     }
 
     @Test
     void testHandleDefaultMessage() {
         Event event = mock(Event.class);
 
-        BikunController.handleDefaultMessage(event);
+        bikunController.handleDefaultMessage(event);
 
         verify(event, atLeastOnce()).getSource();
         verify(event, atLeastOnce()).getTimestamp();
