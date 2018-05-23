@@ -4,11 +4,13 @@ import com.linecorp.bot.model.event.Event;
 import com.linecorp.bot.model.event.MessageEvent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.source.UserSource;
 import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 
 
@@ -44,41 +46,40 @@ public class EchoController {
                 event.getTimestamp(), event.getMessage()));
         TextMessageContent content = event.getMessage();
         String contentText = content.getText().toLowerCase();
+        String replyText = null;
 
-
-        String[] temp = contentText.split(" ");
-        String replyText;
-
-        if (temp[0].equalsIgnoreCase("/oricon")
-                && temp[1].equalsIgnoreCase("jpsingles")) {
-            if (temp.length > 3) {
-                if (temp[2].equalsIgnoreCase("weekly")) {
-                    String tanggal = temp[3];
-                    replyText = eventHandler.topChartWeekly(tanggal);
-                } else if (temp[2].equalsIgnoreCase("daily")) {
-                    String tanggal = temp[3];
-                    replyText = eventHandler.topChartDaily(tanggal);
+        if (event.getSource() instanceof UserSource) {
+            String[] temp = contentText.split(" ");
+            if (temp[0].equalsIgnoreCase("/oricon")
+                    && temp[1].equalsIgnoreCase("jpsingles")) {
+                if (temp.length > 3) {
+                    if (temp[2].equalsIgnoreCase("weekly")) {
+                        String tanggal = temp[3];
+                        replyText = eventHandler.topChartWeekly(tanggal);
+                    } else if (temp[2].equalsIgnoreCase("daily")) {
+                        String tanggal = temp[3];
+                        replyText = eventHandler.topChartDaily(tanggal);
+                    } else {
+                        replyText = errorMessage;
+                    }
                 } else {
-                    replyText = errorMessage;
+                    String[] tempTanggal = temp[2].split("-");
+                    if (tempTanggal.length > 1) {
+                        replyText = eventHandler.topChartMonthly(tempTanggal[0], tempTanggal[1]);
+                    } else if (tempTanggal.length == 1) {
+                        replyText = eventHandler.topChartYear(tempTanggal[0]);
+                    } else {
+                        replyText = errorMessage;
+                    }
                 }
-            } else {
-                String[] tempTanggal = temp[2].split("-");
-                if (tempTanggal.length > 1) {
-                    replyText = eventHandler.topChartMonthly(tempTanggal[0], tempTanggal[1]);
-                } else if (tempTanggal.length == 1) {
-                    replyText = eventHandler.topChartYear(tempTanggal[0]);
-                } else {
-                    replyText = errorMessage;
-                }
-            }
 
-        } else if (temp[0].equalsIgnoreCase("/weather")) {
-            replyText = "Silahkan kirim lokasi kamu agar Sana"
-                    + " dapat memberitahu kamu kondisi cuaca ditempat kamu";
-            flag = true;
+            } else if (temp[0].equalsIgnoreCase("/weather")) {
+                replyText = "Silahkan kirim lokasi kamu agar Sana"
+                        + " dapat memberitahu kamu kondisi cuaca ditempat kamu";
+                flag = true;
 
-        } else if (temp[0].equalsIgnoreCase("/configure_weather")) {
-            replyText = "Kamu ingin ganti satuan suhu dan satuan kecepatan angin ?"
+            } else if (temp[0].equalsIgnoreCase("/configure_weather")) {
+                replyText = "Kamu ingin ganti satuan suhu dan satuan kecepatan angin ?"
                         + ", Sana bisa membantu kamu dengan mengetik opsi berikut :\n"
                         + "(1) /configure STANDARD (untuk suhu Kelvin "
                         + "dan kecepatan angin Meter/sec\n"
@@ -89,35 +90,48 @@ public class EchoController {
                         + "contoh jika kamu ingin suhunya Celcius dan kecepatan angin Meter/sec "
                         + "maka kamu cukup mengetik : /configure METRIC";
 
-            return new TextMessage(replyText);
+                return new TextMessage(replyText);
 
-        } else if (temp[0].equalsIgnoreCase("/configure")) {
-            String userId = content.getId();
-            String tipe = temp[1];
-            if (tipe.equalsIgnoreCase("STANDARD")) {
-                state = STANDARD;
-                replyText = "Konfigurasi data kamu sudah di-update YEAY !";
-            } else if (tipe.equalsIgnoreCase("METRIC")) {
-                state = METRIC;
-                replyText = "Konfigurasi data kamu sudah di-update YEAY !";
-            } else if (tipe.equalsIgnoreCase("IMPERIAL")) {
-                state = IMPERIAL;
-                replyText = "Konfigurasi data kamu sudah di-update YEAY !";
+            } else if (temp[0].equalsIgnoreCase("/configure")) {
+                String tipe = temp[1];
+                if (tipe.equalsIgnoreCase("STANDARD")) {
+                    state = STANDARD;
+                    replyText = "Konfigurasi data kamu sudah di-update YEAY !";
+                } else if (tipe.equalsIgnoreCase("METRIC")) {
+                    state = METRIC;
+                    replyText = "Konfigurasi data kamu sudah di-update YEAY !";
+                } else if (tipe.equalsIgnoreCase("IMPERIAL")) {
+                    state = IMPERIAL;
+                    replyText = "Konfigurasi data kamu sudah di-update YEAY !";
+                } else {
+                    replyText = "Opsi yang kamu pilih tidak tersedia :( ";
+                }
+
+                return new TextMessage(replyText);
+
+            } else if (temp[0].equalsIgnoreCase("/echo")) {
+                replyText = contentText.replace("/echo", "");
+                return new TextMessage(replyText.substring(1));
+
             } else {
-                replyText = "Opsi yang kamu pilih tidak tersedia :( ";
+                replyText = errorMessage;
+                return new TextMessage(replyText);
             }
 
-            return new TextMessage(replyText);
+        } else { //Group
 
-        } else if (temp[0].equalsIgnoreCase("/echo")) {
-            replyText = contentText.replace("/echo", "");
-            return new TextMessage(replyText.substring(1));
+            if (contentText.toLowerCase().contains("cuaca di")) {
+                ArrayList<String> temp = new ArrayList<>();
+                temp.addAll(Arrays.asList(contentText.toLowerCase().split(" ")));
+                int findIndex = temp.indexOf("cuaca");
+                String city = temp.get(findIndex + 2);
 
-        } else {
-            replyText = errorMessage;
-            return new TextMessage(replyText);
+
+                replyText = eventController.getDataCity(city, state);
+                return new TextMessage(replyText);
+            }
+
         }
-
         return new TextMessage(replyText);
     }
 
@@ -131,8 +145,6 @@ public class EchoController {
     public TextMessage handleLocationMessageEvent(MessageEvent<LocationMessageContent> event) {
         LOGGER.fine(String.format("LocationMessageContent(timestamp='%s',content='%s')",
                 event.getTimestamp(), event.getMessage()));
-
-
         if (flag) {
             String replyText;
 
@@ -141,7 +153,7 @@ public class EchoController {
             String latitude = Double.toString(content.getLatitude());
             String userId = content.getId();
 
-            String tipe = null;
+            String tipe;
 
             if(state == STANDARD) {
                 tipe = "STANDARD";
@@ -149,13 +161,15 @@ public class EchoController {
                 tipe = "METRIC";
             } else if (state == IMPERIAL) {
                 tipe = "IMPERIAL";
+            } else {
+                tipe = "STANDARD";
             }
 
             replyText = eventController.getData(longitude,latitude, userId, tipe);
 
             flag = false;
 
-            return new TextMessage(replyText + " Hashmap: " + tipe);
+            return new TextMessage(replyText);
         }
 
         return new TextMessage("Info yang kamu masukkan salah");

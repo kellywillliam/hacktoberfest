@@ -1,7 +1,5 @@
 package advprog.example.bot.controller;
 
-import java.util.HashMap;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -9,8 +7,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
 
 public class WeatherController {
-
-    private static HashMap<String,String> userConfig = new HashMap<>();
 
     private static final String URL = "http://api.openweathermap.org/data/2.5/weather?";
     private static final String COUNTRYURL = "https://restcountries.eu/rest/v2/alpha/";
@@ -29,10 +25,6 @@ public class WeatherController {
         String country = (String) jsonCountry.get("name");
         return city + ", " + country;
 
-    }
-
-    public HashMap<String, String> getUserConfig() {
-        return userConfig;
     }
 
     public String getWeather(JSONObject json) {
@@ -67,27 +59,12 @@ public class WeatherController {
         return restTemplate.getForObject(url, String.class, header);
     }
 
-//    public String updateUserConfig(String userId, String tipe) {
-//        System.out.println(userConfig.get(userId));
-//        userConfig.put(userId,tipe);
-//        System.out.println("WOIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
-//        System.out.println(userConfig.get(userId));
-//        return "Konfigurasi data kamu sudah di-update YEAY !";
-//    }
-
     public String getData(String lon,String lat, String userId,String tipe) {
         String jsonData;
-        String userUnit;
-
-//        if (!userConfig.containsKey(userId)) {
-//            userConfig.put(userId,"STANDARD");
-//            userUnit = userConfig.get(userId);
-//        } else {
-//            userUnit = userConfig.get(userId);
-//        }
 
         String urlApi =  URL + "lat=" + lat + "&lon="
                     + lon + "&units=" + tipe + APIWEATHERKEY;
+
         jsonData = getJsonFromApi(urlApi);
 
         JSONObject json = new JSONObject(jsonData);
@@ -110,6 +87,42 @@ public class WeatherController {
             windUnit = "miles/hour";
             tempUnit = "Fahrenheit";
         }
+
+        String result = text(location,weather,temperature,wind,humidity,windUnit,tempUnit);
+
+        return result;
+    }
+    public String getDataCity(String kota, int tipe) {
+        String jsonData;
+
+        String urlApi =  URL + "q=" + kota +  "&units=" + tipe + APIWEATHERKEY;
+        try {
+            jsonData = getJsonFromApi(urlApi);
+        } catch (Exception e) {
+            return "Nama kota yang kamu berikan, tidak bisa Sana"
+                    + " temukan :( maaf ya";
+        }
+        JSONObject json = new JSONObject(jsonData);
+        String location = getLocation(json);
+        String weather = getWeather(json);
+        double temperature = getTemperature(json);
+        double wind = getWindSpeed(json);
+        double humidity = getHumidity(json);
+
+        String windUnit = null;
+        String tempUnit = null;
+
+        if (tipe == 0) {
+            windUnit = "meter/sec";
+            tempUnit = "Kelvin";
+        } else if (tipe == 1) {
+            windUnit = "meter/sec";
+            tempUnit = "Celcius";
+        } else if (tipe == 2) {
+            windUnit = "miles/hour";
+            tempUnit = "Fahrenheit";
+        }
+
 
         String result = text(location,weather,temperature,wind,humidity,windUnit,tempUnit);
 

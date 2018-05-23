@@ -74,8 +74,8 @@ public class EchoControllerTest {
                 + "ps: untuk info ini hanya ada untuk tanggal yang jatuh di hari senin)\n"
                 + "(4) /oricon jpsingles daily YYYY-MM-DD\n"
                 + "(5) /weather (untuk informasi cuaca)\n"
-                + "(6) /configure_weather (untuk mengupdate satuan\n"
-                + "informasi cuaca)", reply.getText());
+                + "(6) /configure_weather (untuk mengupdate satuan"
+                + " informasi cuaca)", reply.getText());
     }
 
     @Test
@@ -97,4 +97,56 @@ public class EchoControllerTest {
                 + "(10) Doors 〜勇気の軌跡〜 - 嵐 - 2017-11-08 - Unknown",
                 reply.getText());
     }
+
+    @Test
+    void testHandleTextMessageUserConfigure() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/configure_weather");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertEquals("Kamu ingin ganti satuan suhu dan satuan kecepatan angin ?"
+                + ", Sana bisa membantu kamu dengan mengetik opsi berikut :\n"
+                + "(1) /configure STANDARD (untuk suhu Kelvin "
+                + "dan kecepatan angin Meter/sec\n"
+                + "(2) /configure METRIC (untuk suhu "
+                + "Celcius dan kecepatan angin Meter/sec\n"
+                + "(3) /configure IMPERIAL (untuk suhu "
+                + "Fahrenheit dan kecepatan Miles/hour"
+                + "contoh jika kamu ingin suhunya Celcius dan kecepatan angin Meter/sec "
+                + "maka kamu cukup mengetik : /configure METRIC",reply.getText());
+    }
+
+    @Test
+    void testHandleTextMessageWeather() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("/weather");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertEquals("Silahkan kirim lokasi kamu agar Sana"
+                + " dapat memberitahu kamu kondisi cuaca ditempat kamu"
+                ,reply.getText());
+    }
+
+    @Test
+    void testHandleTextMessageNotFoundText() {
+        MessageEvent<TextMessageContent> event =
+                EventTestUtil.createDummyTextMessage("ajdfjalksdjfklasjfkl;as");
+
+        TextMessage reply = echoController.handleTextMessageEvent(event);
+
+        assertEquals("Format yang anda masukkan salah.\n"
+                + "Untuk format yang benar adalah sbb :\n"
+                + "(1) /oricon jpsingles YYYY (untuk info tahunan)\n"
+                + "(2) /oricon jpsingles YYYY-MM (untuk info bulanan)\n"
+                + "(3) /oricon jpsingles weekly YYYY-MM-DD (untuk info mingguan ,"
+                + "ps: untuk info ini hanya ada untuk tanggal yang jatuh di hari senin)\n"
+                + "(4) /oricon jpsingles daily YYYY-MM-DD\n"
+                + "(5) /weather (untuk informasi cuaca)\n"
+                + "(6) /configure_weather (untuk mengupdate satuan informasi cuaca)",
+                reply.getText());
+    }
+
+
 }
