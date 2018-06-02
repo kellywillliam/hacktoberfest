@@ -58,7 +58,7 @@ public class MediaWikiController {
         return replyText;
     }
 
-    private String getArticle() {
+    public String getArticle() {
         try {
             ArrayList<String> rand = wiki.getRandomPages(1, NS.MAIN);
             String title = rand.get(0);
@@ -68,7 +68,7 @@ public class MediaWikiController {
         }
     }
 
-    private String addWiki(String urlGiven) {
+    public String addWiki(String urlGiven) {
         String replyText = "";
         if (isValidUrl(urlGiven)) {
             if (isNewUrl(urlGiven)) {
@@ -83,17 +83,16 @@ public class MediaWikiController {
         return replyText;
     }
 
-    private boolean isValidUrl(String urlGiven) {
+    public boolean isValidUrl(String urlGiven) {
         try {
-            Wiki wiki = new Wiki(urlGiven);
-            wiki.getCategoriesOnPage("Main Page");
+            wiki = new Wiki(urlGiven);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
 
-    private boolean isNewUrl(String urlGiven) {
+    public boolean isNewUrl(String urlGiven) {
         File file = new File(urlList);
         boolean res = false;
         try {
@@ -115,7 +114,7 @@ public class MediaWikiController {
         return res;
     }
 
-    private void saveUrl(String url) {
+    public void saveUrl(String url) {
         try {
             FileWriter fw = new FileWriter(urlList, true);
             BufferedWriter bw = new BufferedWriter(fw);
